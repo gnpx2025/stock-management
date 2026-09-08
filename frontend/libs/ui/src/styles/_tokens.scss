@@ -1,0 +1,30 @@
+:root {
+  --erp-color-bg: #f4f6f8;
+  --erp-color-surface: #ffffff;
+  --erp-color-border: #d7dde5;
+  --erp-color-text: #1f2933;
+  --erp-color-muted: #62748a;
+  --erp-color-accent: #0f6e56;
+  --erp-color-accent-contrast: #ffffff;
+  --erp-header-height: 3.5rem;
+  --erp-sidebar-width: 15rem;
+  --erp-space-1: 0.25rem;
+  --erp-space-2: 0.5rem;
+  --erp-space-3: 0.75rem;
+  --erp-space-4: 1rem;
+  --erp-space-6: 1.5rem;
+  --erp-font-sans: 'Source Sans 3', 'Segoe UI', sans-serif;
+  --erp-font-display: 'Fraunces', Georgia, serif;
+  --erp-shadow-soft: 0 1px 2px rgb(15 23 42 / 6%);
+}
+
+html.app-dark {
+  --erp-color-bg: #0f1419;
+  --erp-color-surface: #1a222c;
+  --erp-color-border: #2f3b49;
+  --erp-color-text: #e8eef5;
+  --erp-color-muted: #9aa8b8;
+  --erp-color-accent: #3ecf8e;
+  --erp-color-accent-contrast: #052e1c;
+  --erp-shadow-soft: 0 1px 2px rgb(0 0 0 / 35%);
+}

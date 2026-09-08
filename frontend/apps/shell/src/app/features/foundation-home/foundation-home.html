@@ -1,0 +1,73 @@
+<section class="foundation">
+  <header class="foundation__intro">
+    <h1>Platform foundation</h1>
+    <p>
+      Shell chrome, runtime config, health checks, global loading, notifications, and theme
+      switching — without Login or business modules.
+    </p>
+  </header>
+
+  <p-card header="Runtime configuration">
+    <dl class="foundation__meta">
+      <div>
+        <dt>Environment</dt>
+        <dd>{{ config.environmentName }}</dd>
+      </div>
+      <div>
+        <dt>API base URL</dt>
+        <dd>{{ config.apiBaseUrl }}</dd>
+      </div>
+      <div>
+        <dt>Theme</dt>
+        <dd>{{ theme.currentMode() }}</dd>
+      </div>
+    </dl>
+  </p-card>
+
+  <p-card header="Platform health">
+    <div class="foundation__health">
+      <p-tag [value]="statusLabel()" [severity]="statusSeverity()" />
+      @if (isHealthy()) {
+        <p class="foundation__ok">API and database report healthy.</p>
+      }
+      @if (health(); as h) {
+        <p>
+          Checked {{ h.checkedAtUtc | date: 'medium' }}
+          @if (h.correlationId) {
+            · correlation {{ h.correlationId }}
+          }
+        </p>
+        <ul>
+          <li>API: {{ h.api.status }}@if (h.api.description) { — {{ h.api.description }} }</li>
+          <li>
+            Database: {{ h.database.status }}@if (h.database.description) {
+              — {{ h.database.description }}
+            }
+          </li>
+        </ul>
+      } @else if (healthError()) {
+        <p class="foundation__error">{{ healthError() }}</p>
+      } @else {
+        <p>No health data yet.</p>
+      }
+      <p-button
+        label="Refresh health"
+        icon="pi pi-refresh"
+        [loading]="loadingHealth()"
+        (onClick)="refreshHealth()"
+      />
+    </div>
+  </p-card>
+
+  <p-card header="Demo hooks">
+    <div class="foundation__demos">
+      <p-button label="Demo global loader" (onClick)="demoLoader()" />
+      <p-button
+        label="Demo toast"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="demoToast()"
+      />
+    </div>
+  </p-card>
+</section>

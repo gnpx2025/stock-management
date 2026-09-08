@@ -1,0 +1,11 @@
+*
+!Dockerfile*
+!.dockerignore
+node_modules
+.git
+.specify
+specs
+coverage
+*.log
+.env
+.env.*

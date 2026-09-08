@@ -1,0 +1,4 @@
+{
+  "environmentName": "Development",
+  "apiBaseUrl": "http://localhost:5080"
+}

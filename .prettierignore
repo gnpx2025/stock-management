@@ -1,0 +1,9 @@
+node_modules
+dist
+build
+coverage
+package-lock.json
+frontend/package-lock.json
+backend/**/bin
+backend/**/obj
+.nx

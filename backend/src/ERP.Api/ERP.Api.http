@@ -1,0 +1,18 @@
+@ERP.Api_HostAddress = http://localhost:5080
+
+GET {{ERP.Api_HostAddress}}/api/v1/platform/health
+Accept: application/json
+X-Correlation-ID: local-dev-1
+
+###
+
+GET {{ERP.Api_HostAddress}}/health/live
+Accept: application/json
+
+###
+
+GET {{ERP.Api_HostAddress}}/api/v1/platform/errors/sample
+Accept: application/json
+X-Correlation-ID: sample-error-1
+
+###

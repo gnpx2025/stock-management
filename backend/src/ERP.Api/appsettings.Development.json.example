@@ -1,0 +1,18 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=erp;Username=erp;Password=erp_dev_password"
+  },
+  "Cors": {
+    "AllowedOrigins": [
+      "http://localhost:4200"
+    ]
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+      "Microsoft.AspNetCore": "Information",
+      "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Information",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Information"
+    }
+  }
+}
