@@ -1,0 +1,61 @@
+<div class="login">
+  <div class="login__panel">
+    <header class="login__brand">
+      <span class="login__mark" aria-hidden="true">ERP</span>
+      <div>
+        <p class="login__product">Platform Shell</p>
+        <p class="login__tagline">Sign in to continue</p>
+      </div>
+    </header>
+
+    <form class="login__form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="login__field">
+        <label for="usernameOrEmail">Username or email</label>
+        <input
+          id="usernameOrEmail"
+          pInputText
+          type="text"
+          autocomplete="username"
+          formControlName="usernameOrEmail"
+          [attr.aria-invalid]="
+            form.controls.usernameOrEmail.invalid && form.controls.usernameOrEmail.touched
+          "
+        />
+        @if (
+          form.controls.usernameOrEmail.invalid && form.controls.usernameOrEmail.touched
+        ) {
+          <span class="login__hint">Username or email is required.</span>
+        }
+      </div>
+
+      <div class="login__field">
+        <label for="password">Password</label>
+        <p-password
+          inputId="password"
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          autocomplete="current-password"
+          styleClass="login__password"
+          inputStyleClass="w-full"
+          [fluid]="true"
+        />
+        @if (form.controls.password.invalid && form.controls.password.touched) {
+          <span class="login__hint">Password is required.</span>
+        }
+      </div>
+
+      @if (errorMessage(); as message) {
+        <p-message severity="error" styleClass="login__error">{{ message }}</p-message>
+      }
+
+      <p-button
+        type="submit"
+        label="Sign in"
+        styleClass="login__submit"
+        [loading]="authenticating"
+        [disabled]="authenticating || form.invalid"
+      />
+    </form>
+  </div>
+</div>

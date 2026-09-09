@@ -7,6 +7,26 @@
       "http://localhost:4200"
     ]
   },
+  "Authentication": {
+    "Jwt": {
+      "Issuer": "erp",
+      "Audience": "erp-shell",
+      "SigningKey": "REPLACE_WITH_LONG_RANDOM_SECRET_AT_LEAST_32_CHARS",
+      "AccessTokenMinutes": 15
+    },
+    "Refresh": {
+      "CookieName": "erp_refresh",
+      "IndicatorCookieName": "erp_auth",
+      "LifetimeDays": 7,
+      "SameSite": "None",
+      "Secure": false
+    },
+    "Seed": {
+      "UserName": "admin",
+      "Email": "admin@example.com",
+      "Password": "REPLACE_WITH_LOCAL_SECRET"
+    }
+  },
   "Logging": {
     "LogLevel": {
       "Default": "Debug",

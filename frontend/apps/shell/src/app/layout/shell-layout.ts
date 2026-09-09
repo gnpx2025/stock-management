@@ -6,7 +6,7 @@ import {
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Button } from 'primeng/button';
 import { Toast } from 'primeng/toast';
-import { LoadingService } from '@erp/core';
+import { AuthSessionService, LoadingService } from '@erp/core';
 import { ThemeService } from '@erp/ui';
 import { GlobalLoaderComponent } from './global-loader';
 
@@ -27,8 +27,13 @@ import { GlobalLoaderComponent } from './global-loader';
 export class ShellLayoutComponent {
   protected readonly theme = inject(ThemeService);
   protected readonly loading = inject(LoadingService);
+  private readonly auth = inject(AuthSessionService);
 
   toggleTheme(): void {
     this.theme.toggle();
+  }
+
+  logout(): void {
+    this.auth.logout().subscribe();
   }
 }

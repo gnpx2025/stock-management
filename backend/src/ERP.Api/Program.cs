@@ -1,8 +1,10 @@
 using System.Text.Json.Serialization;
 using Asp.Versioning;
+using ERP.Api.Auth;
 using ERP.Api.Infrastructure.ExceptionHandling;
 using ERP.Api.Middleware;
 using ERP.Infrastructure;
+using ERP.Infrastructure.Identity;
 using ERP.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpLogging;
@@ -21,6 +23,8 @@ builder.Logging.Configure(options =>
 });
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddAuthRateLimiting();
+builder.Services.AddSingleton<AuthCookieService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -72,7 +76,8 @@ builder.Services.AddCors(options =>
 
         policy.WithOrigins(origins)
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -94,6 +99,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("ShellCors");
+app.UseRateLimiter();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

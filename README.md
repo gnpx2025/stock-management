@@ -38,9 +38,13 @@ npx nx serve shell
 - [Repository structure](docs/repository-structure.md)
 - [Frontend architecture](docs/frontend-architecture.md)
 - [Backend architecture](docs/backend-architecture.md)
+- [Authentication / Login](docs/authentication.md)
 - [Local development](docs/local-development.md)
-- [Feature quickstart / acceptance](specs/001-platform-foundation/quickstart.md)
+- [Auth feature quickstart](specs/002-login-authentication/quickstart.md)
+- [Platform foundation quickstart](specs/001-platform-foundation/quickstart.md)
 
 ## Spec Kit
 
-Feature specs live under `specs/`. Active feature: `specs/001-platform-foundation/`.
+Feature specs live under `specs/`. Active feature: `specs/002-login-authentication/`.
+
+Default seed login (Development only; change immediately): `admin` / `ChangeMe!DevOnly1` — see [docs/authentication.md](docs/authentication.md).

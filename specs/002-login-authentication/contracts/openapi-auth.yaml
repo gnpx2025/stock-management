@@ -1,0 +1,194 @@
+openapi: 3.0.3
+info:
+  title: ERP Login and Authentication API
+  version: 1.0.0
+  description: >
+    Authentication contracts for feature 002-login-authentication.
+    Refresh token is delivered via HttpOnly cookie only (not in response bodies).
+servers:
+  - url: http://localhost:5080
+    description: Local API
+paths:
+  /api/v1/auth/login:
+    post:
+      operationId: login
+      summary: Authenticate with username/email and password
+      tags: [Auth]
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Authenticated; refresh cookie set
+          headers:
+            X-Correlation-ID:
+              schema:
+                type: string
+            Set-Cookie:
+              description: HttpOnly refresh cookie and non-HttpOnly session indicator
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenResponse'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          description: Invalid credentials or inactive account (generic message)
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '429':
+          description: Login rate limited
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/v1/auth/refresh:
+    post:
+      operationId: refresh
+      summary: Rotate refresh session and issue new access token
+      tags: [Auth]
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: Refreshed; new refresh cookie set
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenResponse'
+        '401':
+          description: Missing, invalid, expired, revoked, or reused refresh token
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/v1/auth/logout:
+    post:
+      operationId: logout
+      summary: Revoke current refresh session and clear cookies
+      tags: [Auth]
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '204':
+          description: Logged out
+        '401':
+          description: Optional; prefer idempotent 204 when already logged out
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/v1/auth/me:
+    get:
+      operationId: getMe
+      summary: Minimal authenticated user for current access token
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: Current user summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedUser'
+        '401':
+          description: Missing or invalid access token
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    CorrelationId:
+      name: X-Correlation-ID
+      in: header
+      required: false
+      schema:
+        type: string
+  responses:
+    Problem:
+      description: Validation or client error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  schemas:
+    LoginRequest:
+      type: object
+      required: [usernameOrEmail, password]
+      properties:
+        usernameOrEmail:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+          format: password
+    AuthenticatedUser:
+      type: object
+      required: [id, userName]
+      properties:
+        id:
+          type: string
+          format: uuid
+        userName:
+          type: string
+        email:
+          type: string
+          format: email
+          nullable: true
+    AuthTokenResponse:
+      type: object
+      required: [accessToken, expiresAt, user]
+      properties:
+        accessToken:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/AuthenticatedUser'
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+        correlationId:
+          type: string
+        traceId:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string

@@ -9,5 +9,12 @@ export type {
   NotificationSeverity,
 } from './lib/notification';
 export type { ThemeMode } from './lib/theme';
-export type { AuthSession, TokenStorage } from './lib/auth';
+export type {
+  LoginRequest,
+  AuthenticatedUser,
+  AuthTokenResponse,
+  AuthStatus,
+  AuthSession,
+  TokenStorage,
+} from './lib/auth';
 export type { AppContext } from './lib/app-context';
