@@ -84,7 +84,7 @@ All Technical Context unknowns resolved. Decisions below guide implementation an
 - **Memory-only** access token store implementing/replacing `TokenStorage`.
 - **Auth interceptor** (after correlation, coordinated with loading/error): attach `Authorization: Bearer`; skip attaching on login/refresh; on 401 for protected calls, single-flight refresh then one retry; on refresh failure → clear state, redirect `/login`.
 - **Guards**: `authGuard` for protected Shell routes; `guestGuard` for `/login` (redirect authenticated users to home/return). Preserve **safe relative `returnUrl`** query (or router state); reject absolute/external URLs.
-- Login feature under Shell `features/auth/login`; PrimeNG form controls; reuse global loader (`X-Skip-Loading` only where appropriate) and toast/error infrastructure.
+- Login feature under Shell `features/auth/login`; Angular Material form controls; reuse global loader (`X-Skip-Loading` only where appropriate) and snackbar/error infrastructure.
 - Logout control available from Shell chrome (minimal).
 
 **Rationale**: Spec FR-012–016, clarifications on return URL; constitution Signals-first.

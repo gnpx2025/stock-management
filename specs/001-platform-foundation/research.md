@@ -31,16 +31,16 @@ All Technical Context unknowns resolved. Decisions below guide implementation an
 
 ---
 
-## 3. PrimeNG theming and light/dark
+## 3. Angular Material theming and light/dark
 
-**Decision**: Configure PrimeNG via `providePrimeNG` with Aura (or current default preset) from `@primeng/themes`. Set `darkModeSelector` to a document-root class (e.g. `.app-dark`). On first load: prefer `prefers-color-scheme` when practical, otherwise default light; Shell provides a simple toggle that adds/removes the class. Centralize theme tokens/SCSS in `libs/ui`. Do not introduce Tailwind or competing UI kits.
+**Decision (current)**: Angular Material theme is centralized in `libs/ui`, mapped to ERP design tokens, with dark mode via `.app-dark` / `color-scheme`. On first load: prefer `prefers-color-scheme` when practical, otherwise default light. Do not introduce Tailwind or competing UI kits (including PrimeNG).
 
-**Rationale**: Matches clarification (light default + OS prefer + Shell switch) and PrimeNG official theming model; avoids unnecessary wrappers.
+**Rationale**: Constitution v3.0.0 / feature `003-angular-material-migration` (supersedes original PrimeNG Aura decision).
 
 **Alternatives considered**:
-- `darkModeSelector: 'system'` only — rejected (no manual verification switch).
-- Custom theme engine without PrimeNG presets — rejected (unnecessary complexity).
-- Tailwind alongside PrimeNG — rejected (constitution / FR-006).
+- `color-scheme: system` only — rejected historically (needed manual verification switch).
+- Keep PrimeNG Aura — rejected (Material migration).
+- Tailwind alongside Material — rejected (constitution).
 
 ---
 
@@ -58,7 +58,7 @@ All Technical Context unknowns resolved. Decisions below guide implementation an
 
 ## 5. Global loading and notifications
 
-**Decision**: Shell owns a request-refcount (or equivalent) global overlay loader driven by core HTTP interceptor(s). Notifications use PrimeNG Toast (or MessageService) exposed via a small shared notification facade in `ui`/`core`—not per-feature implementations. Foundation home includes demo actions to trigger loader/toast for acceptance.
+**Decision**: Shell owns a request-refcount (or equivalent) global overlay loader driven by core HTTP interceptor(s). Notifications use Angular Material SnackBar exposed via a small shared notification facade in `ui`/`core`—not per-feature implementations. Foundation home includes demo actions to trigger loader/toast for acceptance.
 
 **Rationale**: Constitution + FR-012/013; minimal custom UI beyond wiring.
 

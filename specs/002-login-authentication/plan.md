@@ -8,13 +8,15 @@
 
 ## Summary
 
-Implement production-ready Login and Authentication on the completed Platform Foundation: Shell login UI (PrimeNG), JWT bearer access tokens (in-memory) with rotating HttpOnly refresh-session cookies, Clean Architecture auth use cases, minimal authenticatable-user persistence, route guards with safe return-URL, HTTP auth interceptor with single-flight refresh, IP/client login rate limiting, seed identity for Dev/Testing, and automated frontend/backend tests—without User Management, RBAC, org context, MFA, or business modules.
+Implement production-ready Login and Authentication on the completed Platform Foundation: Shell login UI (Angular Material), JWT bearer access tokens (in-memory) with rotating HttpOnly refresh-session cookies, Clean Architecture auth use cases, minimal authenticatable-user persistence, route guards with safe return-URL, HTTP auth interceptor with single-flight refresh, IP/client login rate limiting, seed identity for Dev/Testing, and automated frontend/backend tests—without User Management, RBAC, org context, MFA, or business modules.
+
+> **Supersession (2026-09-09)**: Login UI uses Angular Material (Constitution v3.0.0 / `003-angular-material-migration`).
 
 ## Technical Context
 
 **Language/Version**: TypeScript (strict) on Angular 21+; C# / .NET 10 (nullable reference types enabled)
 
-**Primary Dependencies**: Existing Nx/Angular/Native Federation/PrimeNG stack; ASP.NET Core Authentication JwtBearer; System.IdentityModel.Tokens.Jwt (or equivalent); ASP.NET Core Data Protection / Identity password hasher (`PasswordHasher<T>`) without full Identity UI/UserManager product surface; ASP.NET Core Rate Limiting; EF Core + Npgsql (existing)
+**Primary Dependencies**: Existing Nx/Angular/Native Federation/Angular Material stack; ASP.NET Core Authentication JwtBearer; System.IdentityModel.Tokens.Jwt (or equivalent); ASP.NET Core Data Protection / Identity password hasher (`PasswordHasher<T>`) without full Identity UI/UserManager product surface; ASP.NET Core Rate Limiting; EF Core + Npgsql (existing)
 
 **Storage**: PostgreSQL 16 (existing Docker Compose); new auth tables via EF Core migrations (`AuthUser`, `RefreshSession`); hashed refresh token verifiers; no plaintext secrets in repo
 
@@ -26,7 +28,7 @@ Implement production-ready Login and Authentication on the completed Platform Fo
 
 **Performance Goals**: Login round-trip usable under SC-002 (&lt;30s end-to-end); access token default ~15 minutes; coordinated single refresh under concurrent 401s; rate limiter protects login without account lockout
 
-**Constraints**: Constitution v2.0.0; do not restructure Platform Foundation except minimal auth touch-points (CORS credentials, bootstrap/routing, replace auth placeholders); Signals-first auth state (no NgRx); PrimeNG-only UI; passwords/tokens never logged; inactive login failures identical to invalid credentials at the client; multiple concurrent sessions; refresh rotation + reuse fails session family; logout revokes current session only
+**Constraints**: Constitution v3.0.0; do not restructure Platform Foundation except minimal auth touch-points (CORS credentials, bootstrap/routing, replace auth placeholders); Signals-first auth state (no NgRx); Angular Material-only UI; passwords/tokens never logged; inactive login failures identical to invalid credentials at the client; multiple concurrent sessions; refresh rotation + reuse fails session family; logout revokes current session only
 
 **Scale/Scope**: One Login page; auth API (`login`/`refresh`/`logout` + minimal `me`); Shell route protection + return URL; core auth session/interceptor/guard; two persistence entities; seed user for Dev/Testing; no business modules
 
@@ -37,10 +39,10 @@ Implement production-ready Login and Authentication on the completed Platform Fo
 | Gate | Status | Notes |
 |------|--------|-------|
 | Spec-Driven order: Authentication after Platform Foundation | Pass | Second constitution item; foundation complete |
-| Stack: Angular/Nx/NF/PrimeNG/SCSS + .NET 10/Clean Architecture/EF/PostgreSQL | Pass | No stack change |
+| Stack: Angular/Nx/NF/Angular Material/SCSS + .NET 10/Clean Architecture/EF/PostgreSQL | Pass | No stack change |
 | Modular monolith (no microservices) | Pass | Auth in existing API host |
 | Shell owns authentication entry, loading, notifications | Pass | Login in Shell; reuse loader/toasts |
-| No competing UI libraries; PrimeNG-first | Pass | Login uses PrimeNG + shared UI |
+| No competing UI libraries; Angular Material-first | Pass | Login uses Material + shared UI |
 | Signals-first; no unnecessary NgRx | Pass | Auth state via Signals |
 | Clean Architecture dependency direction | Pass | Use cases in Application; JWT/hash/persist in Infrastructure; thin Api |
 | API `/api/v1/...`, validation, Problem Details | Pass | Auth under `/api/v1/auth/...` |
@@ -59,7 +61,7 @@ Implement production-ready Login and Authentication on the completed Platform Fo
 |------|--------|-----------------|
 | Stack & modular monolith | Pass | `research.md` §1–2; structure below |
 | Shell owns auth entry; reuse loader/notifications | Pass | `research.md` §6–7; `quickstart.md` |
-| PrimeNG-first; Signals auth state | Pass | `research.md` §6 |
+| Angular Material-first; Signals auth state | Pass | `research.md` §6 |
 | Clean Architecture + thin controllers | Pass | `research.md` §2; `data-model.md` |
 | `/api/v1`, Problem Details, CORS credentials | Pass | `contracts/auth-api.md`, `openapi-auth.yaml` |
 | Secrets / cookie / JWT config | Pass | `research.md` §3–5, §9; `quickstart.md` |
@@ -102,7 +104,7 @@ frontend/
     │   └── src/lib/auth/                 # Replace placeholders: session (Signals),
     │                                     # memory access token, interceptor, guards,
     │                                     # auth API client
-    └── ui/                               # Reuse PrimeNG wiring; no new UI kit
+    └── ui/                               # Reuse Angular Material theme/snackbar wiring; no new UI kit
 
 backend/
 ├── src/

@@ -6,7 +6,9 @@
 
 **Status**: Draft
 
-**Input**: User description: "Establish the initial platform foundation for the ERP application based on the ratified project constitution. This specification is ONLY for the Platform Foundation—Angular/Nx/Native Federation/PrimeNG frontend, .NET 10 Clean Architecture backend, PostgreSQL, Docker, shared libraries, testing, configuration, and basic CI—without Login, Master Data, Finance, Inventory, Purchasing, Sales, Reports, or other business features."
+**Input**: User description: "Establish the initial platform foundation for the ERP application based on the ratified project constitution. This specification is ONLY for the Platform Foundation—Angular/Nx/Native Federation frontend UI foundation, .NET 10 Clean Architecture backend, PostgreSQL, Docker, shared libraries, testing, configuration, and basic CI—without Login, Master Data, Finance, Inventory, Purchasing, Sales, Reports, or other business features."
+
+> **Supersession (2026-09-09)**: Primary UI library is now Angular Material per Constitution v3.0.0 and feature `003-angular-material-migration`. Historical PrimeNG wording below is updated to current requirements.
 
 ## Constitution Alignment
 
@@ -59,7 +61,7 @@ As a frontend developer, I can add a future business micro-frontend and consume 
 **Acceptance Scenarios**:
 
 1. **Given** the Nx frontend workspace, **When** a developer inspects applications and libraries, **Then** a Shell application and foundational library areas (`core`, `ui`, `shared`, `contracts` or Nx-equivalent naming) exist and are consumable by the Shell.
-2. **Given** the Shell application, **When** a developer reviews UI dependencies, **Then** PrimeNG (with PrimeIcons) is the primary UI component library and competing UI component libraries are not installed.
+2. **Given** the Shell application, **When** a developer reviews UI dependencies, **Then** Angular Material (with Angular CDK) is the primary UI component library and competing UI component libraries (including PrimeNG) are not installed.
 3. **Given** the shared UI and theme foundation, **When** a developer applies light or dark theme at the Shell level, **Then** styling remains centralized (no duplicated global/theme styles required per future micro-frontend).
 4. **Given** the Native Federation foundation, **When** a developer plans future apps (`master-data`, `finance`, `inventory`, `purchasing`, `sales`, `reports`), **Then** those apps are not required to exist yet, but the architecture clearly allows adding them later without restructuring the monorepo foundation.
 
@@ -120,15 +122,15 @@ As a new contributor or CI pipeline, I can follow concise developer documentatio
 #### Frontend platform
 
 - **FR-004**: Frontend MUST be an Nx workspace supporting multiple applications, shared libraries, micro-frontends, library boundaries, project graph, build caching, testing, linting, and future CI integration.
-- **FR-005**: Frontend MUST use Angular 21+, strict TypeScript, standalone components, Signals, RxJS, SCSS, Native Federation (`@angular-architects/native-federation`), PrimeNG, and PrimeIcons, following current Nx/Angular conventions (not deprecated Module Federation approaches).
-- **FR-006**: Frontend MUST NOT use Angular Material, NG-ZORRO, Bootstrap UI components, Tailwind CSS, or other competing UI component libraries.
+- **FR-005**: Frontend MUST use Angular 21+, strict TypeScript, standalone components, Signals, RxJS, SCSS, Native Federation (`@angular-architects/native-federation`), and Angular Material as the primary UI component library, following current Nx/Angular conventions (not deprecated Module Federation approaches).
+- **FR-006**: Frontend MUST NOT use PrimeNG, NG-ZORRO, Bootstrap UI components, Tailwind CSS, or other competing UI component libraries.
 - **FR-007**: System MUST provide an initial Shell application responsible for bootstrap, root routing, global layout foundation, global theme configuration, shared UI integration, global loading infrastructure, global notification infrastructure, and application configuration. On first start (without Login), the Shell MUST present minimal application chrome (header/sidebar/content foundation) and a foundation home that shows API health status and provides demo hooks for global loading and notifications. This home MUST NOT implement Login or business features.
 - **FR-008**: System MUST establish foundational library areas for `core`, `ui`, `shared`, and `contracts` (exact Nx naming may follow current conventions) consumable by the Shell.
 - **FR-009**: Core library area MUST reserve cross-cutting infrastructure for HTTP, configuration, error handling, routing infrastructure, application context foundation, and authentication/permission infrastructure **placeholders only** (no real authz implementation).
-- **FR-010**: UI library MUST be the shared UI foundation based on PrimeNG; create only the foundation required now; use PrimeNG directly where appropriate; avoid unnecessary wrappers; add custom shared components only when PrimeNG does not already provide the need; keep reusable component styles inside the UI library.
-- **FR-011**: System MUST establish centralized theme/styling architecture (PrimeNG theme, PrimeIcons, SCSS, design tokens/CSS custom properties where appropriate) supporting light and dark themes, consistent typography/spacing/radius/component styling, and future branding customization without per-micro-frontend global style duplication. Default appearance MUST be light theme, preferring OS color-scheme when practical. The Shell MUST provide a simple light/dark switch for verification. Full branding/settings product UI is out of scope.
+- **FR-010**: UI library MUST be the shared UI foundation based on Angular Material; create only the foundation required now; use Angular Material directly where appropriate; avoid unnecessary wrappers; add custom shared components only when Material does not already provide the need; keep reusable component styles inside the UI library.
+- **FR-011**: System MUST establish centralized theme/styling architecture (Angular Material theme mapped to ERP design tokens, Material icons, SCSS, design tokens/CSS custom properties where appropriate) supporting light and dark themes, consistent typography/spacing/radius/component styling, and future branding customization without per-micro-frontend global style duplication. Default appearance MUST be light theme, preferring OS color-scheme when practical. The Shell MUST provide a simple light/dark switch for verification (may be deferred when temporary chrome is removed in later UI migrations). Full branding/settings product UI is out of scope.
 - **FR-012**: Shell MUST own global loading infrastructure so future apps/shared HTTP infrastructure can trigger a global overlay loader for active API requests without duplicating loader implementations.
-- **FR-013**: System MUST establish shared notification infrastructure (success, warning, information, error) via PrimeNG for consistent use by future feature applications.
+- **FR-013**: System MUST establish shared notification infrastructure (success, warning, information, error) via Angular Material (or an ERP facade over Material) for consistent use by future feature applications.
 - **FR-014**: Frontend MUST provide centralized HTTP error-handling foundation integrated with user-friendly notifications.
 - **FR-015**: Frontend MUST provide environment-based configuration suitable for Angular/Nx across Development, Testing, Staging, and Production, without committing secrets. Configuration MUST include the backend API base URL used by the Shell.
 - **FR-016**: Frontend MUST establish unit/component testing foundation, linting, and type checking.
@@ -154,7 +156,7 @@ As a new contributor or CI pipeline, I can follow concise developer documentatio
 - **FR-028**: Repository MUST include `.gitignore`, README, foundational developer documentation, and an initial CI workflow foundation covering the validation sequence: install → lint → type check → build → unit tests → integration tests. Backend integration tests in CI MUST run against a real PostgreSQL service (for example a CI database container). Deployment infrastructure is out of scope.
 - **FR-029**: Platform MUST configure strict TypeScript, ESLint, Prettier, strict C# nullable reference types, consistent formatting, and fail CI/build checks on architectural or type-safety violations where practical.
 - **FR-030**: Documentation MUST concisely describe repository structure, frontend architecture, backend architecture, micro-frontend architecture, UI library architecture, local development setup, PostgreSQL setup, and how to run frontend, backend, and tests.
-- **FR-031**: Platform MUST enforce architecture boundaries: apps consume shared libraries rather than duplicating infrastructure; micro-frontends remain independently buildable/deployable; shared UI is centralized; PrimeNG is the only approved primary UI component library; business logic stays out of UI components; backend controllers stay thin; domain stays infrastructure-independent.
+- **FR-031**: Platform MUST enforce architecture boundaries: apps consume shared libraries rather than duplicating infrastructure; micro-frontends remain independently buildable/deployable; shared UI is centralized; Angular Material is the only approved primary UI component library; business logic stays out of UI components; backend controllers stay thin; domain stays infrastructure-independent.
 
 ### Key Entities *(infrastructure concepts)*
 

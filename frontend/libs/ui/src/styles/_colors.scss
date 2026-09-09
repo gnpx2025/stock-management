@@ -1,0 +1,57 @@
+:root {
+  /* Surfaces */
+  --erp-color-bg: #f4f6f8;
+  --erp-color-surface: #ffffff;
+  --erp-color-border: #d7dde5;
+  --erp-color-text: #1f2933;
+  --erp-color-muted: #62748a;
+
+  /* Brand */
+  --erp-color-accent: #0f6e56;
+  --erp-color-accent-contrast: #ffffff;
+  --erp-color-accent-rgb: 15 110 86;
+
+  /* Semantic */
+  --erp-color-success: #0f6e56;
+  --erp-color-success-contrast: #ffffff;
+  --erp-color-info: #1f2933;
+  --erp-color-info-contrast: #e8eef5;
+  --erp-color-warn: #b54708;
+  --erp-color-warn-contrast: #fff7ed;
+  --erp-color-error: #b42318;
+  --erp-color-error-contrast: #ffffff;
+
+  /* Utility / atmosphere */
+  --erp-color-overlay: rgb(15 23 42 / 28%);
+  --erp-color-ink-rgb: 15 23 42;
+  --erp-color-mist: #d7e3ec;
+  --erp-color-mist-strong: #c5d0db;
+  --erp-color-black: #000000;
+  --erp-color-white: #ffffff;
+}
+
+html.app-dark {
+  --erp-color-bg: #000000;
+  --erp-color-surface: #18181b;
+  --erp-color-border: #3f3f46;
+  --erp-color-text: #e8eef5;
+  --erp-color-muted: #9aa8b8;
+
+  --erp-color-accent: #3ecf8e;
+  --erp-color-accent-contrast: #052e1c;
+  --erp-color-accent-rgb: 62 207 142;
+
+  --erp-color-success: #3ecf8e;
+  --erp-color-success-contrast: #052e1c;
+  --erp-color-info: #e8eef5;
+  --erp-color-info-contrast: #1f2933;
+  --erp-color-warn: #f79009;
+  --erp-color-warn-contrast: #1a0f00;
+  --erp-color-error: #f97066;
+  --erp-color-error-contrast: #1a0505;
+
+  --erp-color-overlay: rgb(0 0 0 / 45%);
+  --erp-color-ink-rgb: 0 0 0;
+  --erp-color-mist: #3f3f46;
+  --erp-color-mist-strong: #52525b;
+}

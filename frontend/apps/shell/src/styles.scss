@@ -1,5 +1,6 @@
+@use 'colors';
 @use 'tokens';
 @use 'base';
+@use 'material-theme';
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,550;9..144,650&family=Source+Sans+3:wght@400;600;700&display=swap');
-@import 'primeicons/primeicons.css';
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,550;9..144,650&family=Material+Icons&family=Source+Sans+3:wght@400;600;700&display=swap');

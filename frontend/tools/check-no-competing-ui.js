@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Fails if competing UI libraries appear in frontend/package.json.
- * Allowed: PrimeNG, PrimeIcons, @primeng/themes, @primeuix/themes, @angular/cdk.
+ * Allowed: @angular/material, @angular/cdk.
+ * Forbidden: PrimeNG ecosystem, NG-ZORRO, Bootstrap UI, Tailwind, etc.
  */
 const fs = require('node:fs');
 const path = require('node:path');
@@ -16,8 +17,11 @@ const allDeps = {
 };
 
 const forbiddenPatterns = [
-  /^@angular\/material(\/|$)/,
-  /^@angular\/material-experimental(\/|$)/,
+  /^primeng(\/|$)/,
+  /^primeicons(\/|$)/,
+  /^@primeng\//,
+  /^@primeicons\//,
+  /^@primeuix\//,
   /^ng-zorro-antd(\/|$)/,
   /^bootstrap(\/|$)/,
   /^@ng-bootstrap\//,
@@ -32,7 +36,7 @@ const offenders = Object.keys(allDeps).filter((name) =>
 
 if (offenders.length > 0) {
   console.error(
-    'Competing UI libraries are not allowed (PrimeNG-only foundation):\n' +
+    'Competing UI libraries are not allowed (Angular Material foundation):\n' +
       offenders.map((name) => `  - ${name}`).join('\n'),
   );
   process.exit(1);

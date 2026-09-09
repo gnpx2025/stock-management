@@ -58,5 +58,6 @@ export class ThemeService {
       return;
     }
     document.documentElement.classList.toggle(DARK_MODE_CLASS, mode === 'dark');
+    document.documentElement.style.colorScheme = mode;
   }
 }

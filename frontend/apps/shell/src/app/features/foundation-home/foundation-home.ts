@@ -9,21 +9,31 @@ import { DatePipe } from '@angular/common';
 import type { HealthStatus } from '@erp/contracts';
 import {
   APP_CONFIG,
+  AuthSessionService,
   LoadingService,
   PlatformHealthService,
   isPlatformHealthy,
   summarizeHealth,
 } from '@erp/core';
-import { ToastNotificationService, ThemeService } from '@erp/ui';
-import { Button } from 'primeng/button';
-import { Tag } from 'primeng/tag';
-import { Card } from 'primeng/card';
+import {
+  ErpButtonComponent,
+  ErpCardComponent,
+  ErpStatusChipComponent,
+  ToastNotificationService,
+  ThemeService,
+  type ErpStatusTone,
+} from '@erp/ui';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-foundation-home',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Button, Tag, Card, DatePipe],
+  imports: [
+    DatePipe,
+    ErpButtonComponent,
+    ErpCardComponent,
+    ErpStatusChipComponent,
+  ],
   templateUrl: './foundation-home.html',
   styleUrl: './foundation-home.scss',
 })
@@ -31,6 +41,7 @@ export class FoundationHomeComponent implements OnInit {
   private readonly healthApi = inject(PlatformHealthService);
   private readonly notifications = inject(ToastNotificationService);
   private readonly loading = inject(LoadingService);
+  private readonly auth = inject(AuthSessionService);
   protected readonly theme = inject(ThemeService);
   protected readonly config = inject(APP_CONFIG);
 
@@ -46,12 +57,12 @@ export class FoundationHomeComponent implements OnInit {
     return summarizeHealth(this.health());
   }
 
-  protected statusSeverity(): 'success' | 'warn' | 'danger' | 'secondary' {
+  protected statusTone(): ErpStatusTone {
     const status = this.health()?.status;
-    if (status === 'Healthy') return 'success';
+    if (status === 'Healthy') return 'ok';
     if (status === 'Degraded') return 'warn';
-    if (status === 'Unhealthy') return 'danger';
-    return 'secondary';
+    if (status === 'Unhealthy') return 'bad';
+    return 'neutral';
   }
 
   protected isHealthy(): boolean {
@@ -83,7 +94,11 @@ export class FoundationHomeComponent implements OnInit {
   demoToast(): void {
     this.notifications.success(
       'Notification foundation',
-      'PrimeNG toast is wired through the shared notification facade.',
+      'Material snackbar is wired through the shared notification facade.',
     );
+  }
+
+  logout(): void {
+    this.auth.logout().subscribe();
   }
 }

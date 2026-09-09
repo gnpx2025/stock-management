@@ -1,0 +1,9 @@
+.global-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  background: var(--erp-color-overlay);
+  backdrop-filter: blur(2px);
+}

@@ -78,7 +78,7 @@
 - [x] T023 [US1] Implement `POST /api/v1/auth/login` in `backend/src/ERP.Api/Controllers/Auth/AuthController.cs` per `specs/002-login-authentication/contracts/auth-api.md` / `openapi-auth.yaml`
 - [x] T024 [P] [US1] Implement `GET /api/v1/auth/me` (`[Authorize]`) returning minimal user in `backend/src/ERP.Api/Controllers/Auth/AuthController.cs`
 - [x] T025 [P] [US1] Implement frontend Auth API client (`login`, `me`) in `frontend/libs/core/src/lib/auth/auth-api.service.ts`
-- [x] T026 [US1] Build Login page (branding, username/email, password show/hide, submit, loading/disabled duplicate-submit) with PrimeNG in `frontend/apps/shell/src/app/features/auth/login/`
+- [x] T026 [US1] Build Login page (branding, username/email, password show/hide, submit, loading/disabled duplicate-submit) with Angular Material in `frontend/apps/shell/src/app/features/auth/login/` (originally PrimeNG; migrated in `003-angular-material-migration`)
 - [x] T027 [US1] Wire public `/login` route and temporary navigation to Login for unauthenticated users in `frontend/apps/shell/src/app/app.routes.ts` (full guards refined in US3)
 - [x] T028 [US1] On login success: store access token in memory, set Signals state to Authenticated, navigate to authenticated entry (or returnUrl if already present)
 - [x] T029 [US1] Add structured security log for login success (no password/token) in login use case / `AuthController` path

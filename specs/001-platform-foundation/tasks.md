@@ -47,7 +47,7 @@
 
 - [x] T009 Generate Nx application `frontend/apps/shell` and libraries `frontend/libs/core`, `frontend/libs/ui`, `frontend/libs/shared`, `frontend/libs/contracts` with strict TS and library tags (`type:core|ui|shared|contracts`, `scope:shared`)
 - [x] T010 Configure Nx module boundary / dependency constraints in `frontend/eslint.config.*` or `frontend/.eslintrc.*` so apps consume libs and Shell does not become a dependency of libs
-- [x] T011 [P] Add PrimeNG, PrimeIcons, and `@primeng/themes` to `frontend/package.json`; verify Angular Material, NG-ZORRO, Bootstrap UI, and Tailwind CSS are not dependencies
+- [x] T011 [P] Add Angular Material (originally PrimeNG/PrimeIcons/`@primeng/themes`; migrated in `003-angular-material-migration`) to `frontend/package.json`; verify competing UI libraries are not dependencies
 - [x] T012 [P] Initialize Native Federation on `frontend/apps/shell` as dynamic-host (`federation.config.*`, `federation.manifest.json`) without creating business remotes
 - [x] T013 [P] Add frontend runtime config asset `frontend/apps/shell/public/config.json` (or equivalent) plus `AppConfig` types in `frontend/libs/contracts/src/` per `specs/001-platform-foundation/contracts/frontend-contracts.md`
 - [x] T014 Implement config loader + `APP_CONFIG` provider in `frontend/libs/core/src/` and wire into `frontend/apps/shell/src/app/app.config.ts`
@@ -85,7 +85,7 @@
 - [x] T030 [US1] Implement platform health API client in `frontend/libs/core/src/http/platform-health.service.ts` using `apiBaseUrl`
 - [x] T031 [US1] Implement HTTP interceptor(s) for correlation ID forwarding, global loading refcount, and error→notification bridge in `frontend/libs/core/src/http/`
 - [x] T032 [P] [US1] Implement global loader overlay owned by Shell in `frontend/apps/shell/src/app/layout/` consuming core loading state
-- [x] T033 [P] [US1] Configure PrimeNG Toast / notification facade in `frontend/libs/ui/src/` and provide it from `frontend/apps/shell/src/app/app.config.ts`
+- [x] T033 [P] [US1] Configure Material SnackBar / notification facade in `frontend/libs/ui/src/` and provide it from `frontend/apps/shell/src/app/app.config.ts` (originally PrimeNG Toast; migrated in `003`)
 - [x] T034 [US1] Implement theme service (light default, OS prefer, `.app-dark` toggle) in `frontend/libs/ui/src/theme/` and central SCSS/tokens in `frontend/libs/ui/src/styles/`
 - [x] T035 [US1] Build Shell layout chrome (header/sidebar/content) in `frontend/apps/shell/src/app/layout/`
 - [x] T036 [US1] Build foundation home page with health status, demo loader/toast actions, and theme switch in `frontend/apps/shell/src/app/features/foundation-home/`
@@ -99,19 +99,19 @@
 
 ## Phase 4: User Story 2 - Extend the frontend without restructuring (Priority: P1)
 
-**Goal**: Nx graph, Native Federation host, shared libs, and PrimeNG-only UI are clearly extensible for future remotes
+**Goal**: Nx graph, Native Federation host, shared libs, and Angular Material-only UI are clearly extensible for future remotes
 
 **Independent Test**: Inspect `frontend/` project graph; Shell consumes libs; federation host configured; no competing UI libraries; remotes not required yet but extension path documented
 
 ### Tests for User Story 2
 
 - [x] T040 [P] [US2] Add lint/boundary smoke or unit test proving Shell imports from `frontend/libs/*` path aliases in `frontend/apps/shell-e2e/` or `frontend/libs/core/src/*.spec.ts`
-- [x] T041 [P] [US2] Add package.json assertion script or test that fails if Angular Material / NG-ZORRO / Bootstrap UI / Tailwind appear in `frontend/package.json` (supports SC-006 / SC-009)
+- [x] T041 [P] [US2] Add package.json assertion script or test that fails if competing UI libraries appear in `frontend/package.json` (supports SC-006 / SC-009; now allows Angular Material and forbids PrimeNG/etc. per `003`)
 
 ### Implementation for User Story 2
 
 - [x] T042 [US2] Finalize Native Federation host config and empty/placeholder `frontend/apps/shell/public/federation.manifest.json` documenting future remotes (`master-data`, `finance`, `inventory`, `purchasing`, `sales`, `reports`) without implementing them
-- [x] T043 [P] [US2] Flesh out `frontend/libs/ui` exports (theme, toast facade, shared styles only — no unnecessary PrimeNG wrappers) in `frontend/libs/ui/src/index.ts`
+- [x] T043 [P] [US2] Flesh out `frontend/libs/ui` exports (theme, toast facade, shared styles only — no unnecessary Material wrappers) in `frontend/libs/ui/src/index.ts`
 - [x] T044 [P] [US2] Flesh out `frontend/libs/shared` utilities barrel in `frontend/libs/shared/src/index.ts`
 - [x] T045 [P] [US2] Flesh out `frontend/libs/contracts` barrel exporting AppConfig/Health/Notification/Theme/Auth placeholders in `frontend/libs/contracts/src/index.ts`
 - [x] T046 [US2] Document Nx tags and how to add a future remote app in `docs/frontend-architecture.md` (stub OK if filled in polish — create file with extension steps)
@@ -159,7 +159,7 @@
 ### Implementation for User Story 4
 
 - [x] T058 [P] [US4] Write `docs/repository-structure.md` describing monorepo layout
-- [x] T059 [P] [US4] Write `docs/frontend-architecture.md` (Nx, MFE, UI library, PrimeNG rules) — expand if stubbed in T046
+- [x] T059 [P] [US4] Write `docs/frontend-architecture.md` (Nx, MFE, UI library, Angular Material rules) — expand if stubbed in T046
 - [x] T060 [P] [US4] Write `docs/backend-architecture.md` (Clean Architecture, dependency rules, API conventions)
 - [x] T061 [P] [US4] Write `docs/local-development.md` covering Docker Postgres, running API, running Shell, migrations, and tests
 - [x] T062 [US4] Expand root `README.md` with prerequisites, quick start, links to `docs/`, and pointer to `specs/001-platform-foundation/quickstart.md`
@@ -284,7 +284,7 @@ Task: "T052 [US3] backend/src/ERP.Domain/ placeholders"
 
 - [P] = different files, no incomplete dependencies
 - Do **not** implement Login, JWT, roles, master data, or business modules
-- Prefer PrimeNG directly; avoid unnecessary wrappers
+- Prefer Angular Material directly; avoid unnecessary wrappers
 - Keep Spec Kit (`specs/`, `.specify/`) intact
 - Commit after each task or logical group
 - Stop at checkpoints to validate independently

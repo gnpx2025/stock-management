@@ -1,0 +1,86 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light;
+
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$green-palette,
+        tertiary: mat.$azure-palette,
+      ),
+      typography: (
+        plain-family: (
+          'Source Sans 3',
+          'Segoe UI',
+          sans-serif,
+        ),
+        brand-family: (
+          Fraunces,
+          Georgia,
+          serif,
+        ),
+      ),
+      density: 0,
+    )
+  );
+}
+
+// Map Material system tokens onto ERP brand tokens (light + dark via --erp-* swaps).
+:root,
+html.app-dark {
+  --mat-sys-primary: var(--erp-color-accent);
+  --mat-sys-on-primary: var(--erp-color-accent-contrast);
+  --mat-sys-primary-container: color-mix(
+    in srgb,
+    var(--erp-color-accent) 18%,
+    var(--erp-color-surface)
+  );
+  --mat-sys-on-primary-container: var(--erp-color-text);
+  --mat-sys-secondary: var(--erp-color-accent);
+  --mat-sys-on-secondary: var(--erp-color-accent-contrast);
+  --mat-sys-surface: var(--erp-color-surface);
+  --mat-sys-on-surface: var(--erp-color-text);
+  --mat-sys-surface-container: var(--erp-color-surface);
+  --mat-sys-surface-container-low: var(--erp-color-bg);
+  --mat-sys-surface-container-high: var(--erp-color-surface);
+  --mat-sys-background: var(--erp-color-bg);
+  --mat-sys-on-background: var(--erp-color-text);
+  --mat-sys-outline: var(--erp-color-border);
+  --mat-sys-outline-variant: var(--erp-color-border);
+  --mat-sys-error: var(--erp-color-error);
+  --mat-sys-on-error: var(--erp-color-error-contrast);
+}
+
+html.app-dark {
+  color-scheme: dark;
+}
+
+.erp-snackbar-success {
+  --mdc-snackbar-container-color: color-mix(
+    in srgb,
+    var(--erp-color-success) 88%,
+    var(--erp-color-black)
+  );
+  --mdc-snackbar-supporting-text-color: var(--erp-color-success-contrast);
+  --mat-snack-bar-button-color: var(--erp-color-success-contrast);
+}
+
+.erp-snackbar-info {
+  --mdc-snackbar-container-color: var(--erp-color-info);
+  --mdc-snackbar-supporting-text-color: var(--erp-color-info-contrast);
+  --mat-snack-bar-button-color: var(--erp-color-info-contrast);
+}
+
+.erp-snackbar-warn {
+  --mdc-snackbar-container-color: var(--erp-color-warn);
+  --mdc-snackbar-supporting-text-color: var(--erp-color-warn-contrast);
+  --mat-snack-bar-button-color: var(--erp-color-warn-contrast);
+}
+
+.erp-snackbar-error {
+  --mdc-snackbar-container-color: var(--erp-color-error);
+  --mdc-snackbar-supporting-text-color: var(--erp-color-error-contrast);
+  --mat-snack-bar-button-color: var(--erp-color-error-contrast);
+}

@@ -12,7 +12,7 @@ export default [
         'error',
         {
           type: 'attribute',
-          prefix: 'lib',
+          prefix: 'erp',
           style: 'camelCase',
         },
       ],
@@ -20,7 +20,20 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: 'lib',
+          prefix: 'erp',
+          style: 'kebab-case',
+        },
+      ],
+    },
+  },
+  {
+    files: ['**/components/**/*.ts'],
+    rules: {
+      '@angular-eslint/component-selector': [
+        'error',
+        {
+          type: 'element',
+          prefix: 'erp',
           style: 'kebab-case',
         },
       ],

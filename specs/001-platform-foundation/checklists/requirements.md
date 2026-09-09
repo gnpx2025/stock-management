@@ -31,7 +31,7 @@
 
 ## Notes
 
-- **Stack naming**: This feature’s purpose is the ratified platform stack (Constitution v2.0.0). References to Angular/Nx/Native Federation/PrimeNG/.NET/PostgreSQL/Docker are treated as **constitutional scope constraints**, not incidental implementation leakage. Success criteria remain outcome-focused (startup time, health visibility, CI green, no secrets, extensibility).
+- **Stack naming**: This feature’s purpose is the ratified platform stack. References to Angular/Nx/Native Federation/Angular Material/.NET/PostgreSQL/Docker are treated as **constitutional scope constraints** (Constitution v3.0.0). Success criteria remain outcome-focused (startup time, health visibility, CI green, no secrets, extensibility).
 - **Audience**: Primary readers are platform architects and developers; user stories are phrased as developer/operator journeys because end-business users are not in scope for Platform Foundation.
 - **Clarifications**: Session 2026-09-08 resolved Shell↔API health, CI Postgres integration tests, Shell first-run UX, structured logging, and theme default/switch.
 - **Validation**: Post-clarify — all items pass. Ready for `/speckit-plan`.

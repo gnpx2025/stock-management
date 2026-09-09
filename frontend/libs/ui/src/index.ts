@@ -1,3 +1,10 @@
+export { ErpButtonComponent } from './lib/components/button/erp-button';
+export type { ErpButtonColor, ErpButtonVariant } from './lib/components/button/erp-button';
+export { ErpSpinnerComponent } from './lib/components/spinner/erp-spinner';
+export { ErpIconComponent } from './lib/components/icon/erp-icon';
+export { ErpCardComponent } from './lib/components/card/erp-card';
+export { ErpStatusChipComponent } from './lib/components/status-chip/erp-status-chip';
+export type { ErpStatusTone } from './lib/components/status-chip/erp-status-chip';
 export { ThemeService, DARK_MODE_CLASS } from './lib/theme/theme.service';
 export { ToastNotificationService } from './lib/notifications/toast-notification.service';
 export { provideErpUi } from './lib/theme/provide-erp-ui';

@@ -20,7 +20,7 @@ This feature is the second item in the constitutionally approved implementation 
 - Secrets (including signing keys) MUST NOT be committed; environment/secret management from Platform Foundation continues.
 - Passwords, access tokens, and refresh tokens MUST NOT appear in logs, exceptions, or telemetry.
 - Authentication events SHOULD be auditable; this feature records authentication security outcomes via existing structured logging/observability without implementing a full audit module.
-- Frontend stack and UI library rules (PrimeNG primary, shared UI library, Signals-first state, no competing UI libraries) remain binding.
+- Frontend stack and UI library rules (Angular Material primary, shared UI library, Signals-first state, no competing UI libraries) remain binding.
 - Backend Clean Architecture and `/api/v1` conventions remain binding.
 
 **Noted non-conflicts:**

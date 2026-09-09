@@ -1,0 +1,27 @@
+:host {
+  display: inline-block;
+}
+
+.erp-status-chip--ok {
+  background: color-mix(
+    in srgb,
+    var(--erp-color-success) 22%,
+    transparent
+  ) !important;
+}
+
+.erp-status-chip--warn {
+  background: color-mix(
+    in srgb,
+    var(--erp-color-warn) 22%,
+    transparent
+  ) !important;
+}
+
+.erp-status-chip--bad {
+  background: color-mix(
+    in srgb,
+    var(--erp-color-error) 22%,
+    transparent
+  ) !important;
+}

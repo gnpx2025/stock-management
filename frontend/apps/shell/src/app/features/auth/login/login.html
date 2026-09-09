@@ -9,53 +9,59 @@
     </header>
 
     <form class="login__form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <div class="login__field">
-        <label for="usernameOrEmail">Username or email</label>
+      <mat-form-field appearance="outline" class="login__field-control">
+        <mat-label>Username or email</mat-label>
         <input
+          matInput
           id="usernameOrEmail"
-          pInputText
           type="text"
           autocomplete="username"
           formControlName="usernameOrEmail"
-          [attr.aria-invalid]="
-            form.controls.usernameOrEmail.invalid && form.controls.usernameOrEmail.touched
-          "
         />
         @if (
           form.controls.usernameOrEmail.invalid && form.controls.usernameOrEmail.touched
         ) {
-          <span class="login__hint">Username or email is required.</span>
+          <mat-error>Username or email is required.</mat-error>
         }
-      </div>
+      </mat-form-field>
 
-      <div class="login__field">
-        <label for="password">Password</label>
-        <p-password
-          inputId="password"
-          formControlName="password"
-          [feedback]="false"
-          [toggleMask]="true"
+      <mat-form-field appearance="outline" class="login__field-control">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          id="password"
+          [type]="hidePassword() ? 'password' : 'text'"
           autocomplete="current-password"
-          styleClass="login__password"
-          inputStyleClass="w-full"
-          [fluid]="true"
+          formControlName="password"
+        />
+        <erp-button
+          matSuffix
+          variant="icon"
+          type="button"
+          [icon]="hidePassword() ? 'visibility' : 'visibility_off'"
+          [ariaLabel]="hidePassword() ? 'Show password' : 'Hide password'"
+          (clicked)="hidePassword.set(!hidePassword())"
         />
         @if (form.controls.password.invalid && form.controls.password.touched) {
-          <span class="login__hint">Password is required.</span>
+          <mat-error>Password is required.</mat-error>
         }
-      </div>
+      </mat-form-field>
 
       @if (errorMessage(); as message) {
-        <p-message severity="error" styleClass="login__error">{{ message }}</p-message>
+        <p class="login__error" role="alert">{{ message }}</p>
       }
 
-      <p-button
+      <erp-button
+        class="login__submit full-width"
         type="submit"
-        label="Sign in"
-        styleClass="login__submit"
+        variant="flat"
+        color="primary"
         [loading]="authenticating"
         [disabled]="authenticating || form.invalid"
-      />
+        [spinnerDiameter]="20"
+      >
+        Sign in
+      </erp-button>
     </form>
   </div>
 </div>

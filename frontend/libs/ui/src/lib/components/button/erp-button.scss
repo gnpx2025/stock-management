@@ -1,0 +1,15 @@
+:host {
+  display: inline-flex;
+}
+
+:host(.full-width),
+:host(.full-width) button {
+  width: 100%;
+}
+
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--erp-space-2, 0.5rem);
+}

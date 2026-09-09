@@ -1,21 +1,26 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 → 2.0.0
+- Version change: 2.0.0 → 3.0.0
 - Modified principles / sections:
-  - II. Defined Architecture Stack → added PrimeNG as primary frontend UI library
-  - III. Frontend and Micro-Frontend Boundaries → established Angular + PrimeNG +
-    shared UI library + SCSS as standard frontend UI architecture; MFE UI consistency
-  - IX. Quality, Testing, and Observability → forbid unnecessary PrimeNG wrappers;
-    competing UI libraries without architectural approval
-  - Technology and Platform Constraints / Frontend UI Libraries → fully redefined
-    from Custom-UI-primary (no PrimeNG) to PrimeNG-first + shared UI library
-  - Governance → UI library strategy and third-party UI dependencies require review
-- Added sections: none (Frontend UI Libraries subsection rewritten in place)
+  - II. Defined Architecture Stack → Angular Material replaces PrimeNG as
+    primary frontend UI library; stack diagram updated
+  - III. Frontend and Micro-Frontend Boundaries → Angular Material + shared
+    libs/ui + SCSS; MFE design-system consistency; Shell Material usage;
+    competing libraries (including PrimeNG) forbidden; libs/ui, libs/core,
+    libs/contracts ownership clarified
+  - IX. Quality, Testing, and Observability → forbid unnecessary Angular
+    Material wrappers; competing UI libraries without architectural approval
+  - Technology and Platform Constraints / Frontend UI Architecture → fully
+    redefined from PrimeNG-first to Angular Material-first + shared UI library,
+    centralized theming, accessibility, and developer guidance
+  - State Management → explicit Signals default for Shell UI presentation
+    state; NgRx not for simple shell UI
+- Added sections: none (Frontend UI Architecture rewritten in place;
+  accessibility and DX guidance folded into that subsection)
 - Removed / retired rules:
-  - Shared UI must encapsulate third-party and prefer erp-* wrappers over direct use
-  - Separate Custom UI library that MUST NOT use PrimeNG / Material / NG-ZORRO /
-    Bootstrap / other third-party UI frameworks
-  - Custom UI via Angular + SCSS + CDK only as the primary component source
+  - PrimeNG as primary UI component library
+  - Official PrimeNG / PrimeIcons as approved first-class UI dependency
+  - Competing-library ban that listed Angular Material as forbidden
 - Follow-up TODOs: none
 -->
 
@@ -48,8 +53,9 @@ The platform MUST use:
 * Nx as the frontend monorepo and workspace management solution
 * Angular Native Federation for micro-frontends
 * A Shell application for application-level concerns
-* PrimeNG as the primary UI component library
-* A shared UI library as the common UI foundation across micro-frontends
+* Angular Material as the primary UI component library
+* A shared UI library (`libs/ui`) as the common UI foundation across
+  micro-frontends
 * SCSS for application-specific styling
 * .NET 10 with ASP.NET Core Web API for the backend
 * Modular Monolith architecture for the backend initially
@@ -60,9 +66,37 @@ The platform MUST use:
 The standard frontend UI architecture MUST be:
 
 ```text
-Angular + PrimeNG + shared UI library + SCSS
+Angular + Angular Material + shared UI library (libs/ui) + SCSS
 ```
 
+The frontend architecture stack MUST remain:
+
+```text
+Angular 21+
+    ↓
+Nx Monorepo
+    ↓
+Native Federation Microfrontends
+    ↓
+Shared Core / UI / Contracts libraries
+```
+
+The backend architecture stack MUST remain:
+
+```text
+.NET 10
+    ↓
+ASP.NET Core
+    ↓
+Clean Architecture
+    ↓
+Modular Monolith
+    ↓
+PostgreSQL
+```
+
+A change to the frontend UI component library MUST NOT alter the backend
+architecture.
 
 The system MUST NOT be split into backend microservices unless a future
 requirement provides clear business or technical justification.
@@ -74,13 +108,30 @@ monolith.
 
 The frontend MUST use Angular 21+, strict TypeScript, standalone APIs,
 Signals, RxJS, Signal Forms where appropriate, SCSS, Nx, Native
-Federation, and PrimeNG as the primary UI component library. Organization
-MUST follow business capabilities with clear dependency boundaries.
+Federation, and Angular Material as the primary UI component library.
+Organization MUST follow business capabilities with clear dependency
+boundaries.
+
+Shared library ownership MUST follow:
+
+* `libs/ui` — Angular Material usage, reusable ERP UI components, and
+  shared UI styles
+* `libs/contracts` — shared contracts across micro-frontends
+* `libs/core` — core cross-cutting functionality
+
+Micro-frontends MUST NOT directly import UI components or services from
+another micro-frontend.
 
 The Shell MUST own application-level functionality: authentication entry,
-layout, sidebar, topbar, navigation, user/company/branch/financial year/
-accounting period/global permissions context, theme, global loading,
-global notifications, and global error handling.
+layout, sidebar / sidenav, topbar / toolbar, global navigation,
+user/company/branch/financial year/accounting period/global permissions
+context, global theme, global loading foundation, global notification
+foundation, application-level layout state, and global error handling.
+The Shell MUST use Angular Material for standard Shell UI where
+appropriate (including MatSidenav, MatToolbar, MatIcon, MatButton,
+MatMenu, MatTooltip, MatDivider, MatExpansionPanel, MatList, MatBadge,
+MatProgressSpinner, and other Material/CDK components as needed). The
+Shell MUST NOT contain feature-specific business UI.
 
 Business micro-frontends MUST NOT implement their own independent
 application shell or authentication mechanism unless explicitly required
@@ -96,13 +147,22 @@ shared contracts, shared libraries, application context, or backend APIs.
 Micro-frontends MUST remain loosely coupled. The backend MUST remain the
 authoritative source of business data and business rules.
 
-All micro-frontends MUST follow the same shared UI library and PrimeNG
-standards. Individual micro-frontends MUST NOT introduce alternative UI
-component libraries. Competing libraries such as Angular Material,
-NG-ZORRO, Bootstrap UI components, or other third-party UI component
-frameworks MUST NOT be used unless explicitly approved by architecture.
-The shared UI library MUST be the common UI foundation for all
-micro-frontends.
+All Angular micro-frontends MUST use the same Angular Material design
+system. Typography, spacing, colors, component appearance, form
+controls, buttons, tables, dialogs, menus, navigation, validation
+states, error states, and loading states MUST remain consistent across
+MFEs. Individual micro-frontends MUST NOT introduce an alternative UI
+component library or an independent visual design system. Competing
+libraries such as PrimeNG, NG-ZORRO, Bootstrap UI components,
+TailwindCSS, Material UI for React, or other third-party UI component
+frameworks MUST NOT be used. Angular CDK utilities MAY be used where
+appropriate because Angular CDK is part of the Angular Material
+ecosystem. The shared UI library (`libs/ui`) MUST be the common UI
+foundation for all micro-frontends. Angular Material is shared
+infrastructure: the Shell and all MFEs MUST use the same Angular
+Material theme and design standards. Separate Material themes per MFE
+MUST NOT be created unless explicitly required for a genuine isolated
+use case. Duplicate Angular Material configuration MUST be avoided.
 
 ### IV. Backend Clean Architecture and Domain Ownership
 
@@ -258,9 +318,9 @@ Critical financial and inventory rules MUST have automated test coverage.
 Code MUST prioritize readability, maintainability, cohesion, loose
 coupling, testability, and explicit business rules. The project MUST use
 appropriate linting and formatting standards. The platform MUST avoid
-unnecessary abstractions (including unnecessary wrappers around PrimeNG
-components), premature optimization, duplicate business logic, god
-classes/services, excessive inheritance, global mutable state, tight
+unnecessary abstractions (including unnecessary wrappers around Angular
+Material components), premature optimization, duplicate business logic,
+god classes/services, excessive inheritance, global mutable state, tight
 coupling between micro-frontends, and unapproved competing UI component
 libraries. Reusable abstractions MUST be introduced only when there is a
 clear repeated requirement.
@@ -302,59 +362,93 @@ their dependencies have not yet been established.
 
 ## Technology and Platform Constraints
 
-### Frontend UI Architecture (PrimeNG-First)
+### Frontend UI Architecture (Angular Material-First)
 
-The standard frontend UI architecture MUST be Angular + PrimeNG + shared
-UI library + SCSS.
+The standard frontend UI architecture MUST be Angular + Angular Material
++ shared UI library (`libs/ui`) + SCSS.
 
-PrimeNG MUST be the primary UI component library and an approved
-first-class frontend dependency. Official PrimeNG components, APIs,
-themes, styling capabilities, and PrimeIcons MUST be used where
-appropriate. PrimeNG components MUST be used directly wherever suitable.
+Angular Material MUST be the primary UI component library and an approved
+first-class frontend dependency. Official Angular Material components,
+APIs, theming, styling capabilities, and Angular Material icons MUST be
+used where appropriate. Angular Material MUST be the default choice for
+standard UI needs wherever a suitable Material component exists,
+including buttons, inputs, forms, selects, checkboxes, radio buttons,
+tables, menus, sidenav, toolbar, cards, dialogs, drawers, tabs,
+expansion panels, accordions, tooltips, icons, progress indicators,
+snackbars, paginator, date pickers, chips, autocomplete, lists,
+dividers, navigation components, and other standard UI requirements.
+Angular Material components MUST be used directly wherever suitable.
 The platform MUST NOT create unnecessary wrapper components around
-PrimeNG components.
+Angular Material components. Angular CDK utilities MAY be used where
+appropriate.
 
-The project MUST maintain a dedicated shared UI library/module. That
-library MUST contain reusable UI components and shared UI-related styles
-used across the ERP application. PrimeNG components and configurations
-MUST be centralized and standardized through this UI library where
-appropriate. The UI library MUST provide a consistent visual language
-and reusable UI patterns across all micro-frontends.
+The project MUST maintain a dedicated shared UI library at `libs/ui`.
+That library MUST contain reusable UI components and shared UI-related
+styles used across the ERP application. Angular Material components and
+reusable ERP-specific UI components MUST be centralized and exposed
+through `libs/ui` according to the project's architecture. The UI library
+MUST provide a consistent visual language and reusable UI patterns
+across all micro-frontends.
 
-Reusable application-level components MUST be implemented in the shared
-UI library when they are shared across applications. Examples include
-buttons, inputs, selects, tables, dialogs, date pickers, forms, tabs,
-toasts, menus, drawers, and other reusable UI patterns. Use PrimeNG
-directly when the required functionality is already provided. Custom
-Angular components MUST be created only when PrimeNG does not provide
-the required functionality, when a reusable ERP-specific interaction is
-required, or when a domain-specific component cannot reasonably be
-represented using existing PrimeNG components.
+Use Angular Material directly when a wrapper does not provide meaningful
+reuse, abstraction, styling, or ERP-specific behavior. A custom reusable
+component in `libs/ui` MUST be created only when:
 
-Custom reusable components MUST be implemented inside the shared UI
-library when they are reusable across applications. Custom components
-MUST follow Angular 21+, strict TypeScript, standalone components,
-Signals, accessibility, and SCSS standards defined by this constitution.
+1. Angular Material does not provide the required functionality, OR
+2. The application needs consistent ERP-specific behavior/appearance
+   across multiple features, OR
+3. A reusable composition of multiple Angular Material components
+   provides meaningful value.
 
-Component styles and shared UI styles MUST remain within the UI library.
-SCSS MUST be used for application-specific styling. PrimeNG theming MUST
-be configured and standardized centrally. Feature modules and individual
-micro-frontends MUST NOT duplicate PrimeNG overrides or common UI styles,
-and MUST NOT independently redefine common UI component styles.
+Before creating a custom UI component, developers MUST verify whether
+Angular Material already provides a suitable component. The shared UI
+library MUST prevent duplicated UI implementations across MFEs.
+Developers MUST use Angular Material consistently rather than choosing
+arbitrary UI libraries or ad-hoc component implementations.
 
-Business feature modules MUST consume the shared UI library and approved
-PrimeNG functionality rather than introducing their own UI technology.
-Other third-party UI component libraries MUST NOT be introduced without
-an explicit architectural decision.
+Custom reusable components MUST be implemented inside `libs/ui` when they
+are reusable across applications. Custom components MUST follow Angular
+21+, strict TypeScript, standalone components, Signals, accessibility,
+and SCSS standards defined by this constitution.
+
+Component styles and shared UI styles MUST remain within `libs/ui`.
+SCSS MUST be used for application-specific styling. Angular Material
+theming MUST be configured and standardized centrally. Theme
+configuration MUST cover primary color, secondary/accent color where
+applicable, typography, density, light/dark theme, component appearance,
+common spacing, border radius, elevation, and other global design
+tokens. Feature modules and individual micro-frontends MUST NOT
+duplicate Angular Material theme definitions, overrides, or common UI
+styles, and MUST NOT independently redefine common UI component styles.
+Arbitrary hardcoded styling MUST be avoided when an Angular Material
+theme/token or shared SCSS variable can be used. Application-specific
+layout styles MAY exist within feature components; reusable UI styles
+MUST belong in `libs/ui`.
+
+Business feature modules MUST consume `libs/ui` and approved Angular
+Material functionality rather than introducing their own UI technology.
+Other third-party UI component libraries MUST NOT be introduced. The
+frontend MUST NOT use PrimeNG, NG-ZORRO, Bootstrap UI components,
+TailwindCSS, Material UI for React, or other competing component
+libraries.
+
+Angular Material accessibility capabilities MUST be used wherever
+possible. Navigation and UI controls MUST provide keyboard
+accessibility, appropriate ARIA semantics, visible focus states,
+accessible labels/tooltips where required, sufficient contrast, and
+screen-reader-friendly navigation.
 
 ### State Management
 
 State management MUST follow a layered approach. Signals MUST be the
 default for component state, local UI state, feature state, and derived
-state. RxJS MUST be used where reactive streams and asynchronous event
-processing are appropriate. NgRx MUST only be introduced when application
-state is genuinely shared, complex, or requires predictable centralized
-state management.
+state. Signals MUST be used by default for Shell presentation state such
+as sidebar expanded/collapsed state, navigation UI state, theme UI state
+where appropriate, and other Shell-level presentation state. RxJS MUST
+be used where reactive streams and asynchronous event processing are
+appropriate. NgRx MUST NOT be introduced for simple Shell UI state. NgRx
+MUST only be introduced when application state is genuinely shared,
+complex, or requires predictable centralized state management.
 
 Global state MUST be limited to genuinely application-wide information
 (authentication, current user, permissions, company, branch, financial
@@ -448,4 +542,4 @@ Compliance review expectations:
 * Spec-Driven Development lifecycle gates MUST be respected for
   significant features.
 
-**Version**: 2.0.0 | **Ratified**: 2026-09-08 | **Last Amended**: 2026-09-08
+**Version**: 3.0.0 | **Ratified**: 2026-09-08 | **Last Amended**: 2026-09-09

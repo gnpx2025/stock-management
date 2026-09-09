@@ -15,14 +15,11 @@
     "@angular/compiler": "~22.1.0",
     "@angular/core": "~22.1.0",
     "@angular/forms": "~22.1.0",
+    "@angular/material": "~22.1.0",
     "@angular/platform-browser": "~22.1.0",
     "@angular/platform-browser-dynamic": "~22.1.0",
     "@angular/router": "~22.1.0",
-    "@primeng/themes": "^21.0.4",
-    "@primeuix/themes": "^3.0.0",
     "es-module-shims": "^2.8.4",
-    "primeicons": "^8.0.0",
-    "primeng": "^22.1.0",
     "rxjs": "~7.8.0"
   },
   "devDependencies": {

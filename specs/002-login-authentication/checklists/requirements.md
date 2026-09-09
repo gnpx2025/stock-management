@@ -33,7 +33,7 @@
 
 - Validation iteration 1 (2026-09-08): All items pass.
 - Clarification session 2026-09-08: 5 decisions integrated (rate limit, post-login return path, refresh rotation, concurrent sessions, inactive messaging). Checklist re-validated: 16/16 still passing.
-- Constitution-mandated stack references (Shell ownership, `/api/v1`, Signals-first state, PrimeNG, Clean Architecture, PostgreSQL/EF Core) appear in Constitution Alignment, Assumptions, and selected FRs as binding platform constraints—same pattern as `001-platform-foundation`. User scenarios and success criteria remain outcome-focused and technology-agnostic.
+- Constitution-mandated stack references (Shell ownership, `/api/v1`, Signals-first state, Angular Material, Clean Architecture, PostgreSQL/EF Core) appear in Constitution Alignment, Assumptions, and selected FRs as binding platform constraints—same pattern as `001-platform-foundation`. User scenarios and success criteria remain outcome-focused and technology-agnostic.
 - Token storage strategy is explicitly selected (HttpOnly refresh cookie + in-memory access token) under Assumptions/FR-009 rather than left ambiguous.
 - No `[NEEDS CLARIFICATION]` markers; seed-user provisioning and access/refresh lifetime defaults remain in Assumptions (planning may finalize exact durations/thresholds).
 - Ready for `/speckit-plan`.

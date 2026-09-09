@@ -7,16 +7,20 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { AuthSessionService, safeReturnUrl } from '@erp/core';
-import { Button } from 'primeng/button';
-import { InputText } from 'primeng/inputtext';
-import { Password } from 'primeng/password';
-import { Message } from 'primeng/message';
+import { ErpButtonComponent } from '@erp/ui';
 
 @Component({
   selector: 'app-login',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, Button, InputText, Password, Message],
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ErpButtonComponent,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -33,6 +37,7 @@ export class LoginPageComponent {
 
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly submitting = signal(false);
+  protected readonly hidePassword = signal(true);
 
   protected get authenticating(): boolean {
     return this.submitting() || this.auth.status() === 'authenticating';

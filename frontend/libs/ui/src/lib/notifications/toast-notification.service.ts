@@ -1,18 +1,22 @@
 import { Injectable, inject } from '@angular/core';
-import type { NotificationMessage } from '@erp/contracts';
-import { MessageService } from 'primeng/api';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import type { NotificationMessage, NotificationSeverity } from '@erp/contracts';
 import type { NotificationHandler } from '@erp/core';
 
 @Injectable()
 export class ToastNotificationService implements NotificationHandler {
-  private readonly messages = inject(MessageService);
+  private readonly snackBar = inject(MatSnackBar);
 
   show(message: NotificationMessage): void {
-    this.messages.add({
-      severity: message.severity,
-      summary: message.summary,
-      detail: message.detail,
-      life: message.lifeMs ?? 4000,
+    const text = message.detail
+      ? `${message.summary}: ${message.detail}`
+      : message.summary;
+
+    this.snackBar.open(text, undefined, {
+      duration: message.lifeMs ?? 4000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: [this.panelClass(message.severity)],
     });
   }
 
@@ -30,5 +34,9 @@ export class ToastNotificationService implements NotificationHandler {
 
   error(summary: string, detail?: string): void {
     this.show({ severity: 'error', summary, detail });
+  }
+
+  private panelClass(severity: NotificationSeverity): string {
+    return `erp-snackbar-${severity}`;
   }
 }

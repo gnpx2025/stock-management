@@ -9,13 +9,21 @@
   place-items: center;
   padding: var(--erp-space-6);
   background:
-    radial-gradient(circle at 12% 18%, rgb(15 110 86 / 16%), transparent 40%),
-    radial-gradient(circle at 88% 8%, rgb(15 110 86 / 8%), transparent 36%),
+    radial-gradient(
+      circle at 12% 18%,
+      rgb(var(--erp-color-accent-rgb) / 16%),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 88% 8%,
+      rgb(var(--erp-color-accent-rgb) / 8%),
+      transparent 36%
+    ),
     linear-gradient(
       165deg,
-      color-mix(in srgb, var(--erp-color-bg) 70%, #d7e3ec),
+      color-mix(in srgb, var(--erp-color-bg) 70%, var(--erp-color-mist)),
       var(--erp-color-bg) 55%,
-      color-mix(in srgb, var(--erp-color-bg) 85%, #0f6e56)
+      color-mix(in srgb, var(--erp-color-bg) 85%, var(--erp-color-accent))
     );
 }
 
@@ -67,39 +75,18 @@
   gap: var(--erp-space-4);
 }
 
-.login__field {
-  display: grid;
-  gap: var(--erp-space-2);
-}
-
-.login__field label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--erp-color-text);
-}
-
-.login__field input,
-.login__password {
+.login__field-control {
   width: 100%;
-}
-
-.login__hint {
-  color: #b42318;
-  font-size: 0.8rem;
 }
 
 .login__error {
-  width: 100%;
+  margin: 0;
+  color: var(--erp-color-error);
+  font-size: 0.875rem;
 }
 
-:host ::ng-deep .login__submit {
-  width: 100%;
-}
-
-:host ::ng-deep .login__password,
-:host ::ng-deep .login__password .p-password,
-:host ::ng-deep .login__password input {
-  width: 100%;
+.login__submit {
+  display: block;
 }
 
 @media (max-width: 480px) {

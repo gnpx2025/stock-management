@@ -1,13 +1,18 @@
 <section class="foundation">
   <header class="foundation__intro">
-    <h1>Platform foundation</h1>
-    <p>
-      Shell chrome, runtime config, health checks, global loading, notifications, and theme
-      switching — without Login or business modules.
-    </p>
+    <div class="foundation__intro-row">
+      <div>
+        <h1>Platform foundation</h1>
+        <p>
+          Runtime config, health checks, global loading, and notifications on the shared
+          Angular Material foundation — without ERP toolbar/sidebar chrome.
+        </p>
+      </div>
+      <erp-button variant="stroked" type="button" (clicked)="logout()">Logout</erp-button>
+    </div>
   </header>
 
-  <p-card header="Runtime configuration">
+  <erp-card title="Runtime configuration">
     <dl class="foundation__meta">
       <div>
         <dt>Environment</dt>
@@ -22,11 +27,13 @@
         <dd>{{ theme.currentMode() }}</dd>
       </div>
     </dl>
-  </p-card>
+  </erp-card>
 
-  <p-card header="Platform health">
+  <erp-card title="Platform health">
     <div class="foundation__health">
-      <p-tag [value]="statusLabel()" [severity]="statusSeverity()" />
+      <erp-status-chip [tone]="statusTone()" ariaLabel="Platform health status">
+        {{ statusLabel() }}
+      </erp-status-chip>
       @if (isHealthy()) {
         <p class="foundation__ok">API and database report healthy.</p>
       }
@@ -50,24 +57,28 @@
       } @else {
         <p>No health data yet.</p>
       }
-      <p-button
-        label="Refresh health"
-        icon="pi pi-refresh"
+      <erp-button
+        type="button"
+        variant="flat"
+        color="primary"
+        icon="refresh"
         [loading]="loadingHealth()"
-        (onClick)="refreshHealth()"
-      />
+        [disabled]="loadingHealth()"
+        (clicked)="refreshHealth()"
+      >
+        Refresh health
+      </erp-button>
     </div>
-  </p-card>
+  </erp-card>
 
-  <p-card header="Demo hooks">
+  <erp-card title="Demo hooks">
     <div class="foundation__demos">
-      <p-button label="Demo global loader" (onClick)="demoLoader()" />
-      <p-button
-        label="Demo toast"
-        severity="secondary"
-        [outlined]="true"
-        (onClick)="demoToast()"
-      />
+      <erp-button type="button" variant="flat" color="primary" (clicked)="demoLoader()">
+        Demo global loader
+      </erp-button>
+      <erp-button type="button" variant="stroked" (clicked)="demoToast()">
+        Demo toast
+      </erp-button>
     </div>
-  </p-card>
+  </erp-card>
 </section>

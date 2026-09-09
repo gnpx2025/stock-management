@@ -4,6 +4,13 @@
   max-width: 52rem;
 }
 
+.foundation__intro-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--erp-space-4);
+}
+
 .foundation__intro h1 {
   margin: 0 0 var(--erp-space-2);
   font-family: var(--erp-font-display);
@@ -50,14 +57,18 @@
 }
 
 .foundation__error {
-  color: #b42318;
+  color: var(--erp-color-error);
 }
 
 .foundation__ok {
-  color: var(--erp-color-accent);
+  color: var(--erp-color-success);
   margin: 0;
 }
 
 .foundation__demos {
   grid-template-columns: repeat(auto-fit, minmax(12rem, max-content));
+}
+
+.foundation__health erp-button {
+  width: fit-content;
 }
