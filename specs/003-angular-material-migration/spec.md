@@ -33,6 +33,7 @@ This feature implements the Constitution v3.0.0 frontend UI library change: Angu
 - Q: Should repeated Shell controls use shared ERP components in `libs/ui` instead of importing Angular Material directly everywhere? → A: Yes — provide `erp-button`, `erp-spinner`, `erp-icon`, `erp-card`, `erp-status-chip` in `@erp/ui` and consume them from Shell features/layout
 - Q: How must each shared UI component be structured? → A: Separate `.ts`, `.html`, and `.scss` files per component (no inline templates/styles)
 - Q: Where should semantic/brand colors live so components do not hardcode hex values? → A: Centralize in `libs/ui/src/styles/_colors.scss`; components and app SCSS MUST use `--erp-color-*` variables
+- Q: Should common layout helpers (e.g. flex/grid display) be shared? → A: Yes — curated utility classes in `libs/ui/src/styles/_utilities.scss` (e.g. `d-flex`, `gap-*`, `m-*`/`p-*`); use them in templates where layout matches; this is not Tailwind or another utility CSS framework
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -86,6 +87,7 @@ As a frontend developer adding or maintaining Shell screens, I use the shared UI
 2. **Given** a repeated standard control used across Shell surfaces (button, spinner, icon, card, status chip), **When** features render that control, **Then** they use the shared `erp-*` component rather than duplicating Material markup (login form-field/input MAY remain direct Material until a shared form composition exists).
 3. **Given** workspace quality gates for competing UI libraries, **When** a developer attempts to add a forbidden UI stack, **Then** the gate reflects Angular Material as the allowed foundation and rejects competing libraries (including the removed former library).
 4. **Given** shared UI component sources, **When** a developer opens any `erp-*` component, **Then** it has separate `.ts`, `.html`, and `.scss` files and SCSS references `--erp-color-*` tokens rather than hardcoded hex colors for semantic/brand colors.
+5. **Given** Shell templates for login, foundation home, layout, and global loader, **When** a developer inspects common layout markup, **Then** curated utilities from `_utilities.scss` (e.g. `d-flex`, `d-grid`, `gap-*`) are used where they replace duplicated layout declarations, without introducing Tailwind or another utility framework.
 
 ---
 
@@ -147,6 +149,7 @@ As a contributor or CI pipeline, I can lint, type-check, test, and production-bu
 - **FR-014**: All former-library theme configuration, theme CSS, and theme providers MUST be removed.
 - **FR-015**: A single centralized theme configuration MUST serve Shell and future MFEs (no independent per-MFE design systems). The Angular Material theme MUST be mapped to the existing ERP design tokens (colors, typography, spacing, and related brand tokens) rather than shipping Material visual defaults as the ERP brand.
 - **FR-016**: SCSS MUST remain the styling approach; reusable styles belong in `libs/ui`; application-specific layout styles MAY remain in the app/MFE. Brand and semantic colors MUST be defined as CSS custom properties in `libs/ui/src/styles/_colors.scss` (and related token files); component/app SCSS MUST NOT hardcode semantic/brand hex colors when a token exists.
+- **FR-016a**: Curated reusable layout utility classes (e.g. `d-flex`, `d-grid`, `gap-*`, spacing `m-*`/`p-*`, text helpers) MUST live in `libs/ui/src/styles/_utilities.scss` and MUST be available to Shell/MFEs via shared style imports. Templates SHOULD use these utilities where they replace duplicated common layout declarations. This MUST NOT introduce TailwindCSS or another third-party utility CSS framework.
 - **FR-017**: Former icon sets MUST be removed; standard UI icons MUST use the approved Material icon strategy consistently (via `erp-icon` / Material Icons).
 - **FR-017a**: Each shared `erp-*` UI component in `libs/ui` MUST be implemented as separate `.ts`, `.html`, and `.scss` files (no inline `template` / `styles` blocks).
 
@@ -188,6 +191,7 @@ As a contributor or CI pipeline, I can lint, type-check, test, and production-bu
 - **SC-008**: Conflicting prior specs/docs no longer require PrimeNG as the primary UI library (spot-check of previously conflicting artifacts passes).
 - **SC-009**: On login and foundation-home primary flows, keyboard navigation reaches interactive controls with visible focus and accessible labels (smoke-check; no formal WCAG audit required in this feature).
 - **SC-010**: Shared `erp-*` components each have separate `.ts`/`.html`/`.scss` files; component SCSS uses `--erp-color-*` tokens (no hardcoded semantic/brand hex for colors covered by `_colors.scss`).
+- **SC-011**: Shared `_utilities.scss` exists under `libs/ui/src/styles/` and Shell primary surfaces (login, foundation home, shell layout, global loader) use utility classes for common layout (e.g. `d-flex`/`d-grid`/`gap-*`) instead of duplicating those declarations in feature SCSS where applicable.
 
 ## Assumptions
 
@@ -203,3 +207,4 @@ As a contributor or CI pipeline, I can lint, type-check, test, and production-bu
 - Accessibility acceptance for this migration is a Material-defaults smoke-check (keyboard focus + labels on primary login/foundation flows), not a formal WCAG audit.
 - Shared ERP UI components for button/spinner/icon/card/status-chip are in scope as `@erp/ui` compositions for cross-surface consistency; login form-field/input may remain direct Material until a form composition is added.
 - Color values for brand/semantic UI MUST be maintained in `libs/ui/src/styles/_colors.scss`.
+- Curated layout utilities in `_utilities.scss` are in scope; they are owned ERP SCSS helpers, not a third-party utility framework.

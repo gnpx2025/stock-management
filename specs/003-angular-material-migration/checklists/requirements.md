@@ -34,4 +34,4 @@
 - Platform/governance migration specs necessarily name the ratified UI library (Angular Material), forbidden libraries (PrimeNG, etc.), and shared library paths (`libs/ui`) because those are constitutional constraints and acceptance criteria—not incidental implementation choices. This matches the style of `001-platform-foundation` / `002-login-authentication`.
 - Success criteria avoid low-level API/framework metrics; they measure package absence, behavioral preservation, scope boundaries, and quality gates.
 - Validation iteration 1: all checklist items pass; no [NEEDS CLARIFICATION] markers.
-- Post-implement Spec Kit sync (2026-09-09): shared `erp-*` components, three-file structure, and `_colors.scss` are recorded in clarifications, FR-012/016/017a, SC-010, and design artifacts.
+- Post-implement Spec Kit sync (2026-09-09): shared `erp-*` components, three-file structure, `_colors.scss`, and curated `_utilities.scss` (with Shell usage) are recorded in clarifications, FR-012/016/016a/017a, SC-010/SC-011, and design artifacts.

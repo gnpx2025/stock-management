@@ -30,6 +30,7 @@ npm run check:ui-libs
 - `check:ui-libs` passes with Material/CDK allowed and PrimeNG forbidden
 - `frontend/package.json` has `@angular/material` and does **not** list `primeng`, `primeicons`, or `@primeng/themes`
 - `frontend/libs/ui/src/styles/_colors.scss` exists and defines `--erp-color-*`
+- `frontend/libs/ui/src/styles/_utilities.scss` exists and is imported by Shell styles
 - Shared `erp-*` components exist under `frontend/libs/ui/src/lib/components/` with separate `.ts`/`.html`/`.scss` each
 
 Search residual PrimeNG usage:
@@ -102,6 +103,8 @@ Start API (if needed) and Shell per existing README/docs, then verify:
 1. Open any `erp-*` component under `frontend/libs/ui/src/lib/components/`.
 2. Confirm separate `.ts` / `.html` / `.scss` files.
 3. Confirm component SCSS uses `var(--erp-color-*)` (no hardcoded semantic/brand hex for tokenized colors).
+4. Confirm login/foundation/shell-layout/global-loader templates use shared utilities (e.g. `d-flex`, `d-grid`, `gap-*`) for common layout.
+5. Confirm `_utilities.scss` is imported via Shell `styles.scss` / `@erp/ui` styles index.
 
 ---
 
@@ -115,7 +118,7 @@ Confirm requirement language no longer **mandates** PrimeNG in:
 
 Historical “formerly PrimeNG” narrative is OK; active MUST-use-PrimeNG requirements are not.
 
-Confirm Spec Kit feature docs describe `erp-*` components, three-file structure, and `_colors.scss` (`spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, `tasks.md`).
+Confirm Spec Kit feature docs describe `erp-*` components, three-file structure, `_colors.scss`, and `_utilities.scss` (`spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, `tasks.md`).
 
 ---
 
@@ -133,3 +136,4 @@ Confirm Spec Kit feature docs describe `erp-*` components, three-file structure,
 | Prior docs/specs updated | SC-008 |
 | Keyboard focus/labels smoke-check | SC-009 |
 | `erp-*` three-file + `--erp-color-*` tokens | SC-010 |
+| Curated `_utilities.scss` used on Shell surfaces | SC-011 |

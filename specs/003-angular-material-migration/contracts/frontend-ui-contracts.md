@@ -132,9 +132,15 @@ Each shared presentation component MUST:
 |------|------|
 | `libs/ui/src/styles/_colors.scss` | Brand + semantic CSS custom properties (`--erp-color-*`) |
 | `libs/ui/src/styles/_tokens.scss` | Spacing, typography, shadow (consumes `_colors.scss`) |
+| `libs/ui/src/styles/_utilities.scss` | Curated layout/spacing/text helper classes (`d-flex`, `gap-*`, `m-*`/`p-*`, `text-muted`, …) |
 | `libs/ui/src/styles/_material-theme.scss` | Material theme bridge mapped to ERP tokens |
 
 Component and feature SCSS MUST use `var(--erp-color-*)` when a token exists.
+
+**Utility usage contract**:
+- Shell/MFE templates SHOULD apply utilities for common layout instead of redeclaring the same rules in feature SCSS.
+- Feature SCSS remains for screen-specific visuals (gradients, brand treatments, complex grids).
+- MUST NOT introduce TailwindCSS or another third-party utility CSS framework.
 
 ---
 

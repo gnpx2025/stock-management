@@ -8,7 +8,7 @@
 
 ## Summary
 
-Migrate the existing Nx Angular Shell and `@erp/ui` foundation from PrimeNG to Angular Material as the sole primary UI library. Centralize Material theming and semantic color tokens in `libs/ui` (`_colors.scss`, `_tokens.scss`, `_material-theme.scss`); provide shared `erp-*` presentation components (button, spinner, icon, card, status chip) as separate `.ts`/`.html`/`.scss` files; replace login/foundation/loader/notification UI bindings; remove temporary Shell header/aside (content-only Shell) while keeping a minimal content-area logout; update UI policy gates and conflicting prior docs/specs; preserve auth, routes, federation, and loading/notification behavior. No ERP toolbar/sidebar feature and no backend changes.
+Migrate the existing Nx Angular Shell and `@erp/ui` foundation from PrimeNG to Angular Material as the sole primary UI library. Centralize Material theming and semantic color tokens in `libs/ui` (`_colors.scss`, `_tokens.scss`, `_material-theme.scss`); provide curated layout utilities in `_utilities.scss`; provide shared `erp-*` presentation components (button, spinner, icon, card, status chip) as separate `.ts`/`.html`/`.scss` files; replace login/foundation/loader/notification UI bindings; remove temporary Shell header/aside (content-only Shell) while keeping a minimal content-area logout; update UI policy gates and conflicting prior docs/specs; preserve auth, routes, federation, and loading/notification behavior. No ERP toolbar/sidebar feature and no backend changes.
 
 ## Technical Context
 
@@ -26,7 +26,7 @@ Migrate the existing Nx Angular Shell and `@erp/ui` foundation from PrimeNG to A
 
 **Performance Goals**: No new throughput targets; Shell startup and login/foundation flows remain subjectively comparable to pre-migration (functional preservation)
 
-**Constraints**: Constitution v3.0.0 — Angular Material-first; no PrimeNG/competing UI/Tailwind; ERP shared compositions in `@erp/ui` for repeated controls; no toolbar/sidenav feature; content-only Shell; map Material theme to ERP `_colors.scss` tokens; a11y = Material defaults + keyboard/label smoke-check; update conflicting prior specs/docs
+**Constraints**: Constitution v3.0.0 — Angular Material-first; no PrimeNG/competing UI/Tailwind; ERP shared compositions in `@erp/ui` for repeated controls; curated `_utilities.scss` helpers (not a utility framework); no toolbar/sidenav feature; content-only Shell; map Material theme to ERP `_colors.scss` tokens; a11y = Material defaults + keyboard/label smoke-check; update conflicting prior specs/docs
 
 **Scale/Scope**: Shell surfaces (login, foundation home, layout loader, notifications) + `@erp/ui` theme/tokens/components + package/gate/docs cleanup; no new business MFEs
 
@@ -39,7 +39,7 @@ Migrate the existing Nx Angular Shell and `@erp/ui` foundation from PrimeNG to A
 | Spec-Driven incremental order | Pass | UI foundation migration before Shell layout feature |
 | Stack: Angular/Nx/Native Federation/Material/SCSS; backend unchanged | Pass | Frontend-only; .NET/Postgres untouched |
 | Angular Material primary; no PrimeNG/competing UI/Tailwind | Pass | Spec FR-006–009; gate script |
-| Shared UI + centralized theme in `libs/ui`; ERP compositions for consistency | Pass | `erp-*` components + `_colors.scss` / theme bridge |
+| Shared UI + centralized theme in `libs/ui`; ERP compositions for consistency | Pass | `erp-*` components + `_colors.scss` / `_utilities.scss` / theme bridge |
 | Shell owns theme/loader/notifications; no premature full Shell layout | Pass | Content-only Shell; toolbar/sidenav deferred; minimal content logout |
 | MFE boundaries / no cross-MFE UI imports | Pass | Shell → `@erp/ui` → Material |
 | Signals for local UI state; no NgRx for simple shell UI | Pass | Keep `ThemeService` / `LoadingService` signals |
@@ -98,6 +98,7 @@ frontend/
     ├── src/styles/
     │   ├── _colors.scss                  # Brand + semantic CSS variables
     │   ├── _tokens.scss                  # Spacing, typography, shadow
+    │   ├── _utilities.scss               # Curated layout helpers (d-flex, gap-*, …)
     │   ├── _base.scss
     │   ├── _material-theme.scss
     │   └── index.scss
@@ -115,7 +116,7 @@ frontend/
             └── toast-notification.service.ts
 ```
 
-**Structure Decision**: Existing Nx frontend only. Shared Material theme, color tokens, and `erp-*` components live in `@erp/ui`. Shell consumes `@erp/ui` for repeated presentation controls. Temporary Shell chrome is removed rather than rebuilt with MatToolbar/MatSidenav.
+**Structure Decision**: Existing Nx frontend only. Shared Material theme, color tokens, curated utilities, and `erp-*` components live in `@erp/ui`. Shell consumes `@erp/ui` for repeated presentation controls and common layout helpers. Temporary Shell chrome is removed rather than rebuilt with MatToolbar/MatSidenav.
 
 ## Complexity Tracking
 

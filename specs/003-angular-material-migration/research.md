@@ -229,3 +229,21 @@ No PrimeNG tables/dialogs/menus found; FR-022 applies if discovered.
 **Alternatives considered**:
 - Keep hex literals in component SCSS — rejected.
 - Put colors only inside `_material-theme.scss` — rejected (need reusable tokens outside Material mapping).
+
+---
+
+## 16. Curated layout utilities
+
+**Decision**:
+- Maintain `frontend/libs/ui/src/styles/_utilities.scss` with a small curated set of layout helpers (`d-flex`, `d-grid`, flex alignment, `gap-*`, spacing `m-*`/`p-*`, width helpers, text color helpers).
+- Wire via `styles/index.scss` and Shell `styles.scss`.
+- Use utilities in Shell templates (login, foundation home, shell layout, global loader) where they replace duplicated common layout declarations.
+- Keep feature SCSS for screen-specific visuals (gradients, brand mark, typography scales, complex grids).
+- Do **not** add TailwindCSS or another third-party utility framework.
+
+**Rationale**: Post-implement clarification; FR-016a; reusable styles belong in `libs/ui`.
+
+**Alternatives considered**:
+- Tailwind — rejected (constitution / FR-008).
+- Duplicate `display: flex` in every feature SCSS — rejected (user requested shared classes).
+- Full Bootstrap-scale utility dump — rejected (keep curated / token-backed).

@@ -43,4 +43,6 @@ Reusable presentation controls live in `@erp/ui` as `erp-button`, `erp-spinner`,
 
 Brand and semantic colors live in `libs/ui/src/styles/_colors.scss` (`--erp-color-*`); component SCSS MUST use those tokens.
 
+Curated layout helper classes (`d-flex`, `gap-*`, `m-*`/`p-*`, etc.) live in `libs/ui/src/styles/_utilities.scss`. Prefer semantic feature SCSS for screen structure; use utilities for common one-off layout. Do not add Tailwind or another utility CSS framework.
+
 ERP toolbar/sidenav/navigation chrome is owned by Shell but delivered in a later feature; this foundation uses a content-only authenticated shell.

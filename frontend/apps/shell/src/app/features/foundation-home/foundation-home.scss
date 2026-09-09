@@ -1,14 +1,5 @@
 .foundation {
-  display: grid;
-  gap: var(--erp-space-6);
   max-width: 52rem;
-}
-
-.foundation__intro-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--erp-space-4);
 }
 
 .foundation__intro h1 {
@@ -19,15 +10,7 @@
 }
 
 .foundation__intro p {
-  margin: 0;
-  color: var(--erp-color-muted);
   max-width: 42rem;
-}
-
-.foundation__meta {
-  display: grid;
-  gap: var(--erp-space-3);
-  margin: 0;
 }
 
 .foundation__meta div {
@@ -36,7 +19,6 @@
 }
 
 .foundation__meta dt {
-  color: var(--erp-color-muted);
   font-size: 0.8rem;
 }
 
@@ -45,24 +27,9 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-.foundation__health,
-.foundation__demos {
-  display: grid;
-  gap: var(--erp-space-3);
-}
-
 .foundation__health ul {
   margin: 0;
   padding-left: 1.1rem;
-}
-
-.foundation__error {
-  color: var(--erp-color-error);
-}
-
-.foundation__ok {
-  color: var(--erp-color-success);
-  margin: 0;
 }
 
 .foundation__demos {

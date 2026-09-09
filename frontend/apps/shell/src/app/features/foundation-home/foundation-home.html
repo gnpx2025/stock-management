@@ -1,9 +1,9 @@
-<section class="foundation">
+<section class="foundation d-grid gap-6">
   <header class="foundation__intro">
-    <div class="foundation__intro-row">
+    <div class="foundation__intro-row d-flex align-items-start justify-content-between gap-4">
       <div>
         <h1>Platform foundation</h1>
-        <p>
+        <p class="m-0 text-muted">
           Runtime config, health checks, global loading, and notifications on the shared
           Angular Material foundation — without ERP toolbar/sidebar chrome.
         </p>
@@ -13,29 +13,29 @@
   </header>
 
   <erp-card title="Runtime configuration">
-    <dl class="foundation__meta">
+    <dl class="foundation__meta d-grid gap-3 m-0">
       <div>
-        <dt>Environment</dt>
+        <dt class="text-muted">Environment</dt>
         <dd>{{ config.environmentName }}</dd>
       </div>
       <div>
-        <dt>API base URL</dt>
+        <dt class="text-muted">API base URL</dt>
         <dd>{{ config.apiBaseUrl }}</dd>
       </div>
       <div>
-        <dt>Theme</dt>
+        <dt class="text-muted">Theme</dt>
         <dd>{{ theme.currentMode() }}</dd>
       </div>
     </dl>
   </erp-card>
 
   <erp-card title="Platform health">
-    <div class="foundation__health">
+    <div class="foundation__health d-grid gap-3">
       <erp-status-chip [tone]="statusTone()" ariaLabel="Platform health status">
         {{ statusLabel() }}
       </erp-status-chip>
       @if (isHealthy()) {
-        <p class="foundation__ok">API and database report healthy.</p>
+        <p class="text-success m-0">API and database report healthy.</p>
       }
       @if (health(); as h) {
         <p>
@@ -53,7 +53,7 @@
           </li>
         </ul>
       } @else if (healthError()) {
-        <p class="foundation__error">{{ healthError() }}</p>
+        <p class="text-error">{{ healthError() }}</p>
       } @else {
         <p>No health data yet.</p>
       }
@@ -72,7 +72,7 @@
   </erp-card>
 
   <erp-card title="Demo hooks">
-    <div class="foundation__demos">
+    <div class="foundation__demos d-grid gap-3">
       <erp-button type="button" variant="flat" color="primary" (clicked)="demoLoader()">
         Demo global loader
       </erp-button>

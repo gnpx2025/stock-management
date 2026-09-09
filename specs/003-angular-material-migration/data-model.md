@@ -100,6 +100,7 @@ No new entities for toolbar/sidenav navigation trees.
 | Notification service | `ToastNotificationService` | MatSnackBar |
 | Color tokens | `libs/ui/src/styles/_colors.scss` | Brand + semantic CSS variables |
 | Spacing/typography | `libs/ui/src/styles/_tokens.scss` | Consumes `_colors.scss` |
+| Layout utilities | `libs/ui/src/styles/_utilities.scss` | Curated helpers (`d-flex`, `gap-*`, …); not Tailwind |
 | Material bridge | `libs/ui/src/styles/_material-theme.scss` | Maps Material → ERP tokens |
 | `erp-button` | `libs/ui/.../components/button/` | Separate `.ts`/`.html`/`.scss` |
 | `erp-spinner` | `libs/ui/.../components/spinner/` | Separate `.ts`/`.html`/`.scss` |

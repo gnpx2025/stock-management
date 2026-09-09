@@ -146,8 +146,10 @@
 - [x] T035 Create `frontend/libs/ui/src/styles/_colors.scss` for brand/semantic `--erp-color-*` tokens; wire `_tokens.scss` / theme / component SCSS to consume tokens instead of hardcoded semantic/brand hex
 - [x] T036 Update Shell login, foundation-home, and global-loader to consume `erp-*` components from `@erp/ui` (login form-field/input may remain direct Material)
 - [x] T037 Sync Spec Kit artifacts (`spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/frontend-ui-contracts.md`, `quickstart.md`, `prime-inventory.md`, this `tasks.md`) with post-implement refinements
+- [x] T038 Create curated layout utilities in `frontend/libs/ui/src/styles/_utilities.scss` (`d-flex`, `d-grid`, `gap-*`, spacing, text helpers); wire into `frontend/libs/ui/src/styles/index.scss` and `frontend/apps/shell/src/styles.scss`
+- [x] T039 Apply utilities on Shell login, foundation-home, shell-layout, and global-loader templates; remove duplicated common layout rules from their SCSS; update Spec Kit (FR-016a / SC-011)
 
-**Checkpoint**: Spec Kit and codebase agree on shared ERP UI, file structure, and color tokens
+**Checkpoint**: Spec Kit and codebase agree on shared ERP UI, file structure, color tokens, and curated utilities
 
 ---
 
@@ -231,7 +233,7 @@ Task: "Update specs/002-login-authentication/* PrimeNG mandates"
 3. US1 purge → Packages and source clean  
 4. US3 → Docs/consumption policy aligned  
 5. US4 + Polish → Lint/build/tests/docs acceptance  
-6. Phase 8 → Shared `erp-*` components, three-file structure, `_colors.scss`, Spec Kit sync  
+6. Phase 8 → Shared `erp-*` components, three-file structure, `_colors.scss`, `_utilities.scss`, Spec Kit sync  
 
 ### Parallel Team Strategy
 
@@ -250,6 +252,7 @@ Task: "Update specs/002-login-authentication/* PrimeNG mandates"
 - Prefer shared `erp-*` compositions in `libs/ui` for repeated controls; avoid wrappers with no ERP value
 - Each `erp-*` component MUST use separate `.ts`/`.html`/`.scss`
 - Brand/semantic colors live in `_colors.scss` (`--erp-color-*`)
+- Curated layout utilities live in `_utilities.scss` (`d-flex`, `gap-*`, …); not Tailwind
 - Theme toggle UI is deferred; `ThemeService` API remains
 - Commit after each task or logical group
 - Suggested MVP scope: Phases 1–4 through T021 (Material-only working Shell); Phase 8 completes shared ERP UI consistency
