@@ -23,7 +23,7 @@
 
 .foundation__meta dd {
   margin: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--erp-font-family);
 }
 
 .foundation__health ul {
@@ -48,7 +48,7 @@
   overflow: auto;
   font-size: 0.75rem;
   line-height: 1.45;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--erp-font-family);
   background: color-mix(in srgb, Canvas 92%, CanvasText 8%);
   border-radius: 0.5rem;
 }

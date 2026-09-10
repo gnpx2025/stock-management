@@ -11,16 +11,8 @@ html {
         tertiary: mat.$azure-palette,
       ),
       typography: (
-        plain-family: (
-          'Source Sans 3',
-          'Segoe UI',
-          sans-serif,
-        ),
-        brand-family: (
-          Fraunces,
-          Georgia,
-          serif,
-        ),
+        plain-family: 'Scoutie Sans',
+        brand-family: 'Scoutie Sans',
       ),
       density: 0,
     )

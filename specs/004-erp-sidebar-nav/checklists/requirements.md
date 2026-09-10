@@ -34,5 +34,5 @@
 - Validation iteration 1 (2026-09-10): All items passed.
 - Constitution Alignment and Assumptions mention Shell / prior migration only as scope context; functional requirements and success criteria remain technology-agnostic where required.
 - Hierarchy ambiguities resolved via clarifications (ADMINISTRATION siblings; REPORTS leaves).
-- Post-implement refinements (2026-09-10) documented in `spec.md` Clarifications session, `plan.md`, `research.md`, `data-model.md`, `contracts/`, and `quickstart.md`: Material icons, tree rails, leaf-only selection + refresh restore, layout folders, utilities.
+- Post-implement refinements (2026-09-10) documented in `spec.md` Clarifications session, `plan.md`, `research.md`, `data-model.md`, `contracts/`, and `quickstart.md`: Material icons, tree rails, leaf-only selection + refresh restore, layout folders, utilities, **Scoutie Sans** project typography.
 - Ready for further polish or follow-on routing/active-route features.

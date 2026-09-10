@@ -165,7 +165,7 @@ Each shared presentation component MUST:
 | File | Owns |
 |------|------|
 | `libs/ui/src/styles/_colors.scss` | Brand + semantic CSS custom properties (`--erp-color-*`, including `--erp-color-accent-rgb`) |
-| `libs/ui/src/styles/_tokens.scss` | Spacing, typography, shadow (consumes `_colors.scss`) |
+| `libs/ui/src/styles/_tokens.scss` | Spacing, typography (`--erp-font-family: 'Scoutie Sans'`), shadow (consumes `_colors.scss`) |
 | `libs/ui/src/styles/_utilities.scss` | Curated layout/spacing/text helper classes (`d-flex`, `gap-*`, `m-*`/`p-*`, `text-muted`, …) |
 | `libs/ui/src/styles/_material-theme.scss` | Material theme bridge mapped to ERP tokens |
 

@@ -100,4 +100,4 @@
 | `app-shell-sidebar-nav` | `layout/shell-sidebar-nav/` | Sections/nodes; expand + selection Signals |
 | `SHELL_NAV_MENU` | `layout/nav/` | Static NavSection[] |
 
-Prefer curated `@erp/ui` utility classes for common layout. Public `@erp/ui` component exports unchanged except consumption of existing `erp-icon` / tokens / utilities.
+Prefer curated `@erp/ui` utility classes for common layout. Typography inherits project-wide **Scoutie Sans** via `--erp-font-family`. Public `@erp/ui` component exports unchanged except consumption of existing `erp-icon` / tokens / utilities.

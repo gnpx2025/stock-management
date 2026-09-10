@@ -100,6 +100,10 @@ npx nx build shell --skip-nx-cache
 1. Foundation home still renders beside the sidebar.
 2. Theme toggle / logout on content still function — not in sidebar header.
 
+### 11. Typography
+
+1. Sidebar labels and brand header use **Scoutie Sans** (project `--erp-font-family`), not a competing UI text font.
+
 ---
 
 ## Pass criteria

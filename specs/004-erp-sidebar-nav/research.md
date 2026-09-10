@@ -99,12 +99,14 @@ Do not introduce `erp-sidenav` in `@erp/ui` for this feature.
 - Component SCSS owns tree rail, lead column, selection text emphasis.
 - Selection: accent color + `font-weight: 600` only — **no** border or heavy background for expand/selection states.
 - First-level leading icons + expand icons via `erp-icon`.
+- Typography inherits project-wide **Scoutie Sans** from `--erp-font-family` (no local competing text fonts).
 
 **Rationale**: Post-implement UX; constitution token/utility guidance.
 
 **Alternatives considered**:
 - Heavy bordered “button” rows — rejected by user.
 - Background highlight for selection — toned down to text-only emphasis.
+- Roboto Slab / prior display+sans pairs — replaced by Scoutie Sans project-wide.
 
 ---
 
@@ -127,3 +129,13 @@ Do not introduce `erp-sidenav` in `@erp/ui` for this feature.
 **Decision**: Material Icons font already loaded for Shell. First-level `icon` field names Material glyphs. Expand uses `chevron_right` / `expand_more`.
 
 **Rationale**: Post-implement request; aligns with Material-first stack.
+
+---
+
+## 12. Project typography (Scoutie Sans)
+
+**Decision**: Sole UI text font is **Scoutie Sans** (`--erp-font-family` in `@erp/ui` `_tokens.scss`). Material theme plain/brand families match. Shell `styles.scss` loads Scoutie Sans (400/600/700) + Material Icons only. Do not introduce additional UI text font families.
+
+**Rationale**: User direction during Shell sidebar polish; keep one brand typeface across Shell and shared UI.
+
+**Alternatives considered**: Roboto Slab; prior Source Sans 3 + Fraunces pair — removed.

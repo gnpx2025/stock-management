@@ -23,18 +23,20 @@
     @if (hasChildren(node)) {
       <button
         type="button"
-        class="sidebar-nav__row d-flex align-items-center gap-2 w-100 text-start"
+        class="sidebar-nav__row d-flex align-items-center gap-2 w-100 text-start fw-400"
         [attr.aria-expanded]="isExpanded(node.id)"
         (click)="toggle(node)"
       >
         @if (depth === 0) {
-          <span class="sidebar-nav__lead flex-shrink-0 d-inline-flex align-items-center justify-content-center">
+          <span
+            class="sidebar-nav__lead flex-shrink-0 d-inline-flex align-items-center justify-content-center"
+          >
             @if (node.icon) {
               <erp-icon class="sidebar-nav__icon text-muted" [name]="node.icon" />
             }
           </span>
         }
-        <span class="sidebar-nav__label flex-grow-1">{{ node.label }}</span>
+        <span class="sidebar-nav__label flex-grow-1 overflow-hidden">{{ node.label }}</span>
         <erp-icon
           class="sidebar-nav__expand-icon flex-shrink-0 text-muted"
           [name]="isExpanded(node.id) ? 'expand_more' : 'chevron_right'"
@@ -45,8 +47,15 @@
           class="sidebar-nav__branch d-flex"
           [class.sidebar-nav__branch--deep]="depth > 0"
         >
-          <span class="sidebar-nav__branch-rail flex-shrink-0" aria-hidden="true"></span>
-          <ul class="sidebar-nav__branch-list m-0 p-0 flex-grow-1" role="list">
+          <span
+            class="sidebar-nav__branch-rail flex-shrink-0 align-self-stretch"
+            aria-hidden="true"
+          ></span>
+          <ul
+            class="sidebar-nav__branch-list m-0 p-0 flex-grow-1"
+            [class.ps-3]="depth > 0"
+            role="list"
+          >
             @for (child of node.children; track child.id) {
               <ng-container
                 *ngTemplateOutlet="nodeTpl; context: { $implicit: child, depth: depth + 1 }"
@@ -58,19 +67,23 @@
     } @else {
       <button
         type="button"
-        class="sidebar-nav__row d-flex align-items-center gap-2 w-stretch text-start"
+        class="sidebar-nav__row d-flex align-items-center gap-2 w-stretch text-start fw-400"
         [class.sidebar-nav__row--selected]="isSelected(node.id)"
+        [class.text-accent]="isSelected(node.id)"
+        [class.fw-600]="isSelected(node.id)"
         [attr.aria-current]="isSelected(node.id) ? 'page' : null"
         (click)="select(node)"
       >
         @if (depth === 0) {
-          <span class="sidebar-nav__lead flex-shrink-0 d-inline-flex align-items-center justify-content-center">
+          <span
+            class="sidebar-nav__lead flex-shrink-0 d-inline-flex align-items-center justify-content-center"
+          >
             @if (node.icon) {
               <erp-icon class="sidebar-nav__icon text-muted" [name]="node.icon" />
             }
           </span>
         }
-        <span class="sidebar-nav__label flex-grow-1">{{ node.label }}</span>
+        <span class="sidebar-nav__label flex-grow-1 overflow-hidden">{{ node.label }}</span>
       </button>
     }
   </li>

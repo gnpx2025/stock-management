@@ -41,6 +41,10 @@ This feature implements the Constitution v3.0.0 frontend UI library change: Angu
 - Q: How should reactive `disabled` be applied on `erp-form-field`? → A: Via the FormControl API (`enable`/`disable`), not `[disabled]` beside `formControlName`
 - Q: Should foundation home expose a temporary theme toggle and form-control lab? → A: Yes — content-area theme toggle beside logout; UI-lab card exercising every `erp-form-field` control type (temporary verification surface, not a product settings UI)
 
+### Session 2026-09-10 (project typography)
+
+- Q: What is the project-wide UI typeface? → A: **Scoutie Sans** only — owned by `--erp-font-family` in `libs/ui/src/styles/_tokens.scss`; Material `plain-family` / `brand-family` map to Scoutie Sans; load via Shell `styles.scss` Google Fonts (weights 400/600/700) alongside Material Icons; do not ship competing UI text fonts (no Source Sans / Fraunces / Roboto Slab / system UI stacks / monospace UI text)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Remove the former UI library and adopt the approved design system (Priority: P1)

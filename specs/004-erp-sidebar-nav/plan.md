@@ -8,7 +8,7 @@
 
 ## Summary
 
-Restore Shell authenticated chrome with a full-viewport-height sidebar: fixed brand-only logo/header, independently scrollable navigation menu, non-expandable section headers, and a static expandable menu hierarchy. First-level Material leading icons; right-side Material expand icons; tree guide rails with label-column alignment; leaf-only selection (accent + bold) persisted across refresh with ancestor expand restore. Shell-local layout folders + `@erp/ui` tokens/utilities; no page routes, permissions, menu APIs, mobile drawer, or toolbar feature.
+Restore Shell authenticated chrome with a full-viewport-height sidebar: fixed brand-only logo/header, independently scrollable navigation menu, non-expandable section headers, and a static expandable menu hierarchy. First-level Material leading icons; right-side Material expand icons; tree guide rails with label-column alignment; leaf-only selection (accent + bold) persisted across refresh with ancestor expand restore. Shell-local layout folders + `@erp/ui` tokens/utilities; project typography is **Scoutie Sans** (`--erp-font-family`); no page routes, permissions, menu APIs, mobile drawer, or toolbar feature.
 
 ## Technical Context
 

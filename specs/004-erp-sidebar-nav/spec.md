@@ -36,6 +36,8 @@ This feature delivers the Shell’s global sidebar / sidenav navigation structur
 - Q: How strong should selection highlighting be? → A: Selected leaf only — accent text color and bold weight; no border or heavy background on rows; expandable parents are not selected when toggled
 - Q: Should selection survive refresh? → A: Yes — persist selected leaf id; on reload restore selection and expand ancestor groups so the selected item is visible
 - Q: How should Shell layout files be organized? → A: One folder per concern under `layout/` (`shell-layout/`, `shell-sidebar/`, `shell-sidebar-nav/`, `global-loader/`, `nav/`); prefer curated `@erp/ui` utility classes for common layout
+- Q: What project-wide typeface should the Shell (and shared UI) use? → A: **Scoutie Sans** only (`--erp-font-family`); remove other UI text fonts; Material Icons remain for icons only
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - See the full-height sidebar with fixed logo and scrollable menu (Priority: P1)
@@ -158,7 +160,7 @@ As an ERP user, I can select a leaf menu item and see only that leaf highlighted
 - **FR-011**: On initial load with no stored selection, the sidebar MUST present the Initial Collapsed Sidebar View: expandable first-level groups collapsed, with the visible first-level items defined for each section.
 - **FR-012**: The complete expandable hierarchy MUST match the Initial Sidebar Structure defined under Key Entities (all modules and nested items listed there).
 - **FR-013**: This feature MUST NOT implement destination pages, routing to those destinations, API integration, permission filtering, backend changes, menu data APIs, responsive/mobile sidebar behavior, or a new visual theme.
-- **FR-014**: Visual presentation MUST use existing ERP tokens and curated layout utilities; first-level leading icons and expand/collapse icons MUST use Material icons via the shared icon component.
+- **FR-014**: Visual presentation MUST use existing ERP tokens and curated layout utilities; first-level leading icons and expand/collapse icons MUST use Material icons via the shared icon component; UI text MUST use project-wide Scoutie Sans (`--erp-font-family`).
 - **FR-015**: Leaf menu items MAY be non-functional placeholders (no navigation required) within this feature’s scope.
 - **FR-016**: Under ADMINISTRATION, Audit Trail and System Settings MUST appear as sibling leaf items (System Settings MUST NOT be nested under Audit Trail).
 - **FR-017**: Under REPORTS, Sales Reports, Purchase Reports, Inventory Reports, Finance Reports, and Customer Reports MUST be leaf items (no expand/collapse control). Supplier Reports MUST remain expandable with child Management Reports.
@@ -278,3 +280,4 @@ As an ERP user, I can select a leaf menu item and see only that leaf highlighted
 - Responsive/mobile drawer behavior and toolbar/topbar remain out of scope.
 - Prior Material migration left a content-only Shell; this feature reintroduces sidebar chrome only.
 - Layout helpers come from curated `@erp/ui` `_utilities.scss` where applicable; Shell layout code lives in per-concern folders under `apps/shell/src/app/layout/`.
+- Project UI text font is Scoutie Sans (`--erp-font-family`); Material Icons remain for icon glyphs only.

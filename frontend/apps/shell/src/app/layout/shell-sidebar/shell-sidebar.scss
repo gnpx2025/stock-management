@@ -15,22 +15,18 @@
 }
 
 .shell-sidebar__mark {
-  display: inline-grid;
-  place-items: center;
   width: 2rem;
   height: 2rem;
   border-radius: 0.5rem;
   background: color-mix(in srgb, var(--erp-color-accent) 18%, transparent);
-  color: var(--erp-color-accent);
-  font-family: var(--erp-font-display);
+  font-family: var(--erp-font-family);
   font-size: 0.75rem;
   letter-spacing: 0.04em;
 }
 
 .shell-sidebar__brand {
-  overflow: hidden;
   color: var(--erp-color-text);
-  font-family: var(--erp-font-display);
+  font-family: var(--erp-font-family);
   font-size: 1rem;
   line-height: 1.2;
   text-overflow: ellipsis;
@@ -40,5 +36,4 @@
 .shell-sidebar__nav {
   min-height: 0;
   overflow-x: hidden;
-  padding-bottom: var(--erp-space-4);
 }

@@ -42,6 +42,7 @@ All Technical Context unknowns resolved. Decisions below guide implementation an
 - Author Material theme SCSS (M3/`mat.theme`) inside `libs/ui` (`src/styles/_material-theme.scss`).
 - Define brand + semantic colors in `libs/ui/src/styles/_colors.scss` (`--erp-color-*` including success/warn/error/info/overlay/mist).
 - Keep spacing/typography/shadow in `_tokens.scss` (which `@use`s `_colors.scss`).
+- Project UI text font is **Scoutie Sans** via `--erp-font-family` (sole family); Material theme plain/brand families MUST use Scoutie Sans; Shell loads Scoutie Sans + Material Icons only for UI fonts.
 - Map Material system tokens and snackbar panel classes to `--erp-*` variables (no hardcoded semantic hex in components).
 - Continue dark mode via `ThemeService` toggling `app-dark` + `color-scheme` on `documentElement`.
 - Shell `styles.scss` imports shared UI styles only—no independent Material theme per app.
@@ -252,3 +253,13 @@ No PrimeNG tables/dialogs/menus found; FR-022 applies if discovered.
 - Tailwind — rejected (constitution / FR-008).
 - Duplicate `display: flex` in every feature SCSS — rejected (user requested shared classes).
 - Full Bootstrap-scale utility dump — rejected (keep curated / token-backed).
+
+---
+
+## 17. Project typography (Scoutie Sans)
+
+**Decision**: Sole UI text font is **Scoutie Sans**, owned by `--erp-font-family` in `libs/ui/src/styles/_tokens.scss`. Material theme `plain-family` / `brand-family` MUST be Scoutie Sans. Shell `styles.scss` loads Scoutie Sans (weights 400/600/700) plus Material Icons only. Do not ship competing UI text fonts (Source Sans, Fraunces, Roboto Slab, system UI stacks, monospace for UI copy).
+
+**Rationale**: Clarification session 2026-09-10 (project typography); single brand typeface across Shell and `@erp/ui`.
+
+**Alternatives considered**: Dual sans/display pair; Roboto Slab — removed in favor of Scoutie Sans.

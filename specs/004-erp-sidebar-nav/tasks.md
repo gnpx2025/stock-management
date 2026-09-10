@@ -142,6 +142,7 @@
 - [x] T032 [US5] Add tree guide rails with parent-label column alignment for expanded nests in `shell-sidebar-nav.html|scss`
 - [x] T033 [US5] Leaf-only selection (accent + bold); persist selected id; restore selection + ancestor expand on refresh in `shell-sidebar-nav.ts`
 - [x] T034 [US5] Update Speckit artifacts (`spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, `quickstart.md`) to match refinements
+- [x] T035 Update Speckit typography to **Scoutie Sans** (`--erp-font-family`) across `004` and shared UI foundation (`003`) docs
 
 **Checkpoint**: Speckit docs and shipped UX aligned
 

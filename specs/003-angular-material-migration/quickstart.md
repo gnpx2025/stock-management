@@ -92,7 +92,7 @@ Start API (if needed) and Shell per existing README/docs, then verify:
 
 ### 4.4 Theme foundation
 
-1. Confirm shared theme styles load (ERP accent/typography from `_colors.scss` / `_tokens.scss`, not stock Material indigo).
+1. Confirm shared theme styles load (ERP accent/typography from `_colors.scss` / `_tokens.scss`, not stock Material indigo). Confirm UI text uses **Scoutie Sans** (`--erp-font-family`).
 2. Confirm filled form-field background uses ~10% accent (`--mat-form-field-filled-container-color`).
 3. Toggle theme from foundation home and confirm Material + ERP tokens update together.
 

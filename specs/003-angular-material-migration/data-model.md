@@ -13,7 +13,7 @@ Logical configuration owned by `@erp/ui`.
 | Field / concern | Description | Rules |
 |-----------------|-------------|-------|
 | Brand + semantic colors | `--erp-color-*` in `_colors.scss` (bg, surface, border, text, muted, accent, accent-contrast, success, warn, error, info, overlay, mist, etc.) | Single source of brand/semantic truth; components MUST use tokens, not hardcoded hex |
-| Typography | `--erp-font-sans`, `--erp-font-display` (in `_tokens.scss`) | Preserved; Material typography scale references them |
+| Typography | `--erp-font-family: 'Scoutie Sans'` in `_tokens.scss` | Sole project UI text font; Material `plain-family` / `brand-family` MUST match; no competing UI text fonts |
 | Spacing | `--erp-space-*` | Preserved for layout SCSS |
 | Elevation / shadow | `--erp-shadow-soft` | Preserved |
 | Density | Material density setting (default comfortable unless tokens imply otherwise) | Single shared setting |
