@@ -7,7 +7,7 @@
   width: var(--erp-sidebar-width);
   min-height: 0;
   background: color-mix(in srgb, var(--erp-color-surface) 96%, transparent);
-  box-shadow: 4px 0 12px rgb(var(--erp-color-ink-rgb) / 8%);
+  box-shadow: 4px 0 12px rgb(var(--erp-color-ink-rgb) / 5%);
 }
 
 .shell-sidebar__header {

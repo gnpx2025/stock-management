@@ -1,0 +1,44 @@
+<header
+  class="shell-topbar d-flex align-items-center justify-content-between gap-4 px-4"
+  role="banner"
+>
+  <erp-search-input
+    class="shell-topbar__search flex-grow-1"
+    placeholder="Search"
+    ariaLabel="Search"
+    [options]="searchOptions"
+  />
+
+  <div class="shell-topbar__actions d-flex align-items-center gap-1 flex-shrink-0">
+    <erp-button
+      variant="icon"
+      type="button"
+      icon="notifications"
+      ariaLabel="Notifications"
+      (clicked)="onNotificationClick()"
+    />
+
+    <erp-button
+      variant="icon"
+      type="button"
+      [icon]="themeToggleIcon()"
+      [ariaLabel]="themeToggleLabel()"
+      (clicked)="toggleTheme()"
+    />
+
+    <button
+      matButton="outlined"
+      type="button"
+      class="shell-topbar__profile"
+      [matMenuTriggerFor]="profileMenu"
+      [attr.aria-label]="'Account menu for ' + displayName()"
+    >
+      <span class="shell-topbar__profile-name">{{ displayName() }}</span>
+      <erp-icon name="arrow_drop_down" />
+    </button>
+
+    <mat-menu #profileMenu="matMenu" xPosition="before">
+      <button mat-menu-item type="button" (click)="logout()">Logout</button>
+    </mat-menu>
+  </div>
+</header>

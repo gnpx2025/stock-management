@@ -12,7 +12,6 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import type { HealthStatus } from '@erp/contracts';
 import {
   APP_CONFIG,
-  AuthSessionService,
   LoadingService,
   PlatformHealthService,
   isPlatformHealthy,
@@ -50,7 +49,6 @@ export class FoundationHomeComponent implements OnInit {
   private readonly healthApi = inject(PlatformHealthService);
   private readonly notifications = inject(ToastNotificationService);
   private readonly loading = inject(LoadingService);
-  private readonly auth = inject(AuthSessionService);
   private readonly fb = inject(FormBuilder);
   protected readonly theme = inject(ThemeService);
   protected readonly config = inject(APP_CONFIG);
@@ -178,10 +176,6 @@ export class FoundationHomeComponent implements OnInit {
       'Notification foundation',
       'Material snackbar is wired through the shared notification facade.',
     );
-  }
-
-  logout(): void {
-    this.auth.logout().subscribe();
   }
 
   resetFormFields(): void {

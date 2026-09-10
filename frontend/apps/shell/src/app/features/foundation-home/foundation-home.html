@@ -1,28 +1,10 @@
 <section class="foundation d-grid gap-6">
   <header class="foundation__intro">
-    <div class="foundation__intro-row d-flex align-items-start justify-content-between gap-4">
-      <div>
-        <h1>Platform foundation</h1>
-        <p class="m-0 text-muted">
-          Runtime config, health checks, global loading, and notifications on the shared
-          Angular Material foundation. Theme and logout remain here until toolbar chrome lands.
-        </p>
-      </div>
-      <div class="foundation__actions d-flex align-items-center gap-2">
-        <erp-button
-          variant="stroked"
-          type="button"
-          [icon]="theme.currentMode() === 'dark' ? 'light_mode' : 'dark_mode'"
-          [ariaLabel]="
-            theme.currentMode() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
-          "
-          (clicked)="theme.toggle()"
-        >
-          {{ theme.currentMode() === 'dark' ? 'Light' : 'Dark' }}
-        </erp-button>
-        <erp-button variant="stroked" type="button" (clicked)="logout()">Logout</erp-button>
-      </div>
-    </div>
+    <h1>Platform foundation</h1>
+    <p class="m-0 text-muted">
+      Runtime config, health checks, global loading, and notifications on the shared Angular
+      Material foundation. Theme and logout live in the application topbar.
+    </p>
   </header>
 
   <erp-card title="Runtime configuration">

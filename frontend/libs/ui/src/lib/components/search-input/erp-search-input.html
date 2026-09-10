@@ -1,0 +1,29 @@
+<div
+  class="erp-search-input d-flex align-items-center gap-2 px-3 border rounded-pill"
+  [class.erp-search-input--focused]="focused()"
+  [class.erp-search-input--disabled]="disabled()"
+>
+  <erp-icon class="erp-search-input__icon flex-shrink-0 text-muted" name="search" />
+  <input
+    class="erp-search-input__control flex-grow-1 min-w-0 py-2 m-0 border-0 outline-none bg-transparent"
+    type="search"
+    autocomplete="off"
+    [placeholder]="placeholder()"
+    [attr.aria-label]="ariaLabel()"
+    [disabled]="disabled()"
+    [value]="query()"
+    [matAutocomplete]="auto"
+    (input)="onInput($event)"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
+  />
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    class="erp-search-input__panel"
+    (optionSelected)="onOptionSelected($event)"
+  >
+    @for (opt of filteredOptions(); track opt.value) {
+      <mat-option [value]="opt.label">{{ opt.label }}</mat-option>
+    }
+  </mat-autocomplete>
+</div>

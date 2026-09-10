@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  flex-shrink: 0;
+}
+
+.shell-topbar {
+  box-sizing: border-box;
+  min-height: var(--erp-header-height);
+  background: color-mix(in srgb, var(--erp-color-surface) 96%, transparent);
+  box-shadow: 0 4px 12px rgb(var(--erp-color-ink-rgb) / 5%);
+}
+
+.shell-topbar__search {
+  max-width: 28rem;
+  min-width: 0;
+}
+
+.shell-topbar__profile {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--erp-space-1);
+  max-width: 12rem;
+  font-family: var(--erp-font-family);
+}
+
+.shell-topbar__profile-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,41 @@
+.erp-search-input {
+  box-sizing: border-box;
+  min-height: 2.5rem;
+}
+
+.erp-search-input--focused {
+  border-color: color-mix(
+    in srgb,
+    var(--erp-color-accent) 55%,
+    var(--erp-color-border)
+  ) !important;
+  box-shadow: 0 0 0 3px rgb(var(--erp-color-accent-rgb) / 14%);
+}
+
+.erp-search-input--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.erp-search-input__icon {
+  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  line-height: 1;
+}
+
+.erp-search-input__control {
+  color: var(--erp-color-text);
+  font-family: var(--erp-font-family);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.erp-search-input__control::placeholder {
+  color: var(--erp-color-muted);
+}
+
+.erp-search-input__control::-webkit-search-decoration,
+.erp-search-input__control::-webkit-search-cancel-button {
+  appearance: none;
+}
