@@ -153,6 +153,22 @@
 
 ---
 
+## Phase 9: Form-field composition + foundation UI lab (2026-09-10)
+
+**Purpose**: Shared `erp-form-field` covering all MatFormFieldControl types; login migration; foundation theme toggle + UI lab; Spec Kit sync
+
+**Independent Test**: SC-012 + quickstart §§4.2–4.4; no reactive-forms `[disabled]` warnings; date-range renders without `shouldLabelFloat` crash
+
+- [x] T040 Create `erp-form-field` (+ `erpPrefix` / `erpSuffix`) under `frontend/libs/ui/src/lib/components/form-field/` with in-template controls for `input` | `textarea` | `select` | `native-select` | `datepicker` | `date-range` | `timepicker` | `autocomplete` | `chip-grid`; export types from `frontend/libs/ui/src/index.ts`
+- [x] T041 Register `provideNativeDateAdapter()` in `frontend/libs/ui/src/lib/theme/provide-erp-ui.ts`; sync `disabled` via FormControl API; density + filled accent (10%) tokens in `erp-form-field.scss`
+- [x] T042 Migrate login to `erp-form-field` / `erpSuffix` password toggle in `frontend/apps/shell/src/app/features/auth/login/`
+- [x] T043 Add foundation-home content-area theme toggle beside logout and form-field UI lab card in `frontend/apps/shell/src/app/features/foundation-home/`
+- [x] T044 Sync Spec Kit artifacts (`spec.md`, `plan.md`, `data-model.md`, `contracts/frontend-ui-contracts.md`, `quickstart.md`, this `tasks.md`) for form-field composition, theme toggle, and UI lab
+
+**Checkpoint**: Form composition is the Shell form standard; foundation lab verifies all control types; Spec Kit matches codebase
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -165,6 +181,7 @@
 - **User Story 4 (Phase 6)**: Depends on US1–US3 completion for meaningful green builds
 - **Polish (Phase 7)**: Depends on US4
 - **Post-implement (Phase 8)**: Depends on Polish / completed migration; documents and implements shared `erp-*` refinements
+- **Form-field lab (Phase 9)**: Depends on Phase 8; adds `erp-form-field` + foundation verification surfaces
 
 ### User Story Dependencies
 
@@ -234,6 +251,7 @@ Task: "Update specs/002-login-authentication/* PrimeNG mandates"
 4. US3 → Docs/consumption policy aligned  
 5. US4 + Polish → Lint/build/tests/docs acceptance  
 6. Phase 8 → Shared `erp-*` components, three-file structure, `_colors.scss`, `_utilities.scss`, Spec Kit sync  
+7. Phase 9 → `erp-form-field`, login migration, foundation theme toggle + UI lab, Spec Kit sync  
 
 ### Parallel Team Strategy
 
@@ -249,10 +267,10 @@ Task: "Update specs/002-login-authentication/* PrimeNG mandates"
 
 - [P] = different files, no incomplete-task dependencies
 - Do **not** implement ERP toolbar/sidenav/navigation menu
-- Prefer shared `erp-*` compositions in `libs/ui` for repeated controls; avoid wrappers with no ERP value
+- Prefer shared `erp-*` compositions in `libs/ui` for repeated controls (including form fields); avoid wrappers with no ERP value
 - Each `erp-*` component MUST use separate `.ts`/`.html`/`.scss`
 - Brand/semantic colors live in `_colors.scss` (`--erp-color-*`)
 - Curated layout utilities live in `_utilities.scss` (`d-flex`, `gap-*`, …); not Tailwind
-- Theme toggle UI is deferred; `ThemeService` API remains
+- Theme toggle is available on foundation home via `ThemeService`; full settings UI remains out of scope
 - Commit after each task or logical group
-- Suggested MVP scope: Phases 1–4 through T021 (Material-only working Shell); Phase 8 completes shared ERP UI consistency
+- Suggested MVP scope: Phases 1–4 through T021 (Material-only working Shell); Phase 8–9 complete shared ERP UI consistency including form fields

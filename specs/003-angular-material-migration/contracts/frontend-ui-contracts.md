@@ -14,11 +14,12 @@ This feature does **not** change backend OpenAPI. Auth DTOs remain as in `002-lo
 
 **Must provide**:
 - Angular Material theming / animations prerequisites required for Material components used by Shell and `erp-*` compositions
+- `provideNativeDateAdapter()` (or equivalent) so `erp-form-field` datepicker / date-range / timepicker work
 - `ThemeService` availability (existing `providedIn: 'root'` may remain)
 - `ToastNotificationService` bound to `NOTIFICATION_HANDLER`
 - **Must not** provide `providePrimeNG`, PrimeNG `MessageService`, or Aura/`@primeng/themes` presets
 
-**Contract**: Calling `provideErpUi()` once at application bootstrap is sufficient for centralized theme + notification wiring.
+**Contract**: Calling `provideErpUi()` once at application bootstrap is sufficient for centralized theme + notification + date adapter wiring.
 
 ---
 
@@ -37,7 +38,7 @@ class ThemeService {
 - Toggles CSS class `app-dark` on `document.documentElement`
 - Sets `color-scheme` consistently with mode
 
-**UI contract**: No Shell chrome toggle required in this feature; API remains for future Shell layout and tests.
+**UI contract**: Foundation home exposes a minimal content-area theme toggle for verification; full settings/branding UI remains out of scope.
 
 ---
 
@@ -83,9 +84,10 @@ Authenticated Shell layout **must not** expose (this feature):
 - ERP sidenav/sidebar navigation
 - Temporary pre-migration header/aside chrome
 
-**Logout control contract**:
+**Logout + theme controls (foundation home)**:
 - Visible on foundation home (or equivalent authenticated content route)
-- Invokes existing logout use-case/service (same session end behavior as prior header button)
+- Logout invokes existing logout use-case/service
+- Theme toggle calls `ThemeService.toggle()`
 - Implemented with `erp-button`; not MatToolbar/MatSidenav
 
 ---
@@ -100,8 +102,8 @@ apps/shell (and future MFEs)
  @angular/material + @angular/cdk
 ```
 
-- Repeated presentation controls (button, spinner, icon, card, status chip): import `erp-*` from `@erp/ui`.
-- One-off form primitives (e.g. `MatFormField` / `MatInput` on login): MAY import Material directly until a shared form composition exists.
+- Repeated presentation controls (button, spinner, icon, card, status chip, form field): import `erp-*` from `@erp/ui`.
+- Form fields: use `erp-form-field` (do not duplicate `mat-form-field` chrome in features).
 - Theme / tokens / notification facade: import from `@erp/ui` public API only.
 - Forbidden: PrimeNG imports; cross-MFE deep imports; Tailwind/utility UI frameworks.
 - Do not create wrappers that add no ERP-specific API, styling, or composition value.
@@ -123,14 +125,46 @@ Each shared presentation component MUST:
 | `erp-icon` | Material Icons font wrapper |
 | `erp-card` | Surface card container |
 | `erp-status-chip` | Status / health chip |
+| `erp-form-field` | Material form-field composition (all MatFormFieldControl types) |
+| `[erpPrefix]` / `[erpSuffix]` | Form-field adornment markers |
 
 ---
 
-## 8. Color token contract
+## 8. `erp-form-field` API contract
+
+**Control discriminator** (`control` input):
+
+| Value | Material control | Notes |
+|-------|------------------|-------|
+| `input` (default) | `input[matInput]` | `type`, `autocomplete`, `disabledInteractive` |
+| `textarea` | `textarea[matInput]` | `rows` |
+| `select` | `mat-select` | `options` / `optionGroups`; selection outputs |
+| `native-select` | `select[matNativeControl]` | `options` |
+| `datepicker` | `input` + `mat-datepicker` | toggle suffix; `min`/`max`/`dateFilter` |
+| `date-range` | `mat-date-range-input` | `startControlName` + `endControlName` |
+| `timepicker` | `input` + `mat-timepicker` | toggle suffix |
+| `autocomplete` | `input` + `mat-autocomplete` | `options`, `displayWith` |
+| `chip-grid` | `mat-chip-grid` | `string[]` FormControl; chip add/remove |
+
+**Shared inputs**: `label`, `hint`, `error`, `appearance`, `controlName`, `placeholder`, `required`, `readonly`, `disabled` (synced via FormControl API).
+
+**Adornments**: Project with `erpPrefix` / `erpSuffix` (wrapped to Material prefix/suffix slots).
+
+**Implementation constraints**:
+- Controls are rendered **in-template** (not projected as MatFormFieldControl) so Material can discover them.
+- Do not bind `[disabled]` alongside `formControlName`; use `disabled` input → `FormControl.disable()` / `enable()`.
+
+**Density / filled color** (component SCSS on host):
+- `--erp-form-field-*` spacing vars
+- `--mat-form-field-filled-container-color: rgb(var(--erp-color-accent-rgb) / 0.1)`
+
+---
+
+## 9. Color token contract
 
 | File | Owns |
 |------|------|
-| `libs/ui/src/styles/_colors.scss` | Brand + semantic CSS custom properties (`--erp-color-*`) |
+| `libs/ui/src/styles/_colors.scss` | Brand + semantic CSS custom properties (`--erp-color-*`, including `--erp-color-accent-rgb`) |
 | `libs/ui/src/styles/_tokens.scss` | Spacing, typography, shadow (consumes `_colors.scss`) |
 | `libs/ui/src/styles/_utilities.scss` | Curated layout/spacing/text helper classes (`d-flex`, `gap-*`, `m-*`/`p-*`, `text-muted`, …) |
 | `libs/ui/src/styles/_material-theme.scss` | Material theme bridge mapped to ERP tokens |
@@ -144,7 +178,7 @@ Component and feature SCSS MUST use `var(--erp-color-*)` when a token exists.
 
 ---
 
-## 9. UI library policy gate
+## 10. UI library policy gate
 
 `frontend/tools/check-no-competing-ui.js` (invoked via `npm run check:ui-libs`):
 
@@ -158,7 +192,7 @@ Gate failure = non-zero exit (CI/local).
 
 ---
 
-## 10. Public `@erp/ui` exports (minimum)
+## 11. Public `@erp/ui` exports (minimum)
 
 Must export (names may stay stable):
 - `provideErpUi`
@@ -169,14 +203,19 @@ Must export (names may stay stable):
 - `ErpIconComponent` / `erp-icon`
 - `ErpCardComponent` / `erp-card`
 - `ErpStatusChipComponent` / `erp-status-chip`
+- `ErpFormFieldComponent` / `erp-form-field`
+- `ErpPrefixDirective` / `erpPrefix`
+- `ErpSuffixDirective` / `erpSuffix`
+- Types: `ErpFormFieldControl`, `ErpFormFieldOption`, `ErpFormFieldOptionGroup`
 
 Additional Material theme SCSS is consumed via style imports, not necessarily TS exports.
 
 ---
 
-## 11. Explicit non-contracts
+## 12. Explicit non-contracts
 
 - No new REST endpoints
 - No changes to login request/response DTOs
 - No federation remote manifest contract changes
 - No ERP navigation menu schema
+- Foundation form-field UI lab is temporary QA chrome, not a product settings contract

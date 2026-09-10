@@ -15,7 +15,7 @@ This feature implements the Constitution v3.0.0 frontend UI library change: Angu
 **Noted alignment adjustments (not conflicts):**
 
 - Constitution assigns Shell ownership of sidenav, toolbar, global navigation, theme, global loader, and global notifications. This feature migrates theme, loader, and notification foundations to Angular Material and removes the temporary Shell header/aside (content-only Shell). It MUST NOT implement the full ERP toolbar/topbar, sidebar/sidenav, or navigation menu system—those remain a later Shell feature.
-- Constitution allows ERP-specific reusable compositions in `libs/ui` when consistency across features is needed. This feature centralizes shared presentation controls (`erp-button`, `erp-spinner`, `erp-icon`, `erp-card`, `erp-status-chip`) in `@erp/ui` while keeping Material as the underlying foundation. One-off form primitives (e.g. `mat-form-field` on login) MAY remain direct Material usage until a shared form composition is justified.
+- Constitution allows ERP-specific reusable compositions in `libs/ui` when consistency across features is needed. This feature centralizes shared presentation controls (`erp-button`, `erp-spinner`, `erp-icon`, `erp-card`, `erp-status-chip`, `erp-form-field` + `erpPrefix`/`erpSuffix`) in `@erp/ui` while keeping Material as the underlying foundation.
 - Existing Platform Foundation and Login Authentication behaviors MUST remain intact except for UI component and theming substitutions required by this migration.
 
 ## Clarifications
@@ -34,6 +34,12 @@ This feature implements the Constitution v3.0.0 frontend UI library change: Angu
 - Q: How must each shared UI component be structured? → A: Separate `.ts`, `.html`, and `.scss` files per component (no inline templates/styles)
 - Q: Where should semantic/brand colors live so components do not hardcode hex values? → A: Centralize in `libs/ui/src/styles/_colors.scss`; components and app SCSS MUST use `--erp-color-*` variables
 - Q: Should common layout helpers (e.g. flex/grid display) be shared? → A: Yes — curated utility classes in `libs/ui/src/styles/_utilities.scss` (e.g. `d-flex`, `gap-*`, `m-*`/`p-*`); use them in templates where layout matches; this is not Tailwind or another utility CSS framework
+
+### Session 2026-09-10 (form-field composition + foundation UI lab)
+
+- Q: Should login and other Shell forms keep raw `mat-form-field` / `matInput`, or is a shared form composition justified? → A: Yes — provide `erp-form-field` in `@erp/ui` that owns Material form-field chrome (label, hint, error, appearance) and renders each MatFormFieldControl type in-template (`input`, `textarea`, `select`, `native-select`, `datepicker`, `date-range`, `timepicker`, `autocomplete`, `chip-grid`); project adornments via `erpPrefix` / `erpSuffix`
+- Q: How should reactive `disabled` be applied on `erp-form-field`? → A: Via the FormControl API (`enable`/`disable`), not `[disabled]` beside `formControlName`
+- Q: Should foundation home expose a temporary theme toggle and form-control lab? → A: Yes — content-area theme toggle beside logout; UI-lab card exercising every `erp-form-field` control type (temporary verification surface, not a product settings UI)
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -68,8 +74,10 @@ As an ERP user or reviewer, I can still open the Shell, use the login screen, vi
 3. **Given** the foundation home, **When** a reviewer views runtime configuration and platform health and uses demo loader/notification actions, **Then** those capabilities remain available and use the migrated UI/notification/loading foundations.
 4. **Given** the Shell after migration, **When** a reviewer inspects the authenticated shell chrome, **Then** the previous temporary header and aside are absent (content-only shell), and no new ERP toolbar/sidebar/navigation feature has been introduced.
 5. **Given** an authenticated session on foundation home (or equivalent content surface), **When** the user activates the minimal content-area logout control, **Then** the session ends with the same logout behavior as before (without restoring header/aside chrome).
-6. **Given** existing routes, **When** a user navigates among currently implemented Shell screens (including via direct URLs where chrome links were removed), **Then** routing behavior for those routes remains available (no route redesign).
-7. **Given** login and foundation-home primary controls after migration, **When** a reviewer uses keyboard navigation, **Then** focus moves through interactive controls with visible focus and controls have accessible labels; no separate formal WCAG audit is required in this feature.
+6. **Given** an authenticated session on foundation home, **When** the user activates the content-area theme toggle, **Then** light/dark mode switches via `ThemeService` (`.app-dark` / `color-scheme`) without restoring header chrome.
+7. **Given** foundation home, **When** a reviewer opens the form-field UI lab, **Then** every `erp-form-field` control type is exercisable for visual/QA verification (temporary lab surface).
+8. **Given** existing routes, **When** a user navigates among currently implemented Shell screens (including via direct URLs where chrome links were removed), **Then** routing behavior for those routes remains available (no route redesign).
+9. **Given** login and foundation-home primary controls after migration, **When** a reviewer uses keyboard navigation, **Then** focus moves through interactive controls with visible focus and controls have accessible labels; no separate formal WCAG audit is required in this feature.
 
 ---
 
@@ -83,11 +91,12 @@ As a frontend developer adding or maintaining Shell screens, I use the shared UI
 
 **Acceptance Scenarios**:
 
-1. **Given** Shell and shared libraries, **When** a developer inspects UI consumption, **Then** reusable ERP presentation components (`erp-button`, `erp-spinner`, `erp-icon`, `erp-card`, `erp-status-chip`), theme, and tokens live in the shared UI library and applications import them through the `@erp/ui` public API.
-2. **Given** a repeated standard control used across Shell surfaces (button, spinner, icon, card, status chip), **When** features render that control, **Then** they use the shared `erp-*` component rather than duplicating Material markup (login form-field/input MAY remain direct Material until a shared form composition exists).
+1. **Given** Shell and shared libraries, **When** a developer inspects UI consumption, **Then** reusable ERP presentation components (`erp-button`, `erp-spinner`, `erp-icon`, `erp-card`, `erp-status-chip`, `erp-form-field`), theme, and tokens live in the shared UI library and applications import them through the `@erp/ui` public API.
+2. **Given** a repeated standard control used across Shell surfaces (button, spinner, icon, card, status chip, form field), **When** features render that control, **Then** they use the shared `erp-*` component rather than duplicating Material markup.
 3. **Given** workspace quality gates for competing UI libraries, **When** a developer attempts to add a forbidden UI stack, **Then** the gate reflects Angular Material as the allowed foundation and rejects competing libraries (including the removed former library).
 4. **Given** shared UI component sources, **When** a developer opens any `erp-*` component, **Then** it has separate `.ts`, `.html`, and `.scss` files and SCSS references `--erp-color-*` tokens rather than hardcoded hex colors for semantic/brand colors.
 5. **Given** Shell templates for login, foundation home, layout, and global loader, **When** a developer inspects common layout markup, **Then** curated utilities from `_utilities.scss` (e.g. `d-flex`, `d-grid`, `gap-*`) are used where they replace duplicated layout declarations, without introducing Tailwind or another utility framework.
+6. **Given** login and foundation form surfaces, **When** a developer inspects form fields, **Then** they use `erp-form-field` (with `control` / `controlName` / options / date-range start-end names as needed) and optional `erpPrefix`/`erpSuffix` adornments rather than raw `mat-form-field` composition.
 
 ---
 
@@ -116,7 +125,8 @@ As a contributor or CI pipeline, I can lint, type-check, test, and production-bu
 - What if workspace scripts still allow the former library and forbid the approved one? Update those gates so the constitutionally approved library is allowed and competing libraries (including the removed one) are blocked.
 - What if icons previously came from the former icon set? Replace with the approved icon strategy (Material icons/symbols) consistently for standard UI icons.
 - What if accessibility regressions appear after control substitution? Fix focus order, visible focus, and labels on primary login/foundation flows using Material defaults; defer formal WCAG audit work beyond that smoke-check.
-- What if someone expects a full ERP sidebar/toolbar as part of this work? Explicitly out of scope—the existing temporary header and aside MUST be removed in this migration, leaving a content-only Shell; a minimal content-area logout control MUST remain available so authenticated logout still works; theme toggle UI is deferred with the later Shell layout feature while centralized light/dark theme support remains in shared UI; no new application shell layout, navigation menu, toolbar, or sidenav feature is delivered here.
+- What if someone expects a full ERP sidebar/toolbar as part of this work? Explicitly out of scope—the existing temporary header and aside MUST be removed in this migration, leaving a content-only Shell; a minimal content-area logout control MUST remain available so authenticated logout still works; a minimal content-area theme toggle MAY be present on foundation home for verification while centralized light/dark theme support remains in shared UI; no new application shell layout, navigation menu, toolbar, or sidenav feature is delivered here.
+- What if nested `ng-content` of a Material form control into a wrapped `mat-form-field` fails MatFormFieldControl discovery? Own the control in the `erp-form-field` template (typed `control` switch) rather than projecting the control; keep prefix/suffix projection only.
 
 ## Requirements *(mandatory)*
 
@@ -125,7 +135,7 @@ As a contributor or CI pipeline, I can lint, type-check, test, and production-bu
 #### Scope and non-goals
 
 - **FR-001**: This feature MUST migrate the **existing** Nx + Angular frontend; it MUST NOT create a new project or recreate the application from scratch.
-- **FR-002**: This feature MUST NOT implement ERP toolbar/topbar, sidebar/sidenav, global navigation menu, or a redesigned application shell layout. The existing temporary Shell header and aside MUST be removed, leaving a content-only Shell until a later Shell layout feature. A minimal logout control MUST remain available in content (for example foundation home), not as toolbar/sidebar chrome. Theme-toggle UI that lived only in the removed header MAY be deferred to the later Shell layout feature; centralized light/dark theme support in shared UI MUST remain available for future chrome.
+- **FR-002**: This feature MUST NOT implement ERP toolbar/topbar, sidebar/sidenav, global navigation menu, or a redesigned application shell layout. The existing temporary Shell header and aside MUST be removed, leaving a content-only Shell until a later Shell layout feature. A minimal logout control MUST remain available in content (for example foundation home), not as toolbar/sidebar chrome. A minimal content-area theme toggle MAY be provided on foundation home for verification; centralized light/dark theme support in shared UI MUST remain available for future chrome.
 - **FR-003**: This feature MUST NOT change Native Federation architecture, micro-frontend boundaries, application routing design, or backend architecture.
 - **FR-004**: This feature MUST NOT change business validation rules, authentication rules, or API contracts except where a UI control substitution forces an equivalent interaction (behavior MUST remain equivalent).
 - **FR-005**: Before substituting controls, implementers MUST inspect existing frontend usage of the former UI library (dependencies, imports, templates, theme, CSS, icons, shared UI, apps/MFEs) and choose equivalent approved controls intentionally—not via blind text replacement.
@@ -141,8 +151,10 @@ As a contributor or CI pipeline, I can lint, type-check, test, and production-bu
 
 - **FR-010**: Centralized Angular Material theme, shared design tokens (including `_colors.scss`), and reusable ERP-specific UI compositions MUST live in `libs/ui`.
 - **FR-011**: Applications and micro-frontends MUST consume reusable shared UI through the `libs/ui` public API; they MUST NOT duplicate those components or import UI from another micro-frontend’s internals.
-- **FR-012**: Shared ERP presentation components for repeated controls (at minimum: button, spinner, icon, card, status chip) MUST be provided in `libs/ui` as `erp-*` components and consumed by Shell/features. Direct Angular Material usage remains allowed for one-off form primitives (e.g. `mat-form-field` / `matInput`) until a shared form composition is justified. Do not create wrappers that add no ERP-specific API, styling, or composition value.
-- **FR-013**: Dependency direction MUST remain Application/MFE → `libs/ui` → Angular Material (with `libs/core` / `libs/contracts` used for non-UI shared concerns as already established).
+- **FR-012**: Shared ERP presentation components for repeated controls (at minimum: button, spinner, icon, card, status chip, form field) MUST be provided in `libs/ui` as `erp-*` components and consumed by Shell/features. Do not create wrappers that add no ERP-specific API, styling, or composition value.
+- **FR-012a**: `erp-form-field` MUST compose Material form-field chrome (label, hint, error, appearance) and render MatFormFieldControl types in-template via a `control` discriminator: `input` (default), `textarea`, `select`, `native-select`, `datepicker`, `date-range`, `timepicker`, `autocomplete`, `chip-grid`. Adornments MUST project via `erpPrefix` / `erpSuffix`. Select/autocomplete/native-select options SHOULD be data-driven (`options` / `optionGroups`). Reactive `disabled` MUST sync through FormControl enable/disable (not `[disabled]` + `formControlName`). Date/time adapters required by pickers MUST be registered via `provideErpUi()` (e.g. `provideNativeDateAdapter()`).
+- **FR-012b**: Login and other Shell forms that previously used raw `mat-form-field` MUST consume `erp-form-field`. Foundation home MAY include a temporary form-field UI lab exercising each control type for QA.
+- **FR-013**: Dependency direction MUST remain Application/MFE → `libs/ui` → Angular Material (with `libs/core` / `libs/contracts` used for non-UI shared concerns as already established). Features MAY still import Material modules only when required for content projected into ERP compositions (e.g. none for standard `erp-form-field` usage).
 
 #### Theme, SCSS, and icons
 
@@ -155,8 +167,8 @@ As a contributor or CI pipeline, I can lint, type-check, test, and production-bu
 
 #### Preserve existing product surfaces
 
-- **FR-018**: Existing login form controls and feedback MUST be migrated to Angular Material form controls while preserving validation and auth behavior.
-- **FR-019**: Existing foundation home cards/tags/buttons/demo actions MUST be migrated while preserving displayed information and demo capabilities.
+- **FR-018**: Existing login form controls and feedback MUST be migrated to `erp-form-field` / `erp-button` while preserving validation and auth behavior.
+- **FR-019**: Existing foundation home cards/tags/buttons/demo actions MUST be migrated while preserving displayed information and demo capabilities. Foundation home MUST provide content-area logout and theme toggle, and MAY include a form-field UI lab for control verification.
 - **FR-020**: Existing global notification behavior MUST continue through an Angular Material-based or ERP notification path consistent with shared/core/ui architecture (for example snackbar-based or equivalent shared handler).
 - **FR-021**: Existing global loading indicator behavior MUST continue using Angular Material/CDK or the existing Shell loading foundation; this feature MUST NOT introduce a new global loading architecture.
 - **FR-022**: Existing tables, dialogs, overlays, menus, and similar surfaces—if present—MUST be migrated to Angular Material/CDK equivalents while preserving data display, sorting, pagination, filtering, selection, loading, and empty-state behavior. (If none exist yet beyond current Shell/login/foundation surfaces, this requirement applies to whatever is present at migration time.)
@@ -172,8 +184,9 @@ As a contributor or CI pipeline, I can lint, type-check, test, and production-bu
 
 ### Key Entities
 
-- **Design System Theme**: The single shared visual configuration consumed by Shell and future MFEs; Angular Material theming is mapped onto ERP tokens from `_colors.scss` / `_tokens.scss` (palette, semantic success/warn/error/info, typography, density, light/dark, spacing, elevation, component appearance).
-- **Shared UI Foundation**: The reusable UI layer exposing `erp-*` presentation components, theme providers, notification facade, and centralized styles. Components use separate `.ts`/`.html`/`.scss` files.
+- **Design System Theme**: The single shared visual configuration consumed by Shell and future MFEs; Angular Material theming is mapped onto ERP tokens from `_colors.scss` / `_tokens.scss` (palette, semantic success/warn/error/info, typography, density, light/dark, spacing, elevation, component appearance). Form-field filled container color uses 10% accent (`--mat-form-field-filled-container-color` via `--erp-color-accent-rgb`).
+- **Shared UI Foundation**: The reusable UI layer exposing `erp-*` presentation components (including `erp-form-field`), theme providers, notification facade, and centralized styles. Components use separate `.ts`/`.html`/`.scss` files.
+- **Form Field Composition**: `erp-form-field` API — `control`, `controlName` / `startControlName`+`endControlName`, label/hint/error/appearance, options, picker inputs/outputs, `erpPrefix`/`erpSuffix`.
 - **Notification Facade**: Existing cross-cutting notification contract used by Shell/features; implementation must continue to deliver user-visible feedback after migration.
 - **Global Loading Foundation**: Existing Shell-level loading presentation tied to request/activity hooks; behavior preserved, ownership unchanged; spinner rendered via `erp-spinner`.
 
@@ -183,7 +196,8 @@ As a contributor or CI pipeline, I can lint, type-check, test, and production-bu
 
 - **SC-001**: 100% of former primary UI library packages (component library, icons, dedicated theme package) are absent from frontend package manifests after migration.
 - **SC-002**: A full-text search of frontend application and library source finds zero remaining former-library imports, selectors, services, theme providers, CSS imports, or icon class usage (excluding optional migration documentation).
-- **SC-003**: Reviewers can complete login and foundation-home verification flows with equivalent behavior to pre-migration (success path, validation/error feedback, health display, demo loader, demo notification, and logout via the minimal content-area control).
+- **SC-003**: Reviewers can complete login and foundation-home verification flows with equivalent behavior to pre-migration (success path, validation/error feedback, health display, demo loader, demo notification, logout via the minimal content-area control, and theme toggle).
+- **SC-012**: Login uses `erp-form-field`; foundation home form-field UI lab covers all documented `control` types; shared exports include `ErpFormFieldComponent`, `ErpPrefixDirective`, `ErpSuffixDirective`, and related option types.
 - **SC-004**: 100% of previously implemented Shell routes remain reachable (including via direct URL if chrome links were removed) with unchanged route behavior.
 - **SC-005**: The temporary Shell header and aside are removed; no ERP toolbar/topbar or sidebar/sidenav feature is newly delivered as part of this work (content-only Shell verified by review).
 - **SC-006**: Affected frontend projects pass lint, type-check, and production build; test suites pass or documented exceptions are limited to pre-existing unrelated failures.
@@ -196,15 +210,16 @@ As a contributor or CI pipeline, I can lint, type-check, test, and production-bu
 ## Assumptions
 
 - The current frontend already uses PrimeNG in a limited set of Shell surfaces (login, foundation home, minimal layout chrome, toast notifications, global loader, shared UI theme provider); migration scope matches that existing footprint plus dependency/theme/gate cleanup—not a greenfield UI rewrite.
-- Removing temporary header/aside chrome means theme-toggle UI is deferred to the later Shell layout feature; logout remains available via a minimal content-area control (not restored chrome). Centralized light/dark theme support in shared UI remains available for future Shell chrome.
-- Light/dark theme foundation (tokens/providers) will be preserved via the centralized Material theme rather than redesigned as a branding feature, even if the temporary in-chrome toggle is removed. The Material theme maps to existing ERP SCSS/design tokens rather than adopting stock Material brand colors/typography.
+- Removing temporary header/aside chrome means logout and a minimal theme toggle remain available via content-area controls on foundation home (not restored chrome). Centralized light/dark theme support in shared UI remains available for future Shell chrome.
+- Light/dark theme foundation (tokens/providers) will be preserved via the centralized Material theme rather than redesigned as a branding feature. The Material theme maps to existing ERP SCSS/design tokens rather than adopting stock Material brand colors/typography.
 - Angular CDK is already available and remains acceptable under the constitution.
 - No business micro-frontends beyond Shell are required to exist yet; when they appear later, they inherit this UI foundation.
 - Toolbar/sidebar/navigation will be specified and built as a separate subsequent feature on top of this Material foundation.
 - Prior specs/docs that still prescribe PrimeNG are in scope for requirement-language updates (not a rewrite of completed historical delivery narratives beyond what is needed to remove conflicting mandates).
 - “Preserve behavior” means functional equivalence for users and APIs, not pixel-perfect visual identity with the former theme.
-- Password field, messages, tags/status chips, cards, buttons, toast, and progress spinner are in scope for equivalent Material (or shared UI) substitution based on current usage.
+- Password field, messages, tags/status chips, cards, buttons, toast, progress spinner, and form fields are in scope for equivalent Material (or shared UI) substitution based on current usage.
 - Accessibility acceptance for this migration is a Material-defaults smoke-check (keyboard focus + labels on primary login/foundation flows), not a formal WCAG audit.
-- Shared ERP UI components for button/spinner/icon/card/status-chip are in scope as `@erp/ui` compositions for cross-surface consistency; login form-field/input may remain direct Material until a form composition is added.
+- Shared ERP UI components for button/spinner/icon/card/status-chip/form-field are in scope as `@erp/ui` compositions for cross-surface consistency.
 - Color values for brand/semantic UI MUST be maintained in `libs/ui/src/styles/_colors.scss`.
 - Curated layout utilities in `_utilities.scss` are in scope; they are owned ERP SCSS helpers, not a third-party utility framework.
+- Foundation-home form-field UI lab is a temporary QA surface and may be removed or relocated when product settings UI exists.

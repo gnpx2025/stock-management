@@ -9,43 +9,41 @@
     </header>
 
     <form class="login__form d-grid gap-4" [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Username or email</mat-label>
-        <input
-          matInput
-          id="usernameOrEmail"
-          type="text"
-          autocomplete="username"
-          formControlName="usernameOrEmail"
-        />
-        @if (
+      <erp-form-field
+        class="full-width"
+        label="Username or email"
+        controlName="usernameOrEmail"
+        inputId="usernameOrEmail"
+        autocomplete="username"
+        [error]="
           form.controls.usernameOrEmail.invalid && form.controls.usernameOrEmail.touched
-        ) {
-          <mat-error>Username or email is required.</mat-error>
-        }
-      </mat-form-field>
+            ? 'Username or email is required.'
+            : undefined
+        "
+      />
 
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          id="password"
-          [type]="hidePassword() ? 'password' : 'text'"
-          autocomplete="current-password"
-          formControlName="password"
-        />
+      <erp-form-field
+        class="full-width"
+        label="Password"
+        controlName="password"
+        inputId="password"
+        [type]="hidePassword() ? 'password' : 'text'"
+        autocomplete="current-password"
+        [error]="
+          form.controls.password.invalid && form.controls.password.touched
+            ? 'Password is required.'
+            : undefined
+        "
+      >
         <erp-button
-          matSuffix
+          erpSuffix
           variant="icon"
           type="button"
           [icon]="hidePassword() ? 'visibility' : 'visibility_off'"
           [ariaLabel]="hidePassword() ? 'Show password' : 'Hide password'"
           (clicked)="hidePassword.set(!hidePassword())"
         />
-        @if (form.controls.password.invalid && form.controls.password.touched) {
-          <mat-error>Password is required.</mat-error>
-        }
-      </mat-form-field>
+      </erp-form-field>
 
       @if (errorMessage(); as message) {
         <p class="login__error text-error m-0" role="alert">{{ message }}</p>

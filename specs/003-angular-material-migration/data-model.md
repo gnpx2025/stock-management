@@ -17,8 +17,9 @@ Logical configuration owned by `@erp/ui`.
 | Spacing | `--erp-space-*` | Preserved for layout SCSS |
 | Elevation / shadow | `--erp-shadow-soft` | Preserved |
 | Density | Material density setting (default comfortable unless tokens imply otherwise) | Single shared setting |
-| Light / dark | Driven by `ThemeMode` + `app-dark` class + `color-scheme` | Light default; OS prefer on first visit; persisted `erp.themeMode` |
+| Light / dark | Driven by `ThemeMode` + `app-dark` class + `color-scheme` | Light default; OS prefer on first visit; persisted `erp.themeMode`; foundation-home content toggle for verification |
 | Material bridge | `_material-theme.scss` maps Material system tokens / snackbar panels to `--erp-*` | No per-MFE overrides |
+| Form-field filled fill | `--mat-form-field-filled-container-color` = 10% accent via `--erp-color-accent-rgb` on `erp-form-field` host | Tokenized; no hardcoded hex |
 
 **Relationships**: Consumed by Shell styles and all future MFEs via `@erp/ui` style entrypoints. `ThemeService` applies dark class; does not own color values.
 
@@ -32,7 +33,7 @@ Already defined in `@erp/contracts` as `'light' | 'dark'`.
 
 | Transition | Trigger | Notes |
 |------------|---------|-------|
-| → light / → dark | `ThemeService.setMode` / `toggle` | UI toggle deferred; API remains |
+| → light / → dark | `ThemeService.setMode` / `toggle` | Foundation-home content toggle; API remains for future Shell chrome |
 | Initial resolve | storage → OS prefer → light | Unchanged |
 
 ---
@@ -86,6 +87,8 @@ Existing shape used by `NotificationHandler`:
 | Global loader | **Retained** (`erp-spinner`) |
 | Notification path | **Retained** (MatSnackBar) |
 | Logout control | **Moved** to foundation-home content via `erp-button` |
+| Theme toggle | **Content-area** on foundation home via `ThemeService.toggle()` |
+| Form-field UI lab | **Temporary** foundation-home card exercising all `erp-form-field` controls |
 
 No new entities for toolbar/sidenav navigation trees.
 
@@ -95,7 +98,7 @@ No new entities for toolbar/sidenav navigation trees.
 
 | Asset | Location | Rule |
 |-------|----------|------|
-| Theme providers | `provideErpUi()` | Material providers; no PrimeNG |
+| Theme providers | `provideErpUi()` | Material providers + native date adapter; no PrimeNG |
 | Theme service | `ThemeService` | Keep |
 | Notification service | `ToastNotificationService` | MatSnackBar |
 | Color tokens | `libs/ui/src/styles/_colors.scss` | Brand + semantic CSS variables |
@@ -107,8 +110,9 @@ No new entities for toolbar/sidenav navigation trees.
 | `erp-icon` | `libs/ui/.../components/icon/` | Separate `.ts`/`.html`/`.scss` |
 | `erp-card` | `libs/ui/.../components/card/` | Separate `.ts`/`.html`/`.scss` |
 | `erp-status-chip` | `libs/ui/.../components/status-chip/` | Separate `.ts`/`.html`/`.scss` |
+| `erp-form-field` | `libs/ui/.../components/form-field/` | All MatFormFieldControl types; prefix/suffix markers |
 
-**Consumption rule**: Shell/features use `erp-*` for repeated presentation controls; login may keep direct `MatFormField`/`MatInput` until a shared form composition exists.
+**Consumption rule**: Shell/features use `erp-*` for repeated presentation and form fields (login + foundation lab).
 
 ---
 

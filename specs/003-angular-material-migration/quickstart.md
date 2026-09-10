@@ -78,20 +78,23 @@ Start API (if needed) and Shell per existing README/docs, then verify:
 2. Submit empty/invalid credentials → same validation/error feedback behavior.
 3. Submit valid credentials → authenticated landing works.
 4. Keyboard: Tab through fields/buttons; focus visible; inputs labeled.
-5. Confirm login actions use `erp-button` (form fields MAY remain `mat-form-field` / `matInput`).
+5. Confirm login actions use `erp-button` and fields use `erp-form-field` (password suffix via `erpSuffix`).
 
-### 4.3 Foundation home + logout
+### 4.3 Foundation home + logout + theme
 
 1. View runtime configuration and platform health (`erp-status-chip` + refresh still work).
 2. Demo global loader → overlay + `erp-spinner` appears then clears.
 3. Demo notification → snackbar/toast-equivalent appears with success styling.
 4. Use **content-area Logout** (`erp-button`) → session ends; login accessible again.
-5. Confirm cards/actions use `erp-card` / `erp-button` rather than duplicated Material markup.
+5. Use **content-area theme toggle** beside logout → light/dark switches (`.app-dark`).
+6. Confirm cards/actions use `erp-card` / `erp-button` rather than duplicated Material markup.
+7. Open **Form field controls (UI lab)** → exercise each `erp-form-field` `control` type; confirm JSON dump updates.
 
-### 4.4 Theme foundation (no chrome toggle)
+### 4.4 Theme foundation
 
 1. Confirm shared theme styles load (ERP accent/typography from `_colors.scss` / `_tokens.scss`, not stock Material indigo).
-2. Optionally call `ThemeService.setMode('dark')` from a temporary console/test hook or unit test and confirm `.app-dark` applies Material dark styles—**UI toggle not required**.
+2. Confirm filled form-field background uses ~10% accent (`--mat-form-field-filled-container-color`).
+3. Toggle theme from foundation home and confirm Material + ERP tokens update together.
 
 ### 4.5 Routes
 
@@ -118,7 +121,7 @@ Confirm requirement language no longer **mandates** PrimeNG in:
 
 Historical “formerly PrimeNG” narrative is OK; active MUST-use-PrimeNG requirements are not.
 
-Confirm Spec Kit feature docs describe `erp-*` components, three-file structure, `_colors.scss`, and `_utilities.scss` (`spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, `tasks.md`).
+Confirm Spec Kit feature docs describe `erp-*` components (including `erp-form-field`), three-file structure, `_colors.scss`, and `_utilities.scss` (`spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, `tasks.md`).
 
 ---
 
@@ -128,7 +131,7 @@ Confirm Spec Kit feature docs describe `erp-*` components, three-file structure,
 |-------|----------------|
 | Packages removed / Material present | SC-001, FR-006–009 |
 | No PrimeNG source usage | SC-002 |
-| Login + foundation + loader + notification + logout | SC-003 |
+| Login + foundation + loader + notification + logout + theme toggle | SC-003 |
 | Routes reachable | SC-004 |
 | No header/aside; no new toolbar/sidenav | SC-005 |
 | Lint/build/tests | SC-006 |
@@ -137,3 +140,4 @@ Confirm Spec Kit feature docs describe `erp-*` components, three-file structure,
 | Keyboard focus/labels smoke-check | SC-009 |
 | `erp-*` three-file + `--erp-color-*` tokens | SC-010 |
 | Curated `_utilities.scss` used on Shell surfaces | SC-011 |
+| `erp-form-field` on login + UI lab covers all control types | SC-012 |

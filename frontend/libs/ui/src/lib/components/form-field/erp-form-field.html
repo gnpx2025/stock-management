@@ -1,0 +1,254 @@
+<mat-form-field [appearance]="appearance()">
+  @if (label(); as fieldLabel) {
+    <mat-label>{{ fieldLabel }}</mat-label>
+  }
+
+  @if (prefix()) {
+    <div matIconPrefix class="erp-form-field__affix">
+      <ng-content select="[erpPrefix]" />
+    </div>
+  }
+
+  @switch (control()) {
+    @case ('textarea') {
+      <textarea
+        matInput
+        [attr.id]="inputId() || null"
+        [attr.name]="name() || null"
+        [attr.autocomplete]="autocomplete() || null"
+        [placeholder]="placeholder() || ''"
+        [required]="required()"
+        [readonly]="readonly()"
+        [rows]="rows()"
+        [formControlName]="controlName()!"
+      ></textarea>
+    }
+
+    @case ('select') {
+      <mat-select
+        [id]="inputId() || ''"
+        [placeholder]="placeholder() || ''"
+        [required]="required()"
+        [multiple]="multiple()"
+        [panelClass]="panelClass() || ''"
+        [panelWidth]="panelWidth()"
+        [compareWith]="compareWith()"
+        [disableOptionCentering]="disableOptionCentering()"
+        [hideSingleSelectionIndicator]="hideSingleSelectionIndicator()"
+        [aria-label]="ariaLabel()"
+        [aria-labelledby]="ariaLabelledby()"
+        [formControlName]="controlName()!"
+        (selectionChange)="selectionChange.emit($event)"
+        (openedChange)="openedChange.emit($event)"
+        (opened)="opened.emit()"
+        (closed)="closed.emit()"
+        (valueChange)="valueChange.emit($event)"
+      >
+        @if (optionGroups().length) {
+          @for (group of optionGroups(); track group.label) {
+            <mat-optgroup [label]="group.label" [disabled]="group.disabled ?? false">
+              @for (opt of group.options; track opt.value) {
+                <mat-option [value]="opt.value" [disabled]="opt.disabled ?? false">
+                  {{ opt.label }}
+                </mat-option>
+              }
+            </mat-optgroup>
+          }
+        } @else {
+          @for (opt of options(); track opt.value) {
+            <mat-option [value]="opt.value" [disabled]="opt.disabled ?? false">
+              {{ opt.label }}
+            </mat-option>
+          }
+        }
+      </mat-select>
+    }
+
+    @case ('native-select') {
+      <select
+        matNativeControl
+        [attr.id]="inputId() || null"
+        [attr.name]="name() || null"
+        [attr.autocomplete]="autocomplete() || null"
+        [required]="required()"
+        [formControlName]="controlName()!"
+      >
+        @if (placeholder(); as ph) {
+          <option value="" disabled hidden>{{ ph }}</option>
+        }
+        @for (opt of options(); track opt.value) {
+          <option [value]="$any(opt.value)" [disabled]="opt.disabled ?? false">
+            {{ opt.label }}
+          </option>
+        }
+      </select>
+    }
+
+    @case ('datepicker') {
+      <input
+        matInput
+        [attr.id]="inputId() || null"
+        [attr.name]="name() || null"
+        [placeholder]="placeholder() || ''"
+        [required]="required()"
+        [readonly]="readonly()"
+        [matDatepicker]="datepicker"
+        [matDatepickerFilter]="dateFilter() || null"
+        [min]="min()"
+        [max]="max()"
+        [formControlName]="controlName()!"
+        (dateInput)="dateInput.emit($event)"
+        (dateChange)="dateChange.emit($event)"
+      />
+      <mat-datepicker #datepicker [touchUi]="touchUi()" />
+    }
+
+    @case ('date-range') {
+      @if (!dateRangeWired()) {
+        <input matInput class="erp-form-field__bridge" tabindex="-1" aria-hidden="true" />
+      }
+      @if (dateRangeReady()) {
+        <mat-date-range-input
+          [rangePicker]="rangePicker"
+          [required]="required()"
+          [min]="min()"
+          [max]="max()"
+          [dateFilter]="dateFilter() || null"
+          [separator]="separator()"
+        >
+          <input
+            matStartDate
+            [attr.id]="inputId() || null"
+            [placeholder]="startPlaceholder() || placeholder() || ''"
+            [formControlName]="startControlName()!"
+            (dateInput)="dateInput.emit($event)"
+            (dateChange)="dateChange.emit($event)"
+          />
+          <input
+            matEndDate
+            [placeholder]="endPlaceholder() || ''"
+            [formControlName]="endControlName()!"
+            (dateInput)="dateInput.emit($event)"
+            (dateChange)="dateChange.emit($event)"
+          />
+        </mat-date-range-input>
+        <mat-date-range-picker #rangePicker [touchUi]="touchUi()" />
+      }
+    }
+
+    @case ('timepicker') {
+      <input
+        matInput
+        [attr.id]="inputId() || null"
+        [attr.name]="name() || null"
+        [placeholder]="placeholder() || ''"
+        [required]="required()"
+        [readonly]="readonly()"
+        [matTimepicker]="timepicker"
+        [matTimepickerMin]="min()"
+        [matTimepickerMax]="max()"
+        [formControlName]="controlName()!"
+      />
+      <mat-timepicker #timepicker />
+    }
+
+    @case ('autocomplete') {
+      <input
+        matInput
+        [attr.id]="inputId() || null"
+        [attr.name]="name() || null"
+        [attr.autocomplete]="autocomplete() || 'off'"
+        [placeholder]="placeholder() || ''"
+        [required]="required()"
+        [readonly]="readonly()"
+        [matAutocomplete]="auto"
+        [formControlName]="controlName()!"
+      />
+      <mat-autocomplete
+        #auto
+        [displayWith]="displayWith() || null"
+        [autoActiveFirstOption]="autoActiveFirstOption()"
+        [class]="panelClass() || ''"
+        (optionSelected)="optionSelected.emit($event)"
+      >
+        @for (opt of options(); track opt.value) {
+          <mat-option [value]="opt.value" [disabled]="opt.disabled ?? false">
+            {{ opt.label }}
+          </mat-option>
+        }
+      </mat-autocomplete>
+    }
+
+    @case ('chip-grid') {
+      <mat-chip-grid
+        #chipGrid
+        [attr.id]="inputId() || null"
+        [placeholder]="placeholder() || ''"
+        [required]="required()"
+        [formControlName]="controlName()!"
+        (valueChange)="valueChange.emit($event)"
+      >
+        @for (chip of chipValues(); track chip) {
+          <mat-chip-row (removed)="removeChip(chip)">
+            {{ chip }}
+            <button matChipRemove type="button" [attr.aria-label]="'Remove ' + chip">
+              <erp-icon name="cancel" />
+            </button>
+          </mat-chip-row>
+        }
+        <input
+          [matChipInputFor]="chipGrid"
+          [matChipInputSeparatorKeyCodes]="chipSeparatorKeyCodes()"
+          [matChipInputAddOnBlur]="chipAddOnBlur()"
+          [placeholder]="chipInputPlaceholder()"
+          (matChipInputTokenEnd)="addChipFromInput($event)"
+        />
+      </mat-chip-grid>
+    }
+
+    @default {
+      <input
+        matInput
+        [attr.id]="inputId() || null"
+        [attr.name]="name() || null"
+        [type]="type()"
+        [attr.autocomplete]="autocomplete() || null"
+        [placeholder]="placeholder() || ''"
+        [required]="required()"
+        [readonly]="readonly()"
+        [disabledInteractive]="disabledInteractive()"
+        [formControlName]="controlName()!"
+      />
+    }
+  }
+
+  @if (showPickerSuffix() || suffix()) {
+    <div matIconSuffix class="erp-form-field__affix">
+      @switch (control()) {
+        @case ('datepicker') {
+          @if (datepicker(); as picker) {
+            <mat-datepicker-toggle [for]="picker" />
+          }
+        }
+        @case ('date-range') {
+          @if (rangePicker(); as picker) {
+            <mat-datepicker-toggle [for]="picker" />
+          }
+        }
+        @case ('timepicker') {
+          @if (timepicker(); as picker) {
+            <mat-timepicker-toggle [for]="picker" />
+          }
+        }
+      }
+      <ng-content select="[erpSuffix]" />
+    </div>
+  }
+
+  @if (hint(); as fieldHint) {
+    <mat-hint>{{ fieldHint }}</mat-hint>
+  }
+  @if (error(); as fieldError) {
+    <mat-error>{{ fieldError }}</mat-error>
+  }
+</mat-form-field>

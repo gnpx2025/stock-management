@@ -7,19 +7,21 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { AuthSessionService, safeReturnUrl } from '@erp/core';
-import { ErpButtonComponent } from '@erp/ui';
+import {
+  ErpButtonComponent,
+  ErpFormFieldComponent,
+  ErpSuffixDirective,
+} from '@erp/ui';
 
 @Component({
   selector: 'app-login',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     ErpButtonComponent,
+    ErpFormFieldComponent,
+    ErpSuffixDirective,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',

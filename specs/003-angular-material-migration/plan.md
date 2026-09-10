@@ -8,7 +8,7 @@
 
 ## Summary
 
-Migrate the existing Nx Angular Shell and `@erp/ui` foundation from PrimeNG to Angular Material as the sole primary UI library. Centralize Material theming and semantic color tokens in `libs/ui` (`_colors.scss`, `_tokens.scss`, `_material-theme.scss`); provide curated layout utilities in `_utilities.scss`; provide shared `erp-*` presentation components (button, spinner, icon, card, status chip) as separate `.ts`/`.html`/`.scss` files; replace login/foundation/loader/notification UI bindings; remove temporary Shell header/aside (content-only Shell) while keeping a minimal content-area logout; update UI policy gates and conflicting prior docs/specs; preserve auth, routes, federation, and loading/notification behavior. No ERP toolbar/sidebar feature and no backend changes.
+Migrate the existing Nx Angular Shell and `@erp/ui` foundation from PrimeNG to Angular Material as the sole primary UI library. Centralize Material theming and semantic color tokens in `libs/ui` (`_colors.scss`, `_tokens.scss`, `_material-theme.scss`); provide curated layout utilities in `_utilities.scss`; provide shared `erp-*` presentation components (button, spinner, icon, card, status chip, form-field) as separate `.ts`/`.html`/`.scss` files; replace login/foundation/loader/notification UI bindings; remove temporary Shell header/aside (content-only Shell) while keeping minimal content-area logout + theme toggle and a form-field UI lab on foundation home; update UI policy gates and conflicting prior docs/specs; preserve auth, routes, federation, and loading/notification behavior. No ERP toolbar/sidebar feature and no backend changes.
 
 ## Technical Context
 
@@ -26,7 +26,7 @@ Migrate the existing Nx Angular Shell and `@erp/ui` foundation from PrimeNG to A
 
 **Performance Goals**: No new throughput targets; Shell startup and login/foundation flows remain subjectively comparable to pre-migration (functional preservation)
 
-**Constraints**: Constitution v3.0.0 — Angular Material-first; no PrimeNG/competing UI/Tailwind; ERP shared compositions in `@erp/ui` for repeated controls; curated `_utilities.scss` helpers (not a utility framework); no toolbar/sidenav feature; content-only Shell; map Material theme to ERP `_colors.scss` tokens; a11y = Material defaults + keyboard/label smoke-check; update conflicting prior specs/docs
+**Constraints**: Constitution v3.0.0 — Angular Material-first; no PrimeNG/competing UI/Tailwind; ERP shared compositions in `@erp/ui` for repeated controls (including form fields); curated `_utilities.scss` helpers (not a utility framework); no toolbar/sidenav feature; content-only Shell; map Material theme to ERP `_colors.scss` tokens; a11y = Material defaults + keyboard/label smoke-check; update conflicting prior specs/docs
 
 **Scale/Scope**: Shell surfaces (login, foundation home, layout loader, notifications) + `@erp/ui` theme/tokens/components + package/gate/docs cleanup; no new business MFEs
 
@@ -91,8 +91,8 @@ frontend/
 │       │   ├── shell-layout.ts|html|scss # Content-only shell
 │       │   └── global-loader.ts|html|scss # uses erp-spinner
 │       └── features/
-│           ├── auth/login/               # erp-button + MatFormField/MatInput
-│           └── foundation-home/          # erp-card/button/status-chip; logout
+│           ├── auth/login/               # erp-button + erp-form-field
+│           └── foundation-home/          # erp-card/button/status-chip; logout; theme toggle; form-field UI lab
 └── libs/ui/
     ├── src/index.ts                      # Export erp-* + theme + toast + provideErpUi
     ├── src/styles/
@@ -108,15 +108,16 @@ frontend/
         │   ├── spinner/erp-spinner.ts|html|scss
         │   ├── icon/erp-icon.ts|html|scss
         │   ├── card/erp-card.ts|html|scss
-        │   └── status-chip/erp-status-chip.ts|html|scss
+        │   ├── status-chip/erp-status-chip.ts|html|scss
+        │   └── form-field/               # erp-form-field + erp-prefix + erp-suffix
         ├── theme/
-        │   ├── provide-erp-ui.ts
+        │   ├── provide-erp-ui.ts         # Toast + provideNativeDateAdapter
         │   └── theme.service.ts
         └── notifications/
             └── toast-notification.service.ts
 ```
 
-**Structure Decision**: Existing Nx frontend only. Shared Material theme, color tokens, curated utilities, and `erp-*` components live in `@erp/ui`. Shell consumes `@erp/ui` for repeated presentation controls and common layout helpers. Temporary Shell chrome is removed rather than rebuilt with MatToolbar/MatSidenav.
+**Structure Decision**: Existing Nx frontend only. Shared Material theme, color tokens, curated utilities, and `erp-*` components (including form-field composition) live in `@erp/ui`. Shell consumes `@erp/ui` for repeated presentation and form controls. Temporary Shell chrome is removed rather than rebuilt with MatToolbar/MatSidenav.
 
 ## Complexity Tracking
 

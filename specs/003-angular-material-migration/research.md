@@ -45,9 +45,9 @@ All Technical Context unknowns resolved. Decisions below guide implementation an
 - Map Material system tokens and snackbar panel classes to `--erp-*` variables (no hardcoded semantic hex in components).
 - Continue dark mode via `ThemeService` toggling `app-dark` + `color-scheme` on `documentElement`.
 - Shell `styles.scss` imports shared UI styles only—no independent Material theme per app.
-- Theme-toggle **UI** deferred (header removed); `ThemeService` API remains.
+- Theme-toggle **UI** lives on foundation home (content-area) via `ThemeService.toggle()` for verification; full branding/settings UI remains out of scope.
 
-**Rationale**: Clarification (map to ERP tokens); FR-014–016; post-implement color-token clarification.
+**Rationale**: Clarification (map to ERP tokens); FR-014–016; post-implement color-token clarification; 2026-09-10 foundation theme toggle.
 
 **Alternatives considered**:
 - Ship Material indigo/pink defaults — rejected (clarification).
@@ -65,17 +65,20 @@ All Technical Context unknowns resolved. Decisions below guide implementation an
   - `erp-icon` (`ErpIconComponent`)
   - `erp-card` (`ErpCardComponent`)
   - `erp-status-chip` (`ErpStatusChipComponent`)
+  - `erp-form-field` (`ErpFormFieldComponent`) + `erpPrefix` / `erpSuffix`
 - Each `erp-*` component MUST use separate `.ts`, `.html`, and `.scss` files.
-- Shell/features import these from `@erp/ui` for repeated controls.
-- Login may keep direct `MatFormField` / `MatInput` until a shared form-field composition is justified.
+- Shell/features import these from `@erp/ui` for repeated controls and form fields.
+- `erp-form-field` owns MatFormFieldControl types in-template (`control` switch); do not project the control via `ng-content` (Material discovery limitation).
+- `provideErpUi()` registers `provideNativeDateAdapter()` for date/time pickers.
 - Do not create wrappers that add no ERP API, styling, or composition value.
 
-**Rationale**: Post-implement clarifications; FR-010–013 / FR-017a; constitution allows ERP compositions for consistency.
+**Rationale**: Post-implement clarifications; FR-010–013 / FR-012a / FR-017a; 2026-09-10 form-field composition.
 
 **Alternatives considered**:
 - Import Material directly everywhere — rejected (user requested shared ERP components).
 - Inline templates/styles in component TS — rejected (user required three-file structure).
-- Wrap every Material control including form-field immediately — deferred until reuse exists.
+- Project arbitrary `matInput`/`mat-select` into wrapped `mat-form-field` — rejected (MatFormFieldControl not discovered through nested projection; bridge hacks brittle).
+- Thin 1:1 wrappers for every Material primitive — rejected (no ERP value).
 
 ---
 
@@ -84,7 +87,8 @@ All Technical Context unknowns resolved. Decisions below guide implementation an
 **Decision**:
 - Remove temporary `shell__header` and `shell__sidebar` markup/styles.
 - Retain: global notification path, `app-global-loader` (uses `erp-spinner`), and `<router-outlet>` content region.
-- Add **Logout** via `erp-button` on foundation home—**not** MatToolbar/MatSidenav.
+- Add **Logout** and **theme toggle** via `erp-button` on foundation home—**not** MatToolbar/MatSidenav.
+- Foundation home MAY include a temporary **form-field UI lab** card exercising every `erp-form-field` control type.
 - Do not implement ERP navigation menu, toolbar, or sidenav.
 
 **Rationale**: Clarifications Q1/Q4; FR-002; SC-005.
@@ -130,14 +134,15 @@ All Technical Context unknowns resolved. Decisions below guide implementation an
 | Current | Replacement |
 |---------|-------------|
 | `p-button` / `Button` | `erp-button` (Material button variants underneath) |
-| `p-password` / `Password` | `mat-form-field` + `mat-input` + `erp-button` icon toggle |
-| `InputText` | `matInput` |
-| `Message` (login errors) | inline error text using `--erp-color-error` |
+| `p-password` / `Password` | `erp-form-field` + `erp-button` `erpSuffix` icon toggle |
+| `InputText` | `erp-form-field` (`control="input"`) |
+| `Message` (login errors) | `erp-form-field` `[error]` / inline error text using `--erp-color-error` |
 | `p-card` / `Card` | `erp-card` |
 | `p-tag` / `Tag` | `erp-status-chip` |
 | `p-toast` / `Toast` | `MatSnackBar` via `ToastNotificationService` |
 | `p-progressspinner` | `erp-spinner` |
 | `pi pi-*` icons | `erp-icon` + Material Icons font |
+| Form selects / dates / chips (lab) | `erp-form-field` `control` variants |
 
 No PrimeNG tables/dialogs/menus found; FR-022 applies if discovered.
 

@@ -8,7 +8,20 @@
           Angular Material foundation — without ERP toolbar/sidebar chrome.
         </p>
       </div>
-      <erp-button variant="stroked" type="button" (clicked)="logout()">Logout</erp-button>
+      <div class="foundation__actions d-flex align-items-center gap-2">
+        <erp-button
+          variant="stroked"
+          type="button"
+          [icon]="theme.currentMode() === 'dark' ? 'light_mode' : 'dark_mode'"
+          [ariaLabel]="
+            theme.currentMode() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+          "
+          (clicked)="theme.toggle()"
+        >
+          {{ theme.currentMode() === 'dark' ? 'Light' : 'Dark' }}
+        </erp-button>
+        <erp-button variant="stroked" type="button" (clicked)="logout()">Logout</erp-button>
+      </div>
     </div>
   </header>
 
@@ -80,5 +93,114 @@
         Demo toast
       </erp-button>
     </div>
+  </erp-card>
+
+  <erp-card title="Form field controls (UI lab)">
+    <form class="foundation__fields d-grid gap-4" [formGroup]="formFields" novalidate>
+      <erp-form-field
+        class="full-width"
+        label="Text input"
+        controlName="text"
+        placeholder="Short text"
+        hint="control=&quot;input&quot; (default)"
+      />
+
+      <erp-form-field
+        class="full-width"
+        control="textarea"
+        label="Textarea"
+        controlName="notes"
+        placeholder="Longer notes"
+        [rows]="4"
+        hint="control=&quot;textarea&quot;"
+      />
+
+      <erp-form-field
+        class="full-width"
+        control="select"
+        label="Select"
+        controlName="country"
+        placeholder="Choose country"
+        [options]="countryOptions"
+        hint="control=&quot;select&quot;"
+      />
+
+      <erp-form-field
+        class="full-width"
+        control="select"
+        label="Select (multiple + groups)"
+        controlName="regions"
+        placeholder="Choose regions"
+        multiple
+        [optionGroups]="regionGroups"
+        hint="control=&quot;select&quot; multiple + optionGroups"
+      />
+
+      <erp-form-field
+        class="full-width"
+        control="native-select"
+        label="Native select"
+        controlName="warehouse"
+        placeholder="Choose warehouse"
+        [options]="warehouseOptions"
+        hint="control=&quot;native-select&quot;"
+      />
+
+      <erp-form-field
+        class="full-width"
+        control="datepicker"
+        label="Datepicker"
+        controlName="dueDate"
+        placeholder="Pick a date"
+        hint="control=&quot;datepicker&quot;"
+      />
+
+      <erp-form-field
+        class="full-width"
+        control="date-range"
+        label="Date range"
+        startControlName="rangeStart"
+        endControlName="rangeEnd"
+        startPlaceholder="Start"
+        endPlaceholder="End"
+        hint="control=&quot;date-range&quot;"
+      />
+
+      <erp-form-field
+        class="full-width"
+        control="timepicker"
+        label="Timepicker"
+        controlName="slot"
+        placeholder="Pick a time"
+        hint="control=&quot;timepicker&quot;"
+      />
+
+      <erp-form-field
+        class="full-width"
+        control="autocomplete"
+        label="Autocomplete"
+        controlName="product"
+        placeholder="Search SKU"
+        [options]="autocompleteOptions()"
+        hint="control=&quot;autocomplete&quot;"
+      />
+
+      <erp-form-field
+        class="full-width"
+        control="chip-grid"
+        label="Chip grid"
+        controlName="tags"
+        chipInputPlaceholder="Add tag"
+        hint="control=&quot;chip-grid&quot;"
+      />
+
+      <div class="foundation__fields-actions d-flex gap-3 flex-wrap">
+        <erp-button type="button" variant="stroked" (clicked)="resetFormFields()">
+          Reset fields
+        </erp-button>
+      </div>
+
+      <pre class="foundation__fields-dump m-0">{{ formFields.getRawValue() | json }}</pre>
+    </form>
   </erp-card>
 </section>
