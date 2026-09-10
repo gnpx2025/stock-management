@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
   styles: `
     :host {
       display: block;
-      min-height: 100%;
+      height: 100%;
     }
   `,
 })

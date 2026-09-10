@@ -1,0 +1,44 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.shell-sidebar {
+  width: var(--erp-sidebar-width);
+  min-height: 0;
+  background: color-mix(in srgb, var(--erp-color-surface) 96%, transparent);
+  box-shadow: 4px 0 12px rgb(var(--erp-color-ink-rgb) / 8%);
+}
+
+.shell-sidebar__header {
+  min-height: var(--erp-header-height);
+}
+
+.shell-sidebar__mark {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--erp-color-accent) 18%, transparent);
+  color: var(--erp-color-accent);
+  font-family: var(--erp-font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.shell-sidebar__brand {
+  overflow: hidden;
+  color: var(--erp-color-text);
+  font-family: var(--erp-font-display);
+  font-size: 1rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shell-sidebar__nav {
+  min-height: 0;
+  overflow-x: hidden;
+  padding-bottom: var(--erp-space-4);
+}

@@ -1,0 +1,77 @@
+<div class="sidebar-nav d-flex flex-column gap-4">
+  @for (section of sections; track section.id) {
+    <section class="sidebar-nav__section" [attr.aria-labelledby]="'nav-section-' + section.id">
+      <h2
+        class="sidebar-nav__section-label m-0 mb-2 px-2 text-muted fw-700"
+        [id]="'nav-section-' + section.id"
+      >
+        {{ section.label }}
+      </h2>
+      <ul class="sidebar-nav__list m-0 p-0" role="list">
+        @for (item of section.items; track item.id) {
+          <ng-container
+            *ngTemplateOutlet="nodeTpl; context: { $implicit: item, depth: 0 }"
+          />
+        }
+      </ul>
+    </section>
+  }
+</div>
+
+<ng-template #nodeTpl let-node let-depth="depth">
+  <li class="sidebar-nav__item m-0" role="listitem">
+    @if (hasChildren(node)) {
+      <button
+        type="button"
+        class="sidebar-nav__row d-flex align-items-center gap-2 w-100 text-start"
+        [attr.aria-expanded]="isExpanded(node.id)"
+        (click)="toggle(node)"
+      >
+        @if (depth === 0) {
+          <span class="sidebar-nav__lead flex-shrink-0 d-inline-flex align-items-center justify-content-center">
+            @if (node.icon) {
+              <erp-icon class="sidebar-nav__icon text-muted" [name]="node.icon" />
+            }
+          </span>
+        }
+        <span class="sidebar-nav__label flex-grow-1">{{ node.label }}</span>
+        <erp-icon
+          class="sidebar-nav__expand-icon flex-shrink-0 text-muted"
+          [name]="isExpanded(node.id) ? 'expand_more' : 'chevron_right'"
+        />
+      </button>
+      @if (isExpanded(node.id)) {
+        <div
+          class="sidebar-nav__branch d-flex"
+          [class.sidebar-nav__branch--deep]="depth > 0"
+        >
+          <span class="sidebar-nav__branch-rail flex-shrink-0" aria-hidden="true"></span>
+          <ul class="sidebar-nav__branch-list m-0 p-0 flex-grow-1" role="list">
+            @for (child of node.children; track child.id) {
+              <ng-container
+                *ngTemplateOutlet="nodeTpl; context: { $implicit: child, depth: depth + 1 }"
+              />
+            }
+          </ul>
+        </div>
+      }
+    } @else {
+      <button
+        type="button"
+        class="sidebar-nav__row d-flex align-items-center gap-2 w-stretch text-start"
+        [class.sidebar-nav__row--selected]="isSelected(node.id)"
+        [attr.aria-current]="isSelected(node.id) ? 'page' : null"
+        (click)="select(node)"
+      >
+        @if (depth === 0) {
+          <span class="sidebar-nav__lead flex-shrink-0 d-inline-flex align-items-center justify-content-center">
+            @if (node.icon) {
+              <erp-icon class="sidebar-nav__icon text-muted" [name]="node.icon" />
+            }
+          </span>
+        }
+        <span class="sidebar-nav__label flex-grow-1">{{ node.label }}</span>
+      </button>
+    }
+  </li>
+</ng-template>

@@ -358,6 +358,10 @@
   margin-inline-start: var(--erp-space-4) !important;
 }
 
+.ms-auto {
+  margin-inline-start: auto !important;
+}
+
 .me-0 {
   margin-inline-end: 0 !important;
 }
@@ -552,6 +556,10 @@
 
 .w-fit {
   width: fit-content !important;
+}
+
+.w-stretch {
+  width: stretch !important;
 }
 
 .h-100 {

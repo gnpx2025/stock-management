@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { authGuard, guestGuard } from '@erp/core';
-import { ShellLayoutComponent } from './layout/shell-layout';
+import { ShellLayoutComponent } from './layout/shell-layout/shell-layout';
 import { FoundationHomeComponent } from './features/foundation-home/foundation-home';
 import { LoginPageComponent } from './features/auth/login/login';
 
