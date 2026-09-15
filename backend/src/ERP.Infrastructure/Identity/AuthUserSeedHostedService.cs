@@ -12,31 +12,26 @@ namespace ERP.Infrastructure.Identity;
 public sealed class AuthUserSeedHostedService(
     IServiceScopeFactory scopeFactory,
     IOptions<AuthSeedOptions> seedOptions,
-    IHostEnvironment environment,
     ILogger<AuthUserSeedHostedService> logger) : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        if (!environment.IsDevelopment() && !environment.IsEnvironment("Testing"))
-        {
-            return;
-        }
-
-        var options = seedOptions.Value;
-        if (string.IsNullOrWhiteSpace(options.UserName) || string.IsNullOrWhiteSpace(options.Password))
-        {
-            logger.LogDebug("Auth seed skipped: Authentication:Seed username/password not configured.");
-            return;
-        }
-
         try
         {
             using var scope = scopeFactory.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<ErpDbContext>();
-            var hasher = scope.ServiceProvider.GetRequiredService<IAuthPasswordHasher>();
 
             await db.Database.MigrateAsync(cancellationToken);
 
+            var options = seedOptions.Value;
+            if (string.IsNullOrWhiteSpace(options.UserName)
+                || string.IsNullOrWhiteSpace(options.Password))
+            {
+                logger.LogDebug("Auth seed skipped: Authentication:Seed username/password not configured.");
+                return;
+            }
+
+            var hasher = scope.ServiceProvider.GetRequiredService<IAuthPasswordHasher>();
             var normalized = AuthUser.Normalize(options.UserName);
             var existing = await db.AuthUsers
                 .FirstOrDefaultAsync(u => u.NormalizedUserName == normalized, cancellationToken);
@@ -51,11 +46,11 @@ public sealed class AuthUserSeedHostedService(
             user.SetPasswordHash(hasher.HashPassword(user, options.Password), utcNow);
             db.AuthUsers.Add(user);
             await db.SaveChangesAsync(cancellationToken);
-            logger.LogInformation("Seeded development auth user {UserName}", options.UserName);
+            logger.LogInformation("Seeded auth user {UserName}", options.UserName);
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Auth seed skipped due to database error (is PostgreSQL running and migrated?).");
+            logger.LogWarning(ex, "Database migrate/seed skipped due to database error (is PostgreSQL reachable?).");
         }
     }
 

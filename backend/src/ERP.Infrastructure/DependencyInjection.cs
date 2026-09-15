@@ -20,10 +20,13 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection")
-            ?? throw new InvalidOperationException(
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException(
                 "Connection string 'DefaultConnection' is not configured. " +
-                "Set ConnectionStrings__DefaultConnection or configure appsettings.");
+                "Set ConnectionStrings__DefaultConnection (e.g. on Render) to your PostgreSQL host.");
+        }
 
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
         services.PostConfigure<JwtOptions>(jwt =>

@@ -39,6 +39,29 @@ Authentication__Refresh__Secure=true
 
 Shell `apiBaseUrl` for this deploy: `https://stock-management-a48d.onrender.com`.
 
+## Render (API) required env vars
+
+The API image does **not** ship a production database URL. Without these, login tries `127.0.0.1:5432` and fails.
+
+1. Create a **Render PostgreSQL** instance (or use an existing one).
+2. On the **API** web service, set:
+
+```bash
+ASPNETCORE_ENVIRONMENT=Production
+ConnectionStrings__DefaultConnection=Host=<render-pg-host>;Port=5432;Database=<db>;Username=<user>;Password=<password>;SSL Mode=Require;Trust Server Certificate=true
+Cors__AllowedOrigins__0=https://stock-management-ui-dw2a.onrender.com
+Authentication__Refresh__SameSite=None
+Authentication__Refresh__Secure=true
+Authentication__Jwt__SigningKey=<long-random-secret-32+>
+Authentication__Seed__UserName=admin
+Authentication__Seed__Email=admin@example.com
+Authentication__Seed__Password=<strong-secret>
+```
+
+Use the **Internal** Database host when the API and Postgres are in the same Render region. Prefer Npgsql key/value form above; a `postgresql://…` URL from Render often works with recent Npgsql as well.
+
+3. Redeploy the API. Startup applies EF migrations; seed runs when `Authentication__Seed__*` is set.
+
 ## Rate limiting
 
 `POST /api/v1/auth/login` is limited to 10 attempts / minute / IP. No account lockout.
