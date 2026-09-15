@@ -24,7 +24,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ENV ASPNETCORE_URLS=http://+:8080
-ENV ASPNETCORE_ENVIRONMENT=Development
+# Production loads appsettings.Production.json (CORS + cross-site cookies).
+# Local Compose overrides this with ASPNETCORE_ENVIRONMENT=Development.
+ENV ASPNETCORE_ENVIRONMENT=Production
 
 COPY --from=build /app/publish .
 

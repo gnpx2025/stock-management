@@ -74,6 +74,19 @@ builder.Services.AddCors(options =>
         var origins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
             ?? ["http://localhost:4200"];
 
+        // Env vars like Cors__AllowedOrigins__0 replace by index and can leave
+        // stale higher indexes from appsettings; keep distinct non-empty origins only.
+        origins = origins
+            .Where(static o => !string.IsNullOrWhiteSpace(o))
+            .Select(static o => o.Trim().TrimEnd('/'))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+
+        if (origins.Length == 0)
+        {
+            origins = ["http://localhost:4200"];
+        }
+
         policy.WithOrigins(origins)
             .AllowAnyHeader()
             .AllowAnyMethod()
