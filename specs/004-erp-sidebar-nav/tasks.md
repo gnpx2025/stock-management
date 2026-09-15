@@ -148,6 +148,19 @@
 
 ---
 
+## Phase 9: Chrome layout refinements (2026-09-15) ✅
+
+**Purpose**: Align sidebar with full-width topbar chrome and single-component structure
+
+- [x] T036 Remove brand header from `frontend/apps/shell/src/app/layout/shell-sidebar/`; sidebar sits under full-width topbar via `shell-layout`
+- [x] T037 Merge `shell-sidebar-nav` into `shell-sidebar` (single component + moved unit tests)
+- [x] T038 Apply surface background + right border (no shadow); accent section headers/icons; muted inactive labels; accent selected labels
+- [x] T039 Update Speckit artifacts (`spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, `quickstart.md`, `tasks.md`) for 2026-09-15 refinements
+
+**Checkpoint**: Speckit docs and shipped chrome layout aligned
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies

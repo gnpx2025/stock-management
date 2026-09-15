@@ -120,7 +120,7 @@ Each shared presentation component MUST:
 
 | Selector | Purpose |
 |----------|---------|
-| `erp-button` | Primary/secondary/outline/icon button variants |
+| `erp-button` | Primary/secondary/outline/icon button variants; icon variant colors follow ERP text/accent in light + dark |
 | `erp-spinner` | Indeterminate progress spinner |
 | `erp-icon` | Material Icons font wrapper |
 | `erp-card` | Surface card container |
@@ -167,9 +167,14 @@ Each shared presentation component MUST:
 | `libs/ui/src/styles/_colors.scss` | Brand + semantic CSS custom properties (`--erp-color-*`, including `--erp-color-accent-rgb`) |
 | `libs/ui/src/styles/_tokens.scss` | Spacing, typography (`--erp-font-family: 'Scoutie Sans'`), shadow (consumes `_colors.scss`) |
 | `libs/ui/src/styles/_utilities.scss` | Curated layout/spacing/text helper classes (`d-flex`, `gap-*`, `m-*`/`p-*`, `text-muted`, …) |
-| `libs/ui/src/styles/_material-theme.scss` | Material theme bridge mapped to ERP tokens |
+| `libs/ui/src/styles/_material-theme.scss` | Material theme bridge mapped to ERP tokens (incl. `--mat-sys-on-surface-variant` → muted for icon-button dark mode) |
 
 Component and feature SCSS MUST use `var(--erp-color-*)` when a token exists.
+
+**Icon button dark mode**:
+- Material `mat-icon-button` defaults to `--mat-sys-on-surface-variant`.
+- ERP maps that token to `--erp-color-muted` under `:root` / `html.app-dark`.
+- `erp-button` icon variant additionally sets `--mat-icon-button-icon-color` to `--erp-color-text` (primary → `--erp-color-accent`) so icons stay visible in both themes.
 
 **Utility usage contract**:
 - Shell/MFE templates SHOULD apply utilities for common layout instead of redeclaring the same rules in feature SCSS.

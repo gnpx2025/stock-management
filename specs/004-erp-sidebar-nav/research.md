@@ -11,28 +11,29 @@ All Technical Context unknowns resolved. Updated for post-implement refinements.
 **Decision**: Implement under `frontend/apps/shell/src/app/layout/` with one folder per concern:
 
 - `shell-layout/`
-- `shell-sidebar/`
-- `shell-sidebar-nav/`
+- `shell-sidebar/` (owns chrome + nav tree; single component)
+- `shell-topbar/` (brand + chrome; feature 005)
 - `global-loader/`
 - `nav/` (`shell-nav.types.ts`, `shell-nav-menu.data.ts`)
 
-Do not introduce `erp-sidenav` in `@erp/ui` for this feature.
+Do not introduce `erp-sidenav` in `@erp/ui` for this feature. Do not keep a separate `shell-sidebar-nav/` folder (merged 2026-09-15).
 
-**Rationale**: Constitution Shell ownership; single consumer; clearer maintenance than flat layout files.
+**Rationale**: Constitution Shell ownership; single consumer; clearer maintenance than flat layout files; single sidebar component reduces indirection.
 
 **Alternatives considered**:
 - Flat files directly under `layout/` — replaced by folder-per-concern after implement feedback.
+- Separate `shell-sidebar-nav/` — merged into `shell-sidebar/` (2026-09-15).
 - `@erp/ui` shared sidenav — deferred (YAGNI).
 
 ---
 
 ## 2. Layout primitive: CSS flex aside vs `MatSidenav`
 
-**Decision**: Semantic `<aside>` in a full-height flex Shell layout (`100dvh`), width `--erp-sidebar-width`. No `MatSidenav` drawer modes.
+**Decision**: Semantic `<aside>` under the full-width topbar in a flex Shell main row, width `--erp-sidebar-width`. No `MatSidenav` drawer modes. Sidebar fills remaining height beside content; host remains `100dvh` / `overflow: hidden`.
 
-**Rationale**: Permanent desktop sidebar; mobile drawer out of scope.
+**Rationale**: Permanent desktop sidebar; mobile drawer out of scope; brand/topbar owned above.
 
-**Alternatives considered**: `MatSidenav mode="side"` — heavier, unnecessary.
+**Alternatives considered**: `MatSidenav mode="side"` — heavier, unnecessary. Full-viewport-height sidebar with brand header — superseded 2026-09-15.
 
 ---
 
@@ -67,11 +68,13 @@ Do not introduce `erp-sidenav` in `@erp/ui` for this feature.
 
 ---
 
-## 5. Logo/header content
+## 5. Brand / header content
 
-**Decision**: Brand mark + product name only in sidebar header. Theme/logout stay on foundation-home content.
+**Decision** (2026-09-15): Brand mark + product name live in the **topbar**, not the sidebar. Sidebar has no brand header region. Theme/logout remain topbar actions (005).
 
-**Rationale**: Clarification Q4.
+**Rationale**: User chrome refinement; earlier brand-in-sidebar clarification superseded.
+
+**Alternatives considered**: Fixed brand header inside sidebar — shipped initially, then moved to topbar.
 
 ---
 
@@ -95,8 +98,10 @@ Do not introduce `erp-sidenav` in `@erp/ui` for this feature.
 
 **Decision**:
 - Tokens for sidebar width, colors, spacing.
-- Prefer curated `_utilities.scss` classes (`d-flex`, `gap-*`, `p-*`, `text-muted`, `fw-*`, `overflow-auto`, `ms-auto`, etc.) in templates.
-- Component SCSS owns tree rail, lead column, selection text emphasis.
+- Prefer curated `_utilities.scss` classes (`d-flex`, `gap-*`, `p-*`, `text-muted`, `fw-*`, `overflow-auto`, etc.) in templates.
+- Component SCSS owns tree rail, lead column, selection text emphasis, surface + right border (no shadow).
+- Section headers and leading icons: accent/primary.
+- Inactive item labels: muted; selected leaf labels: accent + bold; icons stay accent.
 - Selection: accent color + `font-weight: 600` only — **no** border or heavy background for expand/selection states.
 - First-level leading icons + expand icons via `erp-icon`.
 - Typography inherits project-wide **Scoutie Sans** from `--erp-font-family` (no local competing text fonts).

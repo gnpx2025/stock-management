@@ -2,7 +2,7 @@
 
 **Feature**: `005-erp-topbar-nav` | **Date**: 2026-09-10
 
-Presentation / session-display model only. No database or new API schemas. Theme and auth entities are owned by existing shared services. Updated for post-implement search autocomplete stubs and chrome visual treatment.
+Presentation / session-display model only. No database or new API schemas. Theme and auth entities are owned by existing shared services. Updated 2026-09-15 for full-width topbar + brand.
 
 ---
 
@@ -10,20 +10,29 @@ Presentation / session-display model only. No database or new API schemas. Theme
 
 ### TopbarChrome
 
-Layout region in the Shell **main content column** (not over the sidebar).
+Layout region spanning the **full Shell width** above sidebar + content.
 
 | Region | Contents | Behavior |
 |--------|----------|----------|
-| Left | Search placeholder (`erp-search-input`) | Editable UI-only; autocomplete stubs |
+| Left | Brand, then Search (`erp-search-input`) | Brand fixed; search editable UI-only |
 | Right | Notification, Theme toggle, Profile | See controls below |
-| Surface | Same as sidenav surface mix | Visual parity with left chrome |
+| Surface | Surface mix | Visual chrome |
 | Separation | Bottom box-shadow | No bottom border |
 | Scroll | Non-scrolling chrome | Page body below scrolls |
 
 **Invariants**:
-- Topbar spans content column width only.
+- Topbar spans full shell width.
 - Height aligns with `--erp-header-height` unless a documented exception is needed.
 - Must not introduce a second application scrollbar.
+- Sidebar sits under the topbar (not beside a content-only topbar).
+
+### Brand
+
+| Field | Type | Rules |
+|-------|------|--------|
+| Mark | string | Short mark text (e.g. `ERP`) |
+| Title | string | Product name (e.g. `ERP Platform`) |
+| Color | token | Accent/primary for mark + title |
 
 ### SearchPlaceholder / ErpSearchOption
 
@@ -84,13 +93,14 @@ Reflects existing theme preference; does not own persistence.
 
 ```text
 ShellLayout
-  ├── ShellSidebar (full height; existing)
-  └── Content column
-        ├── TopbarChrome
-        │     ├── erp-search-input → SearchPlaceholder + ErpSearchOption[]
-        │     ├── NotificationPlaceholder
-        │     ├── ThemeToggleControl → ThemeService (existing)
-        │     └── ProfileMenu → SessionUserDisplay + LogoutAction → AuthSessionService
+  ├── TopbarChrome (full width)
+  │     ├── Brand
+  │     ├── erp-search-input → SearchPlaceholder + ErpSearchOption[]
+  │     ├── NotificationPlaceholder
+  │     ├── ThemeToggleControl → ThemeService (existing)
+  │     └── ProfileMenu → SessionUserDisplay + LogoutAction → AuthSessionService
+  └── Main row
+        ├── ShellSidebar (under topbar; existing 004)
         └── Scrollable page body → router-outlet
 ```
 

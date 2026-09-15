@@ -59,8 +59,9 @@ Presentation state for the sidebar (Shell Signal-backed).
 
 | Region | Contents | Behavior |
 |--------|----------|----------|
-| Header | Brand/logo or product name only | Fixed; does not scroll |
-| Navigation | Ordered NavSections + NavNodes | Independently vertically scrollable |
+| Navigation | Ordered NavSections + NavNodes | Independently vertically scrollable under topbar |
+| Brand header | None | Brand owned by topbar (005) |
+| Surface | Surface mix + right border | No box-shadow |
 
 ---
 

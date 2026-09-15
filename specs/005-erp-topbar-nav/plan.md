@@ -4,11 +4,11 @@
 
 **Input**: Feature specification from `/specs/005-erp-topbar-nav/spec.md`
 
-**Note**: Updated for post-implement refinements (sidenav-matched surface + bottom shadow; `erp-search-input` autocomplete; utilities-first search styling).
+**Note**: Updated for 2026-09-15 chrome refinements (full-width topbar; brand on left; icon-button dark mode).
 
 ## Summary
 
-Add Shell authenticated topbar chrome in the **main content column only** (beside the full-height sidebar): sticky header with left `erp-search-input` (custom input + autocomplete, UI-only stubs), right notification no-op, theme toggle wired to existing `ThemeService`, and profile menu with Logout wired to existing `AuthSessionService`. Content column restructured so the topbar stays fixed while only the page body scrolls. Topbar surface/shadow matches sidenav chrome. Remove duplicate theme/logout controls from foundation-home. No search/notification APIs, profile pages, new theme/auth architecture, or backend work.
+Add Shell authenticated topbar chrome spanning the **full viewport width** above sidebar + content: sticky header with brand mark + product name, left `erp-search-input` (custom input + autocomplete, UI-only stubs), right notification no-op, theme toggle wired to existing `ThemeService`, and profile menu with Logout wired to existing `AuthSessionService`. Shell layout is a column (topbar → main row of sidebar + scrollable body). Topbar surface + bottom shadow. Icon buttons remain visible in light/dark via ERP-mapped Material tokens. Remove duplicate theme/logout controls from foundation-home. No search/notification APIs, profile pages, new theme/auth architecture, or backend work.
 
 ## Technical Context
 
@@ -26,9 +26,9 @@ Add Shell authenticated topbar chrome in the **main content column only** (besid
 
 **Performance Goals**: Topbar sticky/toggle/menu/autocomplete interactions feel instant on desktop; no layout thrash or second scrollbar
 
-**Constraints**: Constitution — Shell owns topbar/toolbar + global theme + auth entry; Material-first via `@erp/ui` where wrapped; Signals for Shell presentation; content-column-only sticky topbar; sidenav-matched surface + bottom shadow (no bottom border); search via `erp-search-input` (not `erp-form-field`); utilities-first styling; no competing UI libraries / Tailwind; no new theme or auth systems
+**Constraints**: Constitution — Shell owns topbar/toolbar + global theme + auth entry; Material-first via `@erp/ui` where wrapped; Signals for Shell presentation; full-width sticky topbar above sidebar; surface + bottom shadow (no bottom border); search via `erp-search-input` (not `erp-form-field`); utilities-first styling; no competing UI libraries / Tailwind; no new theme or auth systems
 
-**Scale/Scope**: One Shell topbar + shared `erp-search-input` + shell-layout scroll restructure; migrate theme/logout off foundation-home
+**Scale/Scope**: One Shell topbar + shared `erp-search-input` + shell-layout scroll restructure; brand owned by topbar; migrate theme/logout off foundation-home
 
 ## Constitution Check
 
@@ -53,12 +53,14 @@ Add Shell authenticated topbar chrome in the **main content column only** (besid
 | Gate | Status | Design evidence |
 |------|--------|-----------------|
 | Shell owns topbar | Pass | research §1; `layout/shell-topbar/` |
-| Content-column sticky without second scrollbar | Pass | research §2; contracts layout |
+| Content-column sticky without second scrollbar | Superseded | Full-width topbar; sidebar under topbar; still one content scrollbar |
+| Full-width sticky without second scrollbar | Pass | research §2; contracts layout |
 | Reuse ThemeService / AuthSessionService | Pass | research §3–§4 |
 | Material-first; shared search in `libs/ui` | Pass | research §5 / §11 |
-| Sidenav-matched surface + bottom shadow | Pass | research §7 |
+| Surface + bottom shadow | Pass | research §7 |
 | Placeholders non-API | Pass | research §8; FR-006/007 |
 | Remove duplicate foundation-home chrome | Pass | research §9 |
+| Brand on topbar; icon dark-mode tokens | Pass | research §2 / §13 |
 
 **Post-design gate result**: PASS
 
@@ -86,7 +88,6 @@ frontend/
 │   │   ├── shell-layout/shell-layout.ts|html|scss
 │   │   ├── shell-topbar/shell-topbar.ts|html|scss
 │   │   ├── shell-sidebar/
-│   │   ├── shell-sidebar-nav/
 │   │   ├── global-loader/
 │   │   └── nav/
 │   └── features/
@@ -94,12 +95,14 @@ frontend/
 └── libs/
     ├── ui/
     │   ├── lib/components/search-input/erp-search-input.ts|html|scss
-    │   ├── styles/_utilities.scss   # border / rounded-pill / min-w-0 / etc.
-    │   └── … ThemeService, erp-button, erp-icon, tokens
+    │   ├── lib/components/button/erp-button.ts|html|scss
+    │   ├── styles/_utilities.scss
+    │   ├── styles/_material-theme.scss
+    │   └── … ThemeService, erp-icon, tokens
     └── core/        # AuthSessionService (logout + user)
 ```
 
-**Structure Decision**: `layout/shell-topbar/` for Shell chrome; reusable search lives in `@erp/ui` as `erp-search-input`. Prefer curated utilities for common layout/border/spacing; keep surface/shadow and search focus/disabled resets in component SCSS.
+**Structure Decision**: `layout/shell-topbar/` for Shell chrome; reusable search lives in `@erp/ui` as `erp-search-input`. Prefer curated utilities for common layout/border/spacing; keep surface/shadow/brand and search focus/disabled resets in component SCSS. Shell layout is topbar-first column, then sidebar + body row.
 
 ## Complexity Tracking
 

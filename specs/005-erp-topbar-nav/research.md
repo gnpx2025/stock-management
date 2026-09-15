@@ -20,18 +20,20 @@ All Technical Context unknowns resolved against the current Shell, `@erp/ui`, an
 
 ## 2. Sticky layout and scroll container
 
-**Decision**: Keep full-height sidebar beside a content column. Restructure the content column from a single scrolling `<main>` into a vertical flex column:
+**Decision** (2026-09-15; supersedes content-column-only clarification):
 
-1. Sticky/fixed-height topbar (non-scrolling)
-2. Scrollable content body that owns `overflow-auto` and page padding (`p-6` moves from outer main onto the body)
+Shell layout is a vertical flex column:
 
-Host remains `100dvh` / `overflow: hidden` so the window does not scroll. Only one content scrollbar (the body under the topbar). Sidebar nav continues to scroll independently.
+1. Full-width sticky/fixed-height topbar (non-scrolling) — includes brand + search + actions
+2. Main row: sidebar + scrollable content body (`overflow-auto`, page padding)
 
-**Rationale**: Spec requires content-column-only sticky topbar without a second scrollbar (clarification Q1; FR-001–003).
+Host remains `100dvh` / `overflow: hidden` so the window does not scroll. Only one content scrollbar (the body under the topbar). Sidebar nav continues to scroll independently under the topbar.
+
+**Rationale**: User chrome refinement for brand in topbar and sidebar under header (FR-001–003 / FR-005a).
 
 **Alternatives considered**:
-- `position: sticky` inside current scrolling `<main>` — fragile with padding/overflow; rejected.
-- Full-viewport-width toolbar above sidebar — rejected by clarification.
+- Content-column-only topbar beside full-height sidebar — shipped initially; superseded 2026-09-15.
+- `position: sticky` inside scrolling `<main>` — fragile; rejected.
 - `MatToolbar` as scroll host — unnecessary; semantic header + flex is enough.
 
 ---
@@ -103,13 +105,14 @@ No `@erp/ui` menu/toolbar wrappers — use Material `MatMenu` directly in Shell.
 
 **Decision** (post-implement refinement; supersedes earlier border-only / no-fill clarification):
 
-- Topbar background matches sidenav: `color-mix(in srgb, var(--erp-color-surface) 96%, transparent)`
+- Topbar background: `color-mix(in srgb, var(--erp-color-surface) 96%, transparent)`
 - No bottom border
-- Bottom box-shadow matching sidenav shadow style, directed downward: `0 4px 12px rgb(var(--erp-color-ink-rgb) / …)`
+- Bottom box-shadow directed downward: `0 4px 12px rgb(var(--erp-color-ink-rgb) / …)`
 - Height aligned with `--erp-header-height` (3.5rem)
-- Prefer curated `@erp/ui` utilities for flex/gap/spacing; topbar-specific surface/shadow in `shell-topbar.scss`
+- Brand title uses accent/primary color
+- Prefer curated `@erp/ui` utilities for flex/gap/spacing; topbar-specific surface/shadow/brand in `shell-topbar.scss`
 
-**Rationale**: User post-implement request for visual parity with sidenav chrome.
+**Rationale**: User post-implement request for chrome separation + brand emphasis.
 
 **Alternatives considered**: Border-only / no fill (earlier clarification) — superseded. Full Material elevation system — unnecessary.
 
@@ -164,3 +167,13 @@ No `@erp/ui` menu/toolbar wrappers — use Material `MatMenu` directly in Shell.
 ## 12. Out of scope (confirmed)
 
 No search API, notification API/panel, profile pages, additional profile actions, new theme/auth architecture, backend/DB/API endpoints, mobile topbar redesign, or unrelated refactors.
+
+---
+
+## 13. Icon button colors in dark mode
+
+**Decision**: Map `--mat-sys-on-surface-variant` to `--erp-color-muted` in `_material-theme.scss`. In `erp-button` icon variant, set `--mat-icon-button-icon-color` (and related state-layer tokens) to `--erp-color-text`, with primary color using `--erp-color-accent`.
+
+**Rationale**: Material icon buttons default to `on-surface-variant`; without ERP mapping they stay light-theme colored under `html.app-dark`.
+
+**Alternatives considered**: Per-page CSS hacks — rejected. Requiring `color="primary"` on every icon button — incomplete for default/unthemed icons.

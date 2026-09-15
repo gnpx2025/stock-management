@@ -43,10 +43,10 @@ All Technical Context unknowns resolved. Decisions below guide implementation an
 - Define brand + semantic colors in `libs/ui/src/styles/_colors.scss` (`--erp-color-*` including success/warn/error/info/overlay/mist).
 - Keep spacing/typography/shadow in `_tokens.scss` (which `@use`s `_colors.scss`).
 - Project UI text font is **Scoutie Sans** via `--erp-font-family` (sole family); Material theme plain/brand families MUST use Scoutie Sans; Shell loads Scoutie Sans + Material Icons only for UI fonts.
-- Map Material system tokens and snackbar panel classes to `--erp-*` variables (no hardcoded semantic hex in components).
+- Map Material system tokens and snackbar panel classes to `--erp-*` variables (no hardcoded semantic hex in components). Include `--mat-sys-on-surface-variant` → `--erp-color-muted` so Material icon buttons stay visible in dark mode; `erp-button` icon variant also sets `--mat-icon-button-icon-color` to ERP text/accent.
 - Continue dark mode via `ThemeService` toggling `app-dark` + `color-scheme` on `documentElement`.
 - Shell `styles.scss` imports shared UI styles only—no independent Material theme per app.
-- Theme-toggle **UI** lives on foundation home (content-area) via `ThemeService.toggle()` for verification; full branding/settings UI remains out of scope.
+- Theme-toggle **UI** lives on the Shell topbar (005); foundation-home content-area toggle was temporary and removed.
 
 **Rationale**: Clarification (map to ERP tokens); FR-014–016; post-implement color-token clarification; 2026-09-10 foundation theme toggle.
 

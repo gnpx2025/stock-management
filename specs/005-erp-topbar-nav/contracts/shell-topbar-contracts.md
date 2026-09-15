@@ -4,7 +4,7 @@
 **Audience**: Shell implementers and reviewers  
 **Scope**: UI structure and behavior contracts (no HTTP APIs)
 
-Updated for post-implement refinements (sidenav-matched surface + bottom shadow; `erp-search-input`).
+Updated 2026-09-15: full-width topbar above sidebar; brand on left; icon-button dark-mode tokens.
 
 ---
 
@@ -13,12 +13,13 @@ Updated for post-implement refinements (sidenav-matched surface + bottom shadow;
 | Requirement | Contract |
 |-------------|----------|
 | Host | Authenticated `ShellLayoutComponent` only (`/login` has no topbar) |
-| Horizontal span | Topbar in **main content column only**; MUST NOT cover/span above the sidebar |
-| Vertical position | Top of content column; remains visible while page body scrolls |
+| Horizontal span | Topbar spans **full viewport width** above sidebar + content |
+| Vertical position | Top of shell; remains visible while page body scrolls |
+| Shell structure | Column: topbar → main row (`sidebar` + scrollable body) |
 | Scroll model | Shell host non-scrolling; sidebar nav may scroll independently; **one** content-body scrollbar under the topbar |
-| Surface | Same surface mix as sidenav (`--erp-color-surface` mix) |
-| Separation | Bottom box-shadow matching sidenav shadow style (downward); **no** bottom border |
-| Height | Prefer `--erp-header-height` alignment with sidebar header |
+| Surface | Surface mix (`--erp-color-surface`) |
+| Separation | Bottom box-shadow; **no** bottom border |
+| Height | Prefer `--erp-header-height` |
 | Code layout | `apps/shell/src/app/layout/shell-topbar/` with separated ts/html/scss |
 
 ---
@@ -27,8 +28,16 @@ Updated for post-implement refinements (sidenav-matched surface + bottom shadow;
 
 | Region | Required elements | Notes |
 |--------|-------------------|-------|
-| Left | Search input | `erp-search-input`; editable; UI-only |
+| Left | Brand, then Search | Brand mark + “ERP Platform”; then `erp-search-input` |
 | Right (L→R) | Notification, Theme toggle, Profile | Default order for this feature |
+
+### Brand
+
+| Requirement | Contract |
+|-------------|----------|
+| Content | Brand mark + product name text |
+| Placement | Leftmost topbar region (before search) |
+| Forbidden | Theme/logout/search/notifications inside brand |
 
 ### Search
 
@@ -50,6 +59,7 @@ Updated for post-implement refinements (sidenav-matched surface + bottom shadow;
 | On activate | No-op (no panel, toast, menu, list, API) |
 | Accessibility | Accessible name (not icon-only silence) |
 | Component preference | `@erp/ui` button + icon |
+| Dark mode | Icon color visible via ERP-mapped tokens |
 
 ### Theme toggle
 
@@ -60,6 +70,7 @@ Updated for post-implement refinements (sidenav-matched surface + bottom shadow;
 | Affordance | Shows **next** theme (action); accessible name describes action |
 | Forbidden | Second theme store / new theme architecture |
 | Component preference | `@erp/ui` button + icon |
+| Dark mode | Icon color visible via ERP-mapped tokens |
 
 ### Profile + Logout
 
@@ -91,9 +102,10 @@ Updated for post-implement refinements (sidenav-matched surface + bottom shadow;
 | Requirement | Contract |
 |-------------|----------|
 | Utilities | Prefer `@erp/ui` `_utilities.scss` for flex/gap/spacing/border/rounded/min-width |
-| Component SCSS | Only genuinely specific rules (topbar surface/shadow; search focus/disabled/input resets) |
+| Component SCSS | Only genuinely specific rules (topbar surface/shadow/brand; search focus/disabled/input resets) |
 | Frameworks | No Tailwind or competing styling systems |
-| Tokens | Reuse `--erp-header-height`, `--erp-color-surface`, `--erp-color-ink-rgb`, spacing tokens |
+| Tokens | Reuse `--erp-header-height`, `--erp-color-surface`, `--erp-color-accent`, `--erp-color-ink-rgb`, spacing tokens |
+| Icon buttons | `erp-button` icon variant colors follow ERP text/accent; Material `--mat-sys-on-surface-variant` mapped to muted |
 
 ---
 
@@ -101,7 +113,7 @@ Updated for post-implement refinements (sidenav-matched surface + bottom shadow;
 
 | Requirement | Contract |
 |-------------|----------|
-| Sidebar | Existing full-height sidebar + brand header unchanged in purpose |
+| Sidebar | Sits under topbar; no brand header inside sidebar |
 | Foundation-home | Duplicate theme toggle + Logout chrome removed |
 | Login | Unchanged; no topbar |
 | Scope | No unrelated refactors |
@@ -112,13 +124,13 @@ Updated for post-implement refinements (sidenav-matched surface + bottom shadow;
 
 | Spec outcome | Contract proof |
 |--------------|----------------|
-| SC-001 sticky content-column | Layout contract scroll model |
+| SC-001 sticky full-width | Layout contract scroll model |
 | SC-002 surface + bottom shadow | Surface / separation rules |
-| SC-003 elements present | Content contract |
-| SC-004 theme | Theme toggle + ThemeService |
+| SC-003 elements present | Content contract (incl. brand) |
+| SC-004 theme + dark icons | Theme toggle + icon-button tokens |
 | SC-005/006/007 profile logout | Profile + Logout + a11y |
 | SC-008 placeholders | Search/Notification rules |
-| SC-009 sidebar intact | Coexistence |
+| SC-009 sidebar under topbar | Coexistence |
 | SC-010 accessible names | Per-control accessibility rows |
 
 See also [data-model.md](../data-model.md) and [quickstart.md](../quickstart.md).

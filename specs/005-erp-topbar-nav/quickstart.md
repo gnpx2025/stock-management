@@ -4,7 +4,7 @@
 
 Validation guide for reviewers after implementation. See [contracts/shell-topbar-contracts.md](./contracts/shell-topbar-contracts.md) and [data-model.md](./data-model.md).
 
-Updated for post-implement refinements (surface/shadow; `erp-search-input` autocomplete).
+Updated 2026-09-15: full-width topbar; brand on left; dark-mode icon buttons.
 
 ---
 
@@ -42,26 +42,27 @@ npx nx build shell --skip-nx-cache
 1. Open `/login` while logged out.
 2. **Expect**: Full-page login only — no ERP topbar.
 
-### 2. Content-column sticky topbar + sidebar coexistence
+### 2. Full-width sticky topbar + sidebar under it
 
 1. Sign in.
-2. **Expect**: Full-height sidebar on the left with its own brand header.
-3. **Expect**: Topbar only in the main content column (does not cover the sidebar).
+2. **Expect**: Topbar spans full width with brand on the left.
+3. **Expect**: Sidebar sits under the topbar (not beside a content-only topbar).
 4. Scroll the main page content.
 5. **Expect**: Topbar stays visible; only the content body scrolls; no extra window/second content scrollbar.
 6. Scroll the sidebar menu if overflowed.
 7. **Expect**: Sidebar menu still scrolls independently; topbar behavior unchanged.
 
-### 3. Visual separation (sidenav-matched chrome)
+### 3. Visual separation
 
-1. Inspect the topbar beside the sidenav.
-2. **Expect**: Topbar surface background matches the sidenav surface treatment.
+1. Inspect the topbar.
+2. **Expect**: Surface background present.
 3. **Expect**: No bottom border on the topbar.
-4. **Expect**: Bottom box-shadow separates topbar from page content (same shadow family as sidenav, directed downward).
+4. **Expect**: Bottom box-shadow separates topbar from content below.
+5. **Expect**: Brand title uses accent/primary color.
 
 ### 4. Search placeholder (`erp-search-input`, UI-only)
 
-1. Find search on the left of the topbar (custom pill/input — not Material form-field chrome).
+1. Find search after the brand on the left of the topbar (custom pill/input — not Material form-field chrome).
 2. Focus and type text.
 3. **Expect**: Text is accepted; autocomplete MAY show locally filtered static stub suggestions.
 4. **Expect**: No search API / network calls and no navigation from selecting stubs in this feature.
@@ -80,7 +81,8 @@ npx nx build shell --skip-nx-cache
 3. **Expect**: Application theme switches via existing theme behavior (`app-dark` / stored preference).
 4. **Expect**: Control affordance/accessible name describes switching **to** the other theme.
 5. Toggle again and confirm round-trip Light ↔ Dark.
-6. **Expect**: No duplicate theme controls remaining on foundation-home.
+6. **Expect**: Notification and theme icon buttons remain visible in both themes.
+7. **Expect**: No duplicate theme controls remaining on foundation-home.
 
 ### 7. Profile menu + Logout
 
@@ -100,7 +102,7 @@ npx nx build shell --skip-nx-cache
 ### 9. Scope guardrails
 
 1. Confirm no new search/notification APIs or backend endpoints were added for this feature.
-2. Confirm sidebar navigation behavior from 004 still passes smoke checks (expand/scroll/selection).
+2. Confirm sidebar navigation behavior from 004 still passes smoke checks (expand/scroll/selection under topbar).
 
 ---
 

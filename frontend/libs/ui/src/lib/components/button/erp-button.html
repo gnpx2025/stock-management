@@ -5,6 +5,7 @@
 @if (variant() === 'icon') {
   <button
     mat-icon-button
+    [color]="color()"
     [attr.type]="type()"
     [disabled]="disabled() || loading()"
     [attr.aria-label]="ariaLabel()"

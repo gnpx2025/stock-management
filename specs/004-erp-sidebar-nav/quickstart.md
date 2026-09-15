@@ -4,6 +4,8 @@
 
 Validation guide for reviewers after implementation. See [contracts/shell-sidebar-contracts.md](./contracts/shell-sidebar-contracts.md) and [data-model.md](./data-model.md).
 
+Updated 2026-09-15: sidebar under topbar; no brand header; single component; surface + right border.
+
 ---
 
 ## Prerequisites
@@ -40,18 +42,20 @@ npx nx build shell --skip-nx-cache
 1. Open `/login` while logged out.
 2. **Expect**: Full-page login only — no ERP sidebar.
 
-### 2. Authenticated full-height sidebar + fixed brand header
+### 2. Authenticated sidebar under topbar + scrollable menu
 
 1. Sign in.
-2. **Expect**: Sidebar on the left spanning the full viewport height.
-3. **Expect**: Top of sidebar shows brand/logo or product name only (no theme/logout in header).
+2. **Expect**: Full-width topbar with brand; sidebar under the topbar on the left.
+3. **Expect**: Sidebar has **no** brand/logo header region.
 4. Expand several nested groups until the menu overflows; scroll the menu area.
-5. **Expect**: Header stays fixed; only the menu area scrolls.
+5. **Expect**: Topbar stays fixed; only the sidebar menu area scrolls.
+6. **Expect**: Sidebar surface background present; right border only; no box-shadow.
 
 ### 3. Section headers are not expandable
 
 1. Click labels such as `SALES`, `FINANCE`, `MASTER DATA`.
 2. **Expect**: No expand/collapse.
+3. **Expect**: Section headers use accent/primary color.
 
 ### 4. Initial collapsed view (clear stored selection first)
 
@@ -59,18 +63,15 @@ npx nx build shell --skip-nx-cache
 2. Soft-refresh the authenticated app.
 3. **Expect**: First-level expandable groups collapsed; ADMINISTRATION leaves visible; REPORTS hubs + Supplier Reports expandable.
 
-### 5. Expand / tree rail / icons
+### 5. Expand / collapse + tree rail
 
 1. Expand SALES → Transactions → Sales Return.
-2. **Expect**: Right-side Material expand icons (`expand_more` when open).
-3. **Expect**: First-level items show leading Material icons.
-4. **Expect**: Vertical tree rail under Transactions; child labels align with the Transactions label column; Credit Note nested under Sales Return with its own rail/indent.
-5. Collapse Transactions → nested items hide.
+2. **Expect**: Children visible with indentation and vertical tree rail; expand icon on the right switches `chevron_right` ↔ `expand_more`.
 
 ### 6. Selection (leaf only)
 
 1. Click Credit Note.
-2. **Expect**: Only Credit Note uses accent color + bold weight; parents are not selected from expand alone; no heavy row borders/backgrounds for expand.
+2. **Expect**: Only Credit Note label uses accent + bold; inactive labels stay muted; leading icons remain accent; parents are not selected from expand alone.
 3. Expand/collapse Transactions without clicking another leaf.
 4. **Expect**: Credit Note remains the selected leaf (until another leaf is chosen).
 
@@ -97,12 +98,17 @@ npx nx build shell --skip-nx-cache
 
 ### 10. Content area still works
 
-1. Foundation home still renders beside the sidebar.
-2. Theme toggle / logout on content still function — not in sidebar header.
+1. Foundation home still renders beside the sidebar under the topbar.
+2. Theme toggle / logout live in the topbar — not in the sidebar.
 
 ### 11. Typography
 
-1. Sidebar labels and brand header use **Scoutie Sans** (project `--erp-font-family`), not a competing UI text font.
+1. Sidebar labels use **Scoutie Sans** (project `--erp-font-family`), not a competing UI text font.
+
+### 12. Single sidebar component
+
+1. Inspect `layout/shell-sidebar/`.
+2. **Expect**: Nav tree lives in `shell-sidebar` (no `shell-sidebar-nav/` folder).
 
 ---
 

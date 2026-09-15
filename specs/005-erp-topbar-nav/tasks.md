@@ -10,6 +10,8 @@
 
 **Post-implement (2026-09-10)**: Speckit docs updated for sidenav-matched topbar surface + bottom shadow (no border); dedicated `@erp/ui` `erp-search-input` (custom input + autocomplete, not `erp-form-field`); utilities-first search styling with no search-field background. See `spec.md` Clarifications session “post-implement refinements”.
 
+**Post-implement (2026-09-15)**: Full-width topbar above sidebar; brand moved into topbar; shell layout column (topbar → sidebar + body); icon-button dark-mode token mapping. See `spec.md` Clarifications session “chrome layout refinements”.
+
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
@@ -128,6 +130,19 @@
 
 ---
 
+## Phase 8: Chrome layout refinements (2026-09-15) ✅
+
+**Purpose**: Full-width topbar, brand ownership, dark-mode icon buttons, Speckit sync
+
+- [x] T025 Restructure `frontend/apps/shell/src/app/layout/shell-layout/` to full-width topbar above sidebar + content body
+- [x] T026 Move brand mark + product name into `frontend/apps/shell/src/app/layout/shell-topbar/`
+- [x] T027 Map `--mat-sys-on-surface-variant` and `erp-button` icon-variant colors for light/dark in `frontend/libs/ui/src/styles/_material-theme.scss` and `erp-button.scss`
+- [x] T028 Update Speckit artifacts (`spec.md`, `plan.md`, `research.md`, `data-model.md`, `contracts/`, `quickstart.md`, `tasks.md`) for 2026-09-15 refinements
+
+**Checkpoint**: Speckit docs and shipped full-width chrome aligned
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -218,6 +233,7 @@ Task: "Add notification icon button no-op on the right in shell-topbar"
 - [P] tasks = different files or clearly separable regions; same-file template edits need coordination
 - [Story] label maps task to specific user story for traceability
 - Reuse only: `ThemeService`, `AuthSessionService`, `@erp/ui` button/icon/`erp-search-input`, Material `MatMenu` / autocomplete
-- Do not: search/notification APIs, new theme/auth systems, bottom border separation, full-width topbar over sidebar, `erp-form-field` for topbar search
+- Do not: search/notification APIs, new theme/auth systems, bottom border separation, `erp-form-field` for topbar search
+- Full-width topbar above sidebar is in scope (2026-09-15 refinement)
 - Commit after each task or logical group
 - Stop at any checkpoint to validate the story independently

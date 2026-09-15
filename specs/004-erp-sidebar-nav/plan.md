@@ -4,11 +4,11 @@
 
 **Input**: Feature specification from `/specs/004-erp-sidebar-nav/spec.md`
 
-**Note**: Updated to reflect post-implement refinements (icons, tree rails, selection persistence, folder layout, utilities).
+**Note**: Updated for 2026-09-15 chrome refinements (brand in topbar; single sidebar component; surface + right border).
 
 ## Summary
 
-Restore Shell authenticated chrome with a full-viewport-height sidebar: fixed brand-only logo/header, independently scrollable navigation menu, non-expandable section headers, and a static expandable menu hierarchy. First-level Material leading icons; right-side Material expand icons; tree guide rails with label-column alignment; leaf-only selection (accent + bold) persisted across refresh with ancestor expand restore. Shell-local layout folders + `@erp/ui` tokens/utilities; project typography is **Scoutie Sans** (`--erp-font-family`); no page routes, permissions, menu APIs, mobile drawer, or toolbar feature.
+Restore Shell authenticated chrome with a left sidebar under the full-width topbar: independently scrollable navigation menu, non-expandable accent section headers, and a static expandable menu hierarchy. First-level Material leading icons (accent); right-side Material expand icons; tree guide rails with label-column alignment; leaf-only selection (muted inactive labels; accent + bold when selected) persisted across refresh with ancestor expand restore. Single `shell-sidebar/` component (nav merged); surface background + right border (no shadow); `@erp/ui` tokens/utilities; project typography is **Scoutie Sans** (`--erp-font-family`); no page routes, permissions, menu APIs, or mobile drawer.
 
 ## Technical Context
 
@@ -26,9 +26,9 @@ Restore Shell authenticated chrome with a full-viewport-height sidebar: fixed br
 
 **Performance Goals**: Sidebar render and expand/collapse feel instant on desktop; full static hierarchy remains smooth to scroll and toggle
 
-**Constraints**: Constitution — Shell owns sidenav/global nav; Material-first; Signals for sidebar UI state; no competing UI libraries; no route wiring / permissions / APIs / responsive drawer / new theme / toolbar; brand-only header; keyboard focus + Enter/Space for expand/collapse
+**Constraints**: Constitution — Shell owns sidenav/global nav; Material-first; Signals for sidebar UI state; no competing UI libraries; no route wiring / permissions / APIs / responsive drawer / new theme; brand owned by topbar; keyboard focus + Enter/Space for expand/collapse
 
-**Scale/Scope**: One Shell sidebar + static nav tree covering 9 sections; per-concern folders under `layout/`; foundation-home keeps content-area theme/logout
+**Scale/Scope**: One Shell sidebar component + static nav tree covering 9 sections; per-concern folders under `layout/` (no separate `shell-sidebar-nav/`)
 
 ## Constitution Check
 
@@ -55,10 +55,11 @@ Restore Shell authenticated chrome with a full-viewport-height sidebar: fixed br
 | Shell owns sidenav | Pass | `layout/shell-sidebar*`, `layout/nav/` |
 | Material-first; no competing UI | Pass | `erp-icon`; research §3/§8/§11 |
 | Signals for expand + selection | Pass | research §4; data-model |
-| Brand-only header; no toolbar | Pass | research §5 |
+| Brand-only header; no toolbar | Superseded | Brand moved to full-width topbar (005); sidebar has no brand header |
 | Keyboard Enter/Space | Pass | research §6 |
 | Static menu; selection persistence only | Pass | research §4/§7 |
 | Tokenized styling + utilities | Pass | research §8 |
+| Single sidebar component | Pass | `layout/shell-sidebar/` owns nav |
 
 **Post-design gate result**: PASS
 
@@ -85,8 +86,8 @@ frontend/
 │   ├── app.routes.ts
 │   ├── layout/
 │   │   ├── shell-layout/shell-layout.ts|html|scss
-│   │   ├── shell-sidebar/shell-sidebar.ts|html|scss
-│   │   ├── shell-sidebar-nav/shell-sidebar-nav.ts|html|scss|spec.ts
+│   │   ├── shell-sidebar/shell-sidebar.ts|html|scss|spec.ts
+│   │   ├── shell-topbar/shell-topbar.ts|html|scss
 │   │   ├── global-loader/global-loader.ts|html|scss
 │   │   └── nav/
 │   │       ├── shell-nav.types.ts
@@ -99,7 +100,7 @@ frontend/
     └── _utilities.scss
 ```
 
-**Structure Decision**: One folder per layout concern. Static menu under `layout/nav/`. Prefer curated utilities for flex/spacing/text helpers; keep tree-rail and selection semantics in component SCSS.
+**Structure Decision**: One folder per layout concern. Static menu under `layout/nav/`. Prefer curated utilities for flex/spacing/text helpers; keep tree-rail and selection semantics in component SCSS. Nav tree lives inside `shell-sidebar/` (no separate `shell-sidebar-nav/`).
 
 ## Complexity Tracking
 

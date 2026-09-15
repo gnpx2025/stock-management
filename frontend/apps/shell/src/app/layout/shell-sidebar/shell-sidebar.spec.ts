@@ -1,4 +1,4 @@
-import { collectDescendantIds, findAncestorIds } from './shell-sidebar-nav';
+import { collectDescendantIds, findAncestorIds } from './shell-sidebar';
 import { NavNode, NavSection } from '../nav/shell-nav.types';
 
 describe('collectDescendantIds', () => {

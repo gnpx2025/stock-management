@@ -13,3 +13,34 @@ button {
   justify-content: center;
   gap: var(--erp-space-2, 0.5rem);
 }
+
+button.mat-mdc-icon-button {
+  --mat-icon-button-icon-color: var(--erp-color-text);
+  --mat-icon-button-state-layer-color: var(--erp-color-text);
+  --mat-icon-button-ripple-color: color-mix(
+    in srgb,
+    var(--erp-color-text) 12%,
+    transparent
+  );
+  --mat-icon-button-disabled-icon-color: color-mix(
+    in srgb,
+    var(--erp-color-text) 38%,
+    transparent
+  );
+}
+
+button.mat-mdc-icon-button.mat-primary {
+  --mat-icon-button-icon-color: var(--erp-color-accent);
+  --mat-icon-button-state-layer-color: var(--erp-color-accent);
+  --mat-icon-button-ripple-color: color-mix(
+    in srgb,
+    var(--erp-color-accent) 12%,
+    transparent
+  );
+}
+
+::ng-deep .mdc-button__label {
+  display: flex !important;
+  align-items: center !important;
+  gap: var(--erp-space-1, 0.25rem) !important;
+}

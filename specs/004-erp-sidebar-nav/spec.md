@@ -38,23 +38,30 @@ This feature delivers the Shell’s global sidebar / sidenav navigation structur
 - Q: How should Shell layout files be organized? → A: One folder per concern under `layout/` (`shell-layout/`, `shell-sidebar/`, `shell-sidebar-nav/`, `global-loader/`, `nav/`); prefer curated `@erp/ui` utility classes for common layout
 - Q: What project-wide typeface should the Shell (and shared UI) use? → A: **Scoutie Sans** only (`--erp-font-family`); remove other UI text fonts; Material Icons remain for icons only
 
+### Session 2026-09-15 (chrome layout refinements)
+
+- Q: Should brand stay in the sidebar header? → A: No — brand/logo + product name move to the full-width topbar (005); sidebar has no brand header region
+- Q: How does the sidebar sit relative to the topbar? → A: Sidebar sits under the full-width topbar (shell column: topbar, then row of sidebar + content)
+- Q: Keep separate `shell-sidebar` and `shell-sidebar-nav` components? → A: No — single `ShellSidebarComponent` owns chrome + nav tree (merge nav into `shell-sidebar/`)
+- Q: Sidebar surface treatment? → A: Keep surface background; right border only; no box-shadow
+- Q: Section header and icon colors? → A: Primary/accent for section headers and leading icons; inactive item **labels** use muted text; selected leaf uses accent + bold (icons stay accent)
+
 ## User Scenarios & Testing *(mandatory)*
 
-### User Story 1 - See the full-height sidebar with fixed logo and scrollable menu (Priority: P1)
+### User Story 1 - See the sidebar under the topbar with a scrollable menu (Priority: P1)
 
-As an authenticated ERP user, I see a sidebar that spans the full height of the viewport, with the product logo/header fixed at the top and a navigation menu area below it that scrolls independently when the menu is longer than the available space—so I can always identify the application while browsing a long menu.
+As an authenticated ERP user, I see a left sidebar under the full-width topbar that fills the remaining viewport height beside page content, with a navigation menu area that scrolls independently when the menu is longer than the available space—so I can browse a long menu without affecting the topbar or page body scroll.
 
-**Why this priority**: Layout behavior is the foundation of usable navigation; without a fixed header and independent scroll, long menus become unusable.
+**Why this priority**: Layout behavior is the foundation of usable navigation; without independent scroll, long menus become unusable.
 
-**Independent Test**: Open the authenticated application shell with the sidebar present; confirm the sidebar fills the viewport height; scroll the menu area and confirm the logo/header does not move; confirm only the navigation area scrolls.
+**Independent Test**: Open the authenticated application shell with the sidebar present; confirm the sidebar sits under the topbar and fills the remaining height; scroll the menu area and confirm only the navigation area scrolls.
 
 **Acceptance Scenarios**:
 
-1. **Given** an authenticated session with the sidebar visible, **When** the user views the layout, **Then** the sidebar occupies the full viewport height.
-2. **Given** the sidebar is displayed, **When** the user inspects its vertical structure, **Then** there are exactly two vertically separated areas: a logo/header area at the top and a navigation menu area below it.
-3. **Given** the logo/header area, **When** the user inspects its contents, **Then** it shows only the brand/logo or product name (no theme toggle, logout, or other actions in this area).
-4. **Given** the navigation menu content exceeds the available height, **When** the user scrolls within the navigation menu area, **Then** the menu content scrolls vertically and the logo/header area remains fixed and fully visible.
-5. **Given** the navigation menu is scrolling, **When** the user observes the scrollbar, **Then** scrolling does not move the logo/header area.
+1. **Given** an authenticated session with the Shell layout visible, **When** the user views the layout, **Then** the sidebar sits under the full-width topbar and fills the remaining viewport height beside the main content.
+2. **Given** the sidebar is displayed, **When** the user inspects its vertical structure, **Then** there is a scrollable navigation menu area (no brand/logo header region inside the sidebar).
+3. **Given** the navigation menu content exceeds the available height, **When** the user scrolls within the navigation menu area, **Then** the menu content scrolls vertically and the topbar remains fixed and fully visible.
+4. **Given** the navigation menu is scrolling, **When** the user observes scrolling, **Then** scrolling does not move the topbar or the main content body scrollbar independently incorrectly.
 
 ---
 
@@ -135,7 +142,7 @@ As an ERP user, I can select a leaf menu item and see only that leaf highlighted
 
 ### Edge Cases
 
-- When the viewport height is short, the logo/header remains fully visible and only the navigation area scrolls.
+- When the viewport height is short, the topbar remains fully visible and only the sidebar navigation area scrolls.
 - When a deeply nested path is expanded such that total menu height greatly exceeds the viewport, scrolling remains confined to the navigation area.
 - When multiple sibling groups are expanded at once, all remain independently expandable/collapsible without collapsing unrelated siblings.
 - When a parent group is collapsed, nested expanded state of its children is cleared for that branch.
@@ -147,12 +154,12 @@ As an ERP user, I can select a leaf menu item and see only that leaf highlighted
 
 ### Functional Requirements
 
-- **FR-001**: The sidebar MUST occupy the full viewport height.
-- **FR-002**: The sidebar MUST contain a fixed logo/header area at the top that does not scroll with the menu. That area MUST contain only the brand/logo or product name (no theme toggle, logout, or other chrome actions in this feature).
-- **FR-003**: The sidebar MUST contain a navigation menu area below the logo/header that scrolls vertically independently when content overflows.
-- **FR-004**: Scrolling the navigation menu MUST NOT move or clip the logo/header area out of view.
+- **FR-001**: The sidebar MUST sit under the full-width Shell topbar and fill the remaining viewport height beside main content.
+- **FR-002**: The sidebar MUST NOT contain a brand/logo header region; brand/product name lives in the topbar (005).
+- **FR-003**: The sidebar MUST contain a navigation menu area that scrolls vertically independently when content overflows.
+- **FR-004**: Scrolling the navigation menu MUST NOT move the topbar out of view.
 - **FR-005**: The navigation MUST present section headers for: OPERATIONS, SALES, PURCHASING, INVENTORY, FINANCE, MASTER DATA, REPORTS, ADMINISTRATION, and UTILITIES, in that order.
-- **FR-006**: Section headers MUST be visual grouping labels only and MUST NOT support expand/collapse interaction.
+- **FR-006**: Section headers MUST be visual grouping labels only and MUST NOT support expand/collapse interaction. Section header text MUST use the primary/accent color.
 - **FR-007**: Menu items listed under a section header MUST belong to that section and MUST NOT introduce an extra expandable level for the section header itself.
 - **FR-008**: Items that have child items MUST show an expand/collapse indicator on the right and MUST allow the user to expand and collapse those children.
 - **FR-009**: Nested items MUST communicate hierarchy through progressive indentation, vertical tree guide rails on expanded groups, and child label alignment with the parent label column.
@@ -165,12 +172,13 @@ As an ERP user, I can select a leaf menu item and see only that leaf highlighted
 - **FR-016**: Under ADMINISTRATION, Audit Trail and System Settings MUST appear as sibling leaf items (System Settings MUST NOT be nested under Audit Trail).
 - **FR-017**: Under REPORTS, Sales Reports, Purchase Reports, Inventory Reports, Finance Reports, and Customer Reports MUST be leaf items (no expand/collapse control). Supplier Reports MUST remain expandable with child Management Reports.
 - **FR-018**: Expandable menu groups MUST be keyboard-operable: they MUST be focusable, and Enter or Space MUST toggle expand/collapse. Full arrow-key tree navigation is not required for this feature.
-- **FR-019**: First-level menu items MUST display a leading Material icon; nested levels do not require leading icons.
+- **FR-019**: First-level menu items MUST display a leading Material icon in the primary/accent color; nested levels do not require leading icons.
 - **FR-020**: Expand/collapse MUST use Material icons: collapsed `chevron_right`, expanded `expand_more`.
-- **FR-021**: Only leaf items MAY be selected. Selection MUST use accent text color and bold font weight only (no border or heavy background for selection or expand state).
+- **FR-021**: Only leaf items MAY be selected. Inactive item labels MUST use muted text color. Selection MUST use accent text color and bold font weight (icons remain accent whether selected or not).
 - **FR-022**: Selected leaf id MUST persist across refresh; on load the sidebar MUST restore selection and expand ancestor groups so the selected leaf is visible.
 - **FR-023**: Expanding a parent MUST NOT mark that parent as selected.
-### Key Entities *(include if feature involves data)*
+- **FR-024**: Sidebar chrome MUST use the surface background treatment, a right border only, and MUST NOT use a box-shadow.
+- **FR-025**: Navigation chrome and tree behavior MUST live in a single `ShellSidebarComponent` (`layout/shell-sidebar/`); a separate `shell-sidebar-nav` component MUST NOT be required.### Key Entities *(include if feature involves data)*
 
 #### Navigation Structure
 
@@ -252,9 +260,9 @@ As an ERP user, I can select a leaf menu item and see only that leaf highlighted
 
 ### Measurable Outcomes
 
-- **SC-001**: In a standard desktop viewport, reviewers confirm the sidebar spans the full viewport height in 100% of layout checks.
-- **SC-002**: When the menu content is taller than the viewport, scrolling the menu keeps the logo/header fully visible in 100% of trials.
-- **SC-003**: 100% of defined section headers appear in the specified order and none of them expand or collapse when activated.
+- **SC-001**: In a standard desktop viewport, reviewers confirm the sidebar sits under the topbar and fills the remaining height beside content in 100% of layout checks.
+- **SC-002**: When the menu content is taller than the available sidebar height, scrolling the menu keeps the topbar fully visible in 100% of trials.
+- **SC-003**: 100% of defined section headers appear in the specified order and none of them expand or collapse when activated; section headers use accent/primary color.
 - **SC-004**: 100% of expandable groups listed in the Initial Sidebar Structure can be expanded to reveal their defined children and collapsed to hide them.
 - **SC-005**: On first load, 100% of first-level expandable groups that have children start collapsed, matching the Initial Collapsed Sidebar View.
 - **SC-006**: A reviewer can locate any leaf item in the defined hierarchy in under 30 seconds by expanding the appropriate groups (without using search).
@@ -262,13 +270,14 @@ As an ERP user, I can select a leaf menu item and see only that leaf highlighted
 - **SC-008**: Scope remains structural: no destination pages, route wiring, permission gating, or API-driven menu loading are required for acceptance of this feature.
 - **SC-009**: In a keyboard-only pass, a reviewer can expand and collapse every first-level expandable group using focus plus Enter or Space without using a pointer.
 - **SC-010**: After selecting a nested leaf and refreshing, the same leaf is selected and visible (ancestors expanded) in 100% of refresh checks.
-- **SC-011**: Only the selected leaf shows accent + bold emphasis; expandable parents do not appear selected merely from being expanded.
+- **SC-011**: Only the selected leaf shows accent + bold emphasis on its label; inactive labels use muted text; leading icons remain accent; expandable parents do not appear selected merely from being expanded.
+- **SC-012**: Sidebar uses surface background + right border and no box-shadow; brand is not rendered inside the sidebar.
 
 ## Assumptions
 
 - The sidebar is shown in the authenticated Shell layout; unauthenticated/login chrome is unchanged by this feature.
-- “Full viewport height” means the sidebar fills the visible application viewport height used by the Shell layout.
-- Logo/header content is brand/logo or product name only (confirmed 2026-09-10); exact artwork is out of scope. Theme toggle, logout, and other actions remain outside the sidebar header.
+- “Remaining viewport height” means the height under the full-width topbar used by the Shell layout main row.
+- Brand/logo + product name live in the topbar (005); the sidebar has no brand header (confirmed 2026-09-15). Earlier 2026-09-10 brand-in-sidebar clarification is superseded.
 - Where the full hierarchy nested System Settings under Audit Trail but the initial collapsed view listed both as visible siblings, **System Settings and Audit Trail are sibling leaves** (confirmed 2026-09-10). No empty expand/collapse control is shown on Audit Trail.
 - Where the initial collapsed view marked Sales/Purchase/Inventory/Finance Reports with expand indicators but listed no children, those four items plus Customer Reports are **leaves** (confirmed 2026-09-10). Supplier Reports expands to Management Reports. All six REPORTS entries appear under REPORTS.
 - MASTER DATA → Finance is a sibling group of Parties/Products/Organization under MASTER DATA, not nested under Organization.
@@ -277,7 +286,6 @@ As an ERP user, I can select a leaf menu item and see only that leaf highlighted
 - FINANCE → Cash & Bank → Reports is a leaf with no children in this feature.
 - Selected leaf id is persisted locally for refresh restore; full expand-state map need not be persisted independently (ancestors are derived from the selected leaf).
 - Clicking leaf items need not navigate anywhere for acceptance of this feature.
-- Responsive/mobile drawer behavior and toolbar/topbar remain out of scope.
-- Prior Material migration left a content-only Shell; this feature reintroduces sidebar chrome only.
-- Layout helpers come from curated `@erp/ui` `_utilities.scss` where applicable; Shell layout code lives in per-concern folders under `apps/shell/src/app/layout/`.
+- Responsive/mobile drawer behavior remains out of scope; topbar coexistence is required (005).
+- Layout helpers come from curated `@erp/ui` `_utilities.scss` where applicable; Shell sidebar code lives in a single `layout/shell-sidebar/` component folder (nav merged; no separate `shell-sidebar-nav/`).
 - Project UI text font is Scoutie Sans (`--erp-font-family`); Material Icons remain for icon glyphs only.

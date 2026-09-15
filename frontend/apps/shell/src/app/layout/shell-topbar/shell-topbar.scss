@@ -10,6 +10,25 @@
   box-shadow: 0 4px 12px rgb(var(--erp-color-ink-rgb) / 5%);
 }
 
+.shell-topbar__mark {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--erp-color-accent) 18%, transparent);
+  font-family: var(--erp-font-family);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.shell-topbar__title {
+  color: var(--erp-color-accent);
+  font-family: var(--erp-font-family);
+  font-size: 1rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .shell-topbar__search {
   max-width: 28rem;
   min-width: 0;
