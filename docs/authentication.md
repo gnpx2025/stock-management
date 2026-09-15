@@ -29,6 +29,15 @@ Authentication__Seed__Password=<local-secret>
 
 - Development (via Shell proxy): `SameSite=Lax`, `Secure=false`, `apiBaseUrl=""`.
 - Production: HTTPS required; set `Authentication:Refresh:Secure=true`, prefer `SameSite=Lax` behind same-site reverse proxy, or `None` only with Secure when Shell and API are cross-site. Enable CORS `AllowCredentials` with explicit origins (never `*`).
+- Cross-origin Render (UI and API on different `*.onrender.com` hosts): allow the Shell origin in `Cors:AllowedOrigins`, set `Authentication:Refresh:SameSite=None` and `Secure=true`, and point Shell `apiBaseUrl` at the API HTTPS URL. Defaults live in `appsettings.Production.json`; override on the host with:
+
+```bash
+Cors__AllowedOrigins__0=https://stock-management-ui-dw2a.onrender.com
+Authentication__Refresh__SameSite=None
+Authentication__Refresh__Secure=true
+```
+
+Shell `apiBaseUrl` for this deploy: `https://stock-management-a48d.onrender.com`.
 
 ## Rate limiting
 
