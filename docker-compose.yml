@@ -19,5 +19,50 @@ services:
       timeout: 5s
       retries: 10
 
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: erp-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: >-
+        Host=postgres;Port=5432;Database=${POSTGRES_DB:-erp};Username=${POSTGRES_USER:-erp};Password=${POSTGRES_PASSWORD:-erp_dev_password}
+      Cors__AllowedOrigins__0: ${CORS_ORIGIN_0:-http://localhost:8080}
+      Cors__AllowedOrigins__1: ${CORS_ORIGIN_1:-http://localhost:4200}
+      Authentication__Jwt__SigningKey: ${Authentication__Jwt__SigningKey:-DEV_ONLY_CHANGE_ME_TO_A_LONG_RANDOM_SECRET_KEY_32+}
+      Authentication__Seed__UserName: ${Authentication__Seed__UserName:-admin}
+      Authentication__Seed__Email: ${Authentication__Seed__Email:-admin@example.com}
+      Authentication__Seed__Password: ${Authentication__Seed__Password:-ChangeMe!DevOnly1}
+      Authentication__Refresh__Secure: ${Authentication__Refresh__Secure:-false}
+      Authentication__Refresh__SameSite: ${Authentication__Refresh__SameSite:-Lax}
+    ports:
+      - "${API_PORT:-5080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health/live || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: erp-web
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
 volumes:
   erp_pg_data:

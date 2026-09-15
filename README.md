@@ -16,9 +16,22 @@ export PATH="$HOME/.dotnet:$HOME/.dotnet/tools:$PATH"
 
 ## Quick start
 
+### Option A — Docker (API + Shell + Postgres)
+
 ```bash
 cp .env.example .env
-docker compose up -d
+docker compose up -d --build
+# → Shell http://localhost:8080  (LAN: http://<host-ip>:8080)
+# → API   http://localhost:5080
+```
+
+See [docker/README.md](docker/README.md).
+
+### Option B — Local processes (Postgres in Docker)
+
+```bash
+cp .env.example .env
+docker compose up -d postgres
 
 # Backend
 cd backend

@@ -1,0 +1,16 @@
+node_modules
+dist
+.nx
+.angular
+coverage
+tmp
+out-tsc
+*.log
+.git
+.gitignore
+**/.DS_Store
+**/*.md
+apps/**/*.spec.ts
+libs/**/*.spec.ts
+**/jest.config.*
+**/tsconfig.spec.json

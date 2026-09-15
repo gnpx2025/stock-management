@@ -19,13 +19,27 @@ export PATH="$HOME/.dotnet:$PATH"
 cp .env.example .env
 ```
 
-## 2. PostgreSQL
+## 2. Full stack in Docker (optional)
+
+Builds and runs Postgres, API, and Shell (nginx):
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
-## 3. Backend
+- App: **http://localhost:8080** (other machines: `http://<host-lan-ip>:8080`)
+- API: **http://localhost:5080**
+- Details: [docker/README.md](../docker/README.md)
+
+Stop host `dotnet run` / `nx serve` first if ports `5080` / `8080` are already in use, or change `API_PORT` / `WEB_PORT` in `.env`.
+
+## 3. PostgreSQL only (local API + Shell)
+
+```bash
+docker compose up -d postgres
+```
+
+## 4. Backend
 
 ```bash
 cd backend
@@ -40,7 +54,7 @@ Smoke:
 - http://localhost:5080/health/live
 - http://localhost:5080/api/v1/platform/health
 
-## 4. Frontend
+## 5. Frontend
 
 ```bash
 cd frontend
@@ -52,7 +66,7 @@ Open the Shell URL (typically http://localhost:4200). Foundation home shows API 
 
 Runtime API URL: `frontend/apps/shell/public/config.json`.
 
-## 5. Tests
+## 6. Tests
 
 ```bash
 # Frontend
