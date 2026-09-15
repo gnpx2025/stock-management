@@ -1,4 +1,4 @@
 {
-  "environmentName": "Development",
-  "apiBaseUrl": ""
+  "environmentName": "Production",
+  "apiBaseUrl": "https://stock-management-a48d.onrender.com"
 }
