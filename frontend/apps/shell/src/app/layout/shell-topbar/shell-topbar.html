@@ -8,14 +8,16 @@
       aria-hidden="true"
       >ERP</span
     >
-    <span class="shell-topbar__title overflow-hidden fw-600">ERP Platform</span>
+    <span class="shell-topbar__title overflow-hidden fw-600">{{
+      'shell.topbar.brandTitle' | erpTranslate: 'ERP Platform'
+    }}</span>
   </div>
 
   <erp-search-input
     class="shell-topbar__search flex-grow-1"
-    placeholder="Search"
-    ariaLabel="Search"
-    [options]="searchOptions"
+    [placeholder]="'shell.topbar.searchPlaceholder' | erpTranslate: 'Search'"
+    [ariaLabel]="'shell.topbar.searchAria' | erpTranslate: 'Search'"
+    [options]="searchOptions()"
   />
 
   <div class="shell-topbar__actions d-flex align-items-center gap-1 flex-shrink-0">
@@ -23,7 +25,7 @@
       variant="icon"
       type="button"
       icon="notifications"
-      ariaLabel="Notifications"
+      [ariaLabel]="'shell.topbar.notifications' | erpTranslate: 'Notifications'"
       (clicked)="onNotificationClick()"
     />
 
@@ -35,19 +37,27 @@
       (clicked)="toggleTheme()"
     />
 
+    <erp-language-selector
+      [language]="language.language()"
+      [ariaLabel]="languageAriaLabel()"
+      (languageChange)="onLanguageChange($event)"
+    />
+
     <button
       matButton="outlined"
       type="button"
       class="shell-topbar__profile"
       [matMenuTriggerFor]="profileMenu"
-      [attr.aria-label]="'Account menu for ' + displayName()"
+      [attr.aria-label]="accountMenuLabel()"
     >
       <span class="shell-topbar__profile-name">{{ displayName() }}</span>
       <erp-icon name="arrow_drop_down" />
     </button>
 
     <mat-menu #profileMenu="matMenu" xPosition="before">
-      <button mat-menu-item type="button" (click)="logout()">Logout</button>
+      <button mat-menu-item type="button" (click)="logout()">
+        {{ 'shell.topbar.logout' | erpTranslate: 'Logout' }}
+      </button>
     </mat-menu>
   </div>
 </header>

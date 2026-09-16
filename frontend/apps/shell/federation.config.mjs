@@ -37,4 +37,8 @@ export default withNativeFederation({
   features: {
     denseChunking: true,
   },
+
+  // Workspace libs such as @erp/i18n are consumed via TypeScript path aliases.
+  // When remotes are added, share @erp/i18n as a singleton so all MFEs see the
+  // same LanguageService instance (no per-MFE language selectors).
 });

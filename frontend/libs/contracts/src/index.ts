@@ -10,6 +10,11 @@ export type {
 } from './lib/notification';
 export type { ThemeMode } from './lib/theme';
 export type {
+  AppLanguage,
+  DocumentDirection,
+  LanguageOption,
+} from './lib/language';
+export type {
   LoginRequest,
   AuthenticatedUser,
   AuthTokenResponse,

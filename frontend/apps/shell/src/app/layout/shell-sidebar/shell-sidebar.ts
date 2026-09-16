@@ -1,5 +1,6 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { LanguageService, TranslatePipe } from '@erp/i18n';
 import { ErpIconComponent } from '@erp/ui';
 import { SHELL_NAV_MENU } from '../nav/shell-nav-menu.data';
 import { NavNode, NavSection } from '../nav/shell-nav.types';
@@ -9,17 +10,24 @@ const SELECTED_NAV_STORAGE_KEY = 'erp.shell.sidebar.selectedNavId';
 @Component({
   selector: 'app-shell-sidebar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgTemplateOutlet, ErpIconComponent],
+  imports: [NgTemplateOutlet, ErpIconComponent, TranslatePipe],
   templateUrl: './shell-sidebar.html',
   styleUrl: './shell-sidebar.scss',
 })
 export class ShellSidebarComponent {
+  /** Touched so OnPush refreshes when locale changes (pipe is impure; host still needs CD trigger). */
+  protected readonly language = inject(LanguageService);
+
   protected readonly sections: NavSection[] = SHELL_NAV_MENU;
   protected readonly expandedIds = signal<ReadonlySet<string>>(new Set());
   protected readonly selectedId = signal<string | null>(null);
 
   constructor() {
     this.restoreSelection();
+  }
+
+  protected navKey(id: string): string {
+    return `shell.nav.${id}`;
   }
 
   protected hasChildren(node: NavNode): boolean {

@@ -1,7 +1,11 @@
-<aside class="shell-sidebar d-flex flex-column h-100" aria-label="Application navigation">
+<aside
+  class="shell-sidebar d-flex flex-column h-100"
+  [attr.data-lang]="language.language()"
+  [attr.aria-label]="'shell.sidebar.navAria' | erpTranslate: 'Application navigation'"
+>
   <nav
     class="shell-sidebar__nav flex-grow-1 overflow-auto px-2 pt-3 pb-4"
-    aria-label="Main menu"
+    [attr.aria-label]="'shell.sidebar.menuAria' | erpTranslate: 'Main menu'"
   >
     <div class="sidebar-nav d-flex flex-column gap-4">
       @for (section of sections; track section.id) {
@@ -10,7 +14,7 @@
             class="sidebar-nav__section-label m-0 mb-2 px-2 fw-700"
             [id]="'nav-section-' + section.id"
           >
-            {{ section.label }}
+            {{ navKey(section.id) | erpTranslate: section.label }}
           </h2>
           <ul class="sidebar-nav__list m-0 p-0" role="list">
             @for (item of section.items; track item.id) {
@@ -43,7 +47,9 @@
             }
           </span>
         }
-        <span class="sidebar-nav__label flex-grow-1 overflow-hidden">{{ node.label }}</span>
+        <span class="sidebar-nav__label flex-grow-1 overflow-hidden">{{
+          navKey(node.id) | erpTranslate: node.label
+        }}</span>
         <erp-icon
           class="sidebar-nav__expand-icon flex-shrink-0 text-muted"
           [name]="isExpanded(node.id) ? 'expand_more' : 'chevron_right'"
@@ -89,7 +95,9 @@
             }
           </span>
         }
-        <span class="sidebar-nav__label flex-grow-1 overflow-hidden">{{ node.label }}</span>
+        <span class="sidebar-nav__label flex-grow-1 overflow-hidden">{{
+          navKey(node.id) | erpTranslate: node.label
+        }}</span>
       </button>
     }
   </li>

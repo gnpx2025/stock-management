@@ -2,6 +2,7 @@
   "extends": "./tsconfig.app.json",
   "files": [
     "../../libs/core/src/index.ts",
+    "../../libs/i18n/src/index.ts",
     "../../libs/ui/src/index.ts",
     "../../libs/contracts/src/index.ts"
   ],

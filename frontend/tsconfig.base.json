@@ -18,7 +18,8 @@
       "@erp/shared": ["./libs/shared/src/index.ts"],
       "@erp/contracts": ["./libs/contracts/src/index.ts"],
       "@erp/core": ["./libs/core/src/index.ts"],
-      "@erp/ui": ["./libs/ui/src/index.ts"]
+      "@erp/ui": ["./libs/ui/src/index.ts"],
+      "@erp/i18n": ["./libs/i18n/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

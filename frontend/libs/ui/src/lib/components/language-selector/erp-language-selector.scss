@@ -1,0 +1,14 @@
+:host {
+  display: inline-flex;
+}
+
+.erp-language-selector {
+  min-width: 0;
+  padding-inline: 0.5rem;
+}
+
+.erp-language-selector__value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}

@@ -1,46 +1,40 @@
-<div class="login d-grid place-items-center p-6 min-vh-100">
+<div class="login d-grid place-items-center p-6 min-vh-100" [attr.data-lang]="language.language()">
   <div class="login__panel">
     <header class="login__brand d-flex align-items-center gap-3 mb-6">
       <span class="login__mark" aria-hidden="true">ERP</span>
       <div>
-        <p class="login__product">Platform Shell</p>
-        <p class="login__tagline text-muted">Sign in to continue</p>
+        <p class="login__product">{{ 'auth.login.product' | erpTranslate: 'Platform Shell' }}</p>
+        <p class="login__tagline text-muted">{{
+          'auth.login.tagline' | erpTranslate: 'Sign in to continue'
+        }}</p>
       </div>
     </header>
 
     <form class="login__form d-grid gap-4" [formGroup]="form" (ngSubmit)="submit()" novalidate>
       <erp-form-field
         class="full-width"
-        label="Username or email"
+        [label]="'auth.login.username' | erpTranslate: 'Username or email'"
         controlName="usernameOrEmail"
         inputId="usernameOrEmail"
         autocomplete="username"
-        [error]="
-          form.controls.usernameOrEmail.invalid && form.controls.usernameOrEmail.touched
-            ? 'Username or email is required.'
-            : undefined
-        "
+        [error]="usernameError()"
       />
 
       <erp-form-field
         class="full-width"
-        label="Password"
+        [label]="'auth.login.password' | erpTranslate: 'Password'"
         controlName="password"
         inputId="password"
         [type]="hidePassword() ? 'password' : 'text'"
         autocomplete="current-password"
-        [error]="
-          form.controls.password.invalid && form.controls.password.touched
-            ? 'Password is required.'
-            : undefined
-        "
+        [error]="passwordError()"
       >
         <erp-button
           erpSuffix
           variant="icon"
           type="button"
           [icon]="hidePassword() ? 'visibility' : 'visibility_off'"
-          [ariaLabel]="hidePassword() ? 'Show password' : 'Hide password'"
+          [ariaLabel]="passwordToggleLabel()"
           (clicked)="hidePassword.set(!hidePassword())"
         />
       </erp-form-field>
@@ -58,7 +52,7 @@
         [disabled]="authenticating || form.invalid"
         [spinnerDiameter]="20"
       >
-        Sign in
+        {{ 'auth.login.submit' | erpTranslate: 'Sign in' }}
       </erp-button>
     </form>
   </div>
