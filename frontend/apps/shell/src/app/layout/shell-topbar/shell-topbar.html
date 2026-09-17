@@ -1,5 +1,5 @@
 <header
-  class="shell-topbar d-flex align-items-center justify-content-between px-3"
+  class="shell-topbar d-flex align-items-center justify-content-between gap-3 px-3"
   role="banner"
 >
   <div class="shell-topbar__brand d-flex flex-shrink-0 align-items-center gap-2">
@@ -18,56 +18,53 @@
       aria-hidden="true"
       >ERP</span
     >
-    <span class="shell-topbar__title overflow-hidden fw-600">{{
+    <span class="shell-topbar__title overflow-hidden fw-600 text-accent">{{
       'shell.topbar.brandTitle' | erpTranslate: 'ERP Platform'
     }}</span>
   </div>
 
-  <erp-search-input
-    class="shell-topbar__search flex-grow-1"
-    [placeholder]="'shell.topbar.searchPlaceholder' | erpTranslate: 'Search'"
-    [ariaLabel]="'shell.topbar.searchAria' | erpTranslate: 'Search'"
-    [options]="searchOptions()"
-  />
-
-  <div class="shell-topbar__actions d-flex align-items-center gap-1 flex-shrink-0">
-    <erp-button
-      variant="icon"
-      type="button"
-      icon="notifications"
-      [ariaLabel]="'shell.topbar.notifications' | erpTranslate: 'Notifications'"
-      (clicked)="onNotificationClick()"
+  <div class="shell-topbar__trailing d-flex align-items-center min-w-0 gap-4">
+    <erp-search-input
+      class="shell-topbar__search min-w-0 align-self-center"
+      [placeholder]="'shell.topbar.searchPlaceholder' | erpTranslate: 'Search'"
+      [ariaLabel]="'shell.topbar.searchAria' | erpTranslate: 'Search'"
+      [options]="searchOptions()"
     />
 
-    <erp-button
-      variant="icon"
-      type="button"
-      [icon]="themeToggleIcon()"
-      [ariaLabel]="themeToggleLabel()"
-      (clicked)="toggleTheme()"
-    />
+    <div class="shell-topbar__actions d-flex align-items-center gap-2 flex-shrink-0">
+      <erp-button
+        variant="icon"
+        type="button"
+        icon="notifications"
+        [ariaLabel]="'shell.topbar.notifications' | erpTranslate: 'Notifications'"
+        (clicked)="onNotificationClick()"
+      />
 
-    <erp-language-selector
-      [language]="language.language()"
-      [ariaLabel]="languageAriaLabel()"
-      (languageChange)="onLanguageChange($event)"
-    />
+      <erp-button
+        variant="icon"
+        type="button"
+        [icon]="themeToggleIcon()"
+        [ariaLabel]="themeToggleLabel()"
+        (clicked)="toggleTheme()"
+      />
 
-    <button
-      matButton="outlined"
-      type="button"
-      class="shell-topbar__profile"
-      [matMenuTriggerFor]="profileMenu"
-      [attr.aria-label]="accountMenuLabel()"
-    >
-      <span class="shell-topbar__profile-name">{{ displayName() }}</span>
-      <erp-icon name="arrow_drop_down" />
-    </button>
+      <erp-language-selector
+        [language]="language.language()"
+        [ariaLabel]="languageAriaLabel()"
+        (languageChange)="onLanguageChange($event)"
+      />
 
-    <mat-menu #profileMenu="matMenu" xPosition="before">
-      <button mat-menu-item type="button" (click)="logout()">
-        {{ 'shell.topbar.logout' | erpTranslate: 'Logout' }}
-      </button>
-    </mat-menu>
+      <erp-menu
+        triggerClass="shell-topbar__profile d-inline-flex align-items-center justify-content-center p-0"
+        [ariaLabel]="accountMenuLabel()"
+        [items]="profileMenuItems()"
+        xPosition="before"
+        (itemSelected)="onProfileMenuItem($event)"
+      >
+        <span class="shell-topbar__profile-initial" aria-hidden="true">{{
+          displayInitial()
+        }}</span>
+      </erp-menu>
+    </div>
   </div>
 </header>

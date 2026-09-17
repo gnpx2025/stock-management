@@ -1,23 +1,11 @@
-<button
-  matButton="outlined"
-  type="button"
-  class="erp-language-selector"
-  [matMenuTriggerFor]="languageMenu"
-  [attr.aria-label]="ariaLabel()"
+<erp-menu
+  triggerAppearance="outlined"
+  triggerClass="erp-language-selector min-w-0 px-2"
+  [ariaLabel]="ariaLabel()"
+  [items]="menuItems()"
+  xPosition="before"
+  (itemSelected)="onItemSelected($event)"
 >
-  <span class="erp-language-selector__value">{{ activeOption().display }}</span>
+  <span class="erp-language-selector__value fw-600">{{ activeOption().display }}</span>
   <erp-icon name="arrow_drop_down" />
-</button>
-
-<mat-menu #languageMenu="matMenu" xPosition="before">
-  @for (option of options(); track option.id) {
-    <button
-      mat-menu-item
-      type="button"
-      [attr.aria-current]="option.id === language() ? 'true' : null"
-      (click)="select(option.id)"
-    >
-      {{ option.display }}
-    </button>
-  }
-</mat-menu>
+</erp-menu>

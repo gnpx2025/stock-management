@@ -22,6 +22,32 @@ html {
 // Map Material system tokens onto ERP brand tokens (light + dark via --erp-* swaps).
 :root,
 html.app-dark {
+  // Slightly rounded button shapes (not pills).
+  --mat-button-filled-container-shape: 0.25rem;
+  --mat-button-outlined-container-shape: 0.25rem;
+  --mat-button-protected-container-shape: 0.25rem;
+  --mat-button-text-container-shape: 0.25rem;
+  --mat-button-tonal-container-shape: 0.25rem;
+  --mat-icon-button-container-shape: 0.25rem;
+  // Compact buttons without changing global density (density -2 hides filled labels).
+  --mat-button-filled-container-height: 32px;
+  --mat-button-outlined-container-height: 32px;
+  --mat-button-protected-container-height: 32px;
+  --mat-button-text-container-height: 32px;
+  --mat-button-tonal-container-height: 32px;
+  --mat-button-filled-horizontal-padding: 14px;
+  --mat-button-outlined-horizontal-padding: 14px;
+  --mat-button-protected-horizontal-padding: 14px;
+  --mat-button-tonal-horizontal-padding: 14px;
+  --mat-button-filled-touch-target-display: none;
+  --mat-button-outlined-touch-target-display: none;
+  --mat-button-protected-touch-target-display: none;
+  --mat-button-text-touch-target-display: none;
+  --mat-button-tonal-touch-target-display: none;
+  --mat-icon-button-state-layer-size: 32px;
+  --mat-icon-button-touch-target-display: none;
+  --mat-icon-button-icon-size: 20px;
+
   --mat-sys-primary: var(--erp-color-accent);
   --mat-sys-on-primary: var(--erp-color-accent-contrast);
   --mat-sys-primary-container: color-mix(

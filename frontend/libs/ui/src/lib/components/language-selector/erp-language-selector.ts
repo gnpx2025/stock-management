@@ -5,10 +5,9 @@ import {
   input,
   output,
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
 import type { AppLanguage, LanguageOption } from '@erp/contracts';
 import { ErpIconComponent } from '../icon/erp-icon';
+import { ErpMenuComponent, type ErpMenuItem } from '../menu/erp-menu';
 
 const DEFAULT_OPTIONS: readonly LanguageOption[] = [
   { id: 'en', flag: '🇬🇧', code: 'EN', display: '🇬🇧 EN' },
@@ -18,7 +17,7 @@ const DEFAULT_OPTIONS: readonly LanguageOption[] = [
 @Component({
   selector: 'erp-language-selector',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, MatMenuModule, ErpIconComponent],
+  imports: [ErpMenuComponent, ErpIconComponent],
   templateUrl: './erp-language-selector.html',
   styleUrl: './erp-language-selector.scss',
 })
@@ -36,6 +35,18 @@ export class ErpLanguageSelectorComponent {
       this.options()[0]
     );
   });
+
+  protected readonly menuItems = computed<readonly ErpMenuItem[]>(() =>
+    this.options().map((option) => ({
+      id: option.id,
+      label: option.display,
+      ariaCurrent: option.id === this.language() ? true : undefined,
+    })),
+  );
+
+  protected onItemSelected(item: ErpMenuItem): void {
+    this.select(item.id as AppLanguage);
+  }
 
   protected select(language: AppLanguage): void {
     if (language !== this.language()) {

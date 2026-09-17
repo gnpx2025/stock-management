@@ -1,6 +1,9 @@
 :host {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   line-height: 0;
+}
+
+:host(.erp-icon--sized) ::ng-deep .mat-icon {
+  width: var(--erp-icon-size) !important;
+  height: var(--erp-icon-size) !important;
+  font-size: var(--erp-icon-size) !important;
 }

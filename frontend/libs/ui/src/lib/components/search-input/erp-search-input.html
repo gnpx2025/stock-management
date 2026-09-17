@@ -1,11 +1,11 @@
 <div
-  class="erp-search-input d-flex align-items-center gap-2 px-3 border rounded-pill"
+  class="erp-search-input d-flex align-items-center gap-2 border py-0 px-1"
   [class.erp-search-input--focused]="focused()"
   [class.erp-search-input--disabled]="disabled()"
 >
   <erp-icon class="erp-search-input__icon flex-shrink-0 text-muted" name="search" />
   <input
-    class="erp-search-input__control flex-grow-1 min-w-0 py-2 m-0 border-0 outline-none bg-transparent"
+    class="erp-search-input__control flex-grow-1 min-w-0 m-0 p-0 border-0 outline-none bg-transparent"
     type="search"
     autocomplete="off"
     [placeholder]="placeholder()"

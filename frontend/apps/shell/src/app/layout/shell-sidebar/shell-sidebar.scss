@@ -8,8 +8,6 @@
 }
 
 .shell-sidebar {
-  width: 100%;
-  height: 100%;
   min-height: 0;
   background: color-mix(in srgb, var(--erp-color-surface) 96%, transparent);
   border-inline-end: 1px solid var(--erp-color-border);
@@ -43,7 +41,6 @@
 .sidebar-nav__row {
   min-height: 2rem;
   padding: var(--erp-space-1) var(--sidebar-nav-row-pad-x);
-  border: 0;
   border-radius: 0.375rem;
   background: transparent;
   color: var(--erp-color-muted);
@@ -74,15 +71,6 @@
 .sidebar-nav__row:focus-visible {
   outline: 2px solid var(--erp-color-accent);
   outline-offset: 1px;
-}
-
-.sidebar-nav__icon,
-.sidebar-nav__expand-icon {
-  ::ng-deep .mat-icon {
-    width: var(--sidebar-nav-icon-size) !important;
-    height: var(--sidebar-nav-icon-size) !important;
-    font-size: var(--sidebar-nav-icon-size) !important;
-  }
 }
 
 :host-context([dir='rtl']) .sidebar-nav__expand-icon:not(.sidebar-nav__expand-icon--open) {
@@ -126,7 +114,6 @@
 }
 
 .sidebar-nav__label {
-  min-width: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

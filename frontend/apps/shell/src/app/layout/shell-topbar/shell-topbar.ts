@@ -6,17 +6,16 @@ import {
   input,
   output,
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
 import type { AppLanguage } from '@erp/contracts';
 import { AuthSessionService } from '@erp/core';
 import { LanguageService, TranslatePipe } from '@erp/i18n';
 import {
   ErpButtonComponent,
-  ErpIconComponent,
   ErpLanguageSelectorComponent,
+  ErpMenuComponent,
   ErpSearchInputComponent,
   ThemeService,
+  type ErpMenuItem,
   type ErpSearchOption,
 } from '@erp/ui';
 
@@ -24,12 +23,10 @@ import {
   selector: 'app-shell-topbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    MatButtonModule,
-    MatMenuModule,
     ErpButtonComponent,
-    ErpIconComponent,
     ErpSearchInputComponent,
     ErpLanguageSelectorComponent,
+    ErpMenuComponent,
     TranslatePipe,
   ],
   templateUrl: './shell-topbar.html',
@@ -77,6 +74,27 @@ export class ShellTopbarComponent {
       : this.language.t('shell.topbar.userFallback', 'User');
   });
 
+  protected readonly displayInitial = computed(() => {
+    const name = this.displayName();
+    const first = Array.from(name)[0] ?? 'U';
+    return first.toLocaleUpperCase();
+  });
+
+  protected readonly profileMenuItems = computed<readonly ErpMenuItem[]>(() => {
+    this.language.language();
+    return [
+      {
+        id: 'profile-name',
+        label: this.displayName(),
+        header: true,
+      },
+      {
+        id: 'logout',
+        label: this.language.t('shell.topbar.logout', 'Logout'),
+      },
+    ];
+  });
+
   protected readonly themeToggleIcon = computed(() =>
     this.theme.currentMode() === 'dark' ? 'light_mode' : 'dark_mode',
   );
@@ -117,6 +135,12 @@ export class ShellTopbarComponent {
 
   protected onLanguageChange(language: AppLanguage): void {
     this.language.setLanguage(language);
+  }
+
+  protected onProfileMenuItem(item: ErpMenuItem): void {
+    if (item.id === 'logout') {
+      this.logout();
+    }
   }
 
   protected logout(): void {

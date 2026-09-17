@@ -1,0 +1,47 @@
+<ng-template #projected>
+  <ng-content />
+</ng-template>
+
+@if (triggerAppearance(); as appearance) {
+  <button
+    [matButton]="appearance"
+    type="button"
+    class="erp-menu__trigger d-inline-flex align-items-center justify-content-center gap-1"
+    [ngClass]="triggerClass()"
+    [attr.aria-label]="ariaLabel() || null"
+    [disabled]="disabled()"
+    [matMenuTriggerFor]="menu"
+  >
+    <ng-container [ngTemplateOutlet]="projected" />
+  </button>
+} @else {
+  <button
+    type="button"
+    class="erp-menu__trigger d-inline-flex align-items-center justify-content-center gap-1"
+    [ngClass]="triggerClass()"
+    [attr.aria-label]="ariaLabel() || null"
+    [disabled]="disabled()"
+    [matMenuTriggerFor]="menu"
+  >
+    <ng-container [ngTemplateOutlet]="projected" />
+  </button>
+}
+
+<mat-menu
+  #menu="matMenu"
+  [xPosition]="xPosition()"
+  [yPosition]="yPosition()"
+>
+  @for (item of items(); track item.id) {
+    <button
+      mat-menu-item
+      type="button"
+      [disabled]="!!item.disabled || !!item.header"
+      [class.erp-menu__item--header]="!!item.header"
+      [attr.aria-current]="item.ariaCurrent || null"
+      (click)="onItemClick(item)"
+    >
+      {{ item.label }}
+    </button>
+  }
+</mat-menu>

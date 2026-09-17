@@ -8,10 +8,7 @@
 }
 
 button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--erp-space-2, 0.5rem);
+  border-radius: 0.25rem;
 }
 
 button.mat-mdc-icon-button {
@@ -27,6 +24,7 @@ button.mat-mdc-icon-button {
     var(--erp-color-text) 38%,
     transparent
   );
+  border-radius: 0.25rem;
 }
 
 button.mat-mdc-icon-button.mat-primary {

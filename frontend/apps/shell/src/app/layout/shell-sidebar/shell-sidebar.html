@@ -1,5 +1,5 @@
 <aside
-  class="shell-sidebar d-flex flex-column h-100"
+  class="shell-sidebar d-flex flex-column h-100 w-100"
   [attr.data-lang]="language.language()"
   [attr.aria-label]="'shell.sidebar.navAria' | erpTranslate: 'Application navigation'"
 >
@@ -11,7 +11,7 @@
       @for (section of sections; track section.id) {
         <section class="sidebar-nav__section" [attr.aria-labelledby]="'nav-section-' + section.id">
           <h2
-            class="sidebar-nav__section-label m-0 mb-2 px-2 fw-700"
+            class="sidebar-nav__section-label m-0 mb-2 px-2 fw-700 text-muted"
             [id]="'nav-section-' + section.id"
           >
             {{ navKey(section.id) | erpTranslate: section.label }}
@@ -34,7 +34,7 @@
     @if (hasChildren(node)) {
       <button
         type="button"
-        class="sidebar-nav__row d-flex align-items-center gap-2 w-100 text-start fw-400"
+        class="sidebar-nav__row d-flex align-items-center gap-2 w-100 text-start fw-400 border-0"
         [attr.aria-expanded]="isExpanded(node.id)"
         (click)="toggle(node)"
       >
@@ -43,17 +43,22 @@
             class="sidebar-nav__lead flex-shrink-0 d-inline-flex align-items-center justify-content-center"
           >
             @if (node.icon) {
-              <erp-icon class="sidebar-nav__icon" [name]="node.icon" />
+              <erp-icon
+                class="sidebar-nav__icon"
+                [name]="node.icon"
+                size="var(--sidebar-nav-icon-size)"
+              />
             }
           </span>
         }
-        <span class="sidebar-nav__label flex-grow-1 overflow-hidden">{{
+        <span class="sidebar-nav__label flex-grow-1 overflow-hidden min-w-0">{{
           navKey(node.id) | erpTranslate: node.label
         }}</span>
         <erp-icon
           class="sidebar-nav__expand-icon flex-shrink-0 text-muted"
           [class.sidebar-nav__expand-icon--open]="isExpanded(node.id)"
           [name]="isExpanded(node.id) ? 'expand_more' : 'chevron_right'"
+          size="var(--sidebar-nav-icon-size)"
         />
       </button>
       @if (isExpanded(node.id)) {
@@ -81,7 +86,7 @@
     } @else {
       <button
         type="button"
-        class="sidebar-nav__row d-flex align-items-center gap-2 w-stretch text-start fw-400"
+        class="sidebar-nav__row d-flex align-items-center gap-2 w-stretch text-start fw-400 border-0"
         [class.sidebar-nav__row--selected]="isSelected(node.id)"
         [class.fw-600]="isSelected(node.id)"
         [attr.aria-current]="isSelected(node.id) ? 'page' : null"
@@ -92,11 +97,15 @@
             class="sidebar-nav__lead flex-shrink-0 d-inline-flex align-items-center justify-content-center"
           >
             @if (node.icon) {
-              <erp-icon class="sidebar-nav__icon" [name]="node.icon" />
+              <erp-icon
+                class="sidebar-nav__icon"
+                [name]="node.icon"
+                size="var(--sidebar-nav-icon-size)"
+              />
             }
           </span>
         }
-        <span class="sidebar-nav__label flex-grow-1 overflow-hidden">{{
+        <span class="sidebar-nav__label flex-grow-1 overflow-hidden min-w-0">{{
           navKey(node.id) | erpTranslate: node.label
         }}</span>
       </button>

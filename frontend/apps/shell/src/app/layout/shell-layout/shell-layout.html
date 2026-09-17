@@ -2,14 +2,14 @@
 
 <div class="shell d-flex flex-column h-100" [class.shell--nav-open]="navOpen()">
   <app-shell-topbar
-    class="z-index-1"
+    class="z-index-1 flex-shrink-0"
     [navOpen]="navOpen()"
     (navToggle)="toggleNav()"
   />
-  <div class="shell__main d-flex flex-grow-1">
+  <div class="shell__main d-flex flex-grow-1 position-relative min-w-0 overflow-hidden">
     <button
       type="button"
-      class="shell__nav-backdrop"
+      class="shell__nav-backdrop border-0 p-0 m-0"
       [attr.aria-hidden]="navOpen() ? null : 'true'"
       [attr.tabindex]="navOpen() ? 0 : -1"
       [attr.aria-label]="'shell.sidebar.closeNav' | erpTranslate: 'Close navigation'"
@@ -19,7 +19,7 @@
       class="shell__sidebar flex-shrink-0 h-100"
       (navigated)="closeNav()"
     />
-    <main class="shell__body flex-grow-1 p-6 overflow-auto">
+    <main class="shell__body flex-grow-1 p-6 overflow-auto min-w-0">
       <router-outlet />
     </main>
   </div>

@@ -2,13 +2,11 @@
   display: inline-flex;
 }
 
-.erp-language-selector {
-  min-width: 0;
-  padding-inline: 0.5rem;
+:host ::ng-deep .erp-language-selector {
+  border-radius: 0.25rem;
 }
 
 .erp-language-selector__value {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.8125rem;
   white-space: nowrap;
 }

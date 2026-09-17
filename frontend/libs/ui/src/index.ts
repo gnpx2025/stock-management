@@ -15,6 +15,8 @@ export { ErpPrefixDirective } from './lib/components/form-field/erp-prefix';
 export { ErpSuffixDirective } from './lib/components/form-field/erp-suffix';
 export { ErpSearchInputComponent } from './lib/components/search-input/erp-search-input';
 export type { ErpSearchOption } from './lib/components/search-input/erp-search-input';
+export { ErpMenuComponent } from './lib/components/menu/erp-menu';
+export type { ErpMenuItem } from './lib/components/menu/erp-menu';
 export { ErpLanguageSelectorComponent } from './lib/components/language-selector/erp-language-selector';
 export { ThemeService, DARK_MODE_CLASS } from './lib/theme/theme.service';
 export { ToastNotificationService } from './lib/notifications/toast-notification.service';

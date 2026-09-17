@@ -1,0 +1,16 @@
+:host {
+  display: inline-flex;
+}
+
+.erp-menu__item--header.mat-mdc-menu-item[disabled],
+.erp-menu__item--header.mat-mdc-menu-item:disabled {
+  --mat-menu-item-label-text-color: var(--erp-color-text);
+  color: var(--erp-color-text);
+  font-weight: 600;
+  opacity: 1;
+  cursor: default;
+}
+
+.mat-mdc-menu-item {
+  min-height: 35px;
+}

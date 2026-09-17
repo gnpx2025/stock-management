@@ -32,6 +32,8 @@ export class ErpButtonComponent {
   readonly disabled = input(false);
   readonly loading = input(false);
   readonly icon = input<string | undefined>(undefined);
+  /** Prefer Material Icons Outlined for the leading/icon glyph. */
+  readonly iconOutlined = input(true);
   readonly ariaLabel = input<string | undefined>(undefined);
   readonly spinnerDiameter = input(18);
 
