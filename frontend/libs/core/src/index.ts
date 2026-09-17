@@ -78,7 +78,12 @@ export { authGuard, guestGuard } from './lib/auth/auth.guard';
 export { safeReturnUrl } from './lib/auth/return-url';
 export {
   AUTH_INDICATOR_COOKIE,
+  AUTH_HINT_STORAGE_KEY,
   hasAuthIndicatorCookie,
+  hasAuthSessionHint,
+  shouldAttemptSessionRestore,
+  setAuthSessionHint,
+  clearAuthSessionHint,
 } from './lib/auth/auth-indicator';
 export { provideAuthInitializer } from './lib/auth/provide-auth-initializer';
 export { AppContextService } from './lib/context/app-context.service';

@@ -17,7 +17,11 @@ import {
   throwError,
 } from 'rxjs';
 import { AuthApiService } from './auth-api.service';
-import { hasAuthIndicatorCookie } from './auth-indicator';
+import {
+  clearAuthSessionHint,
+  setAuthSessionHint,
+  shouldAttemptSessionRestore,
+} from './auth-indicator';
 import { TOKEN_STORAGE } from './token-storage.token';
 
 @Injectable({ providedIn: 'root' })
@@ -39,6 +43,7 @@ export class AuthSessionService {
     this.user.set(response.user);
     this.accessTokenExpiresAt.set(response.expiresAt);
     this.status.set('authenticated');
+    setAuthSessionHint();
   }
 
   clear(): void {
@@ -46,6 +51,7 @@ export class AuthSessionService {
     this.user.set(null);
     this.accessTokenExpiresAt.set(null);
     this.status.set('unauthenticated');
+    clearAuthSessionHint();
   }
 
   login(request: LoginRequest): Observable<AuthTokenResponse> {
@@ -72,11 +78,11 @@ export class AuthSessionService {
   }
 
   /**
-   * Silent session restore when the `erp_auth=1` indicator cookie is present.
-   * Skips the network call when the indicator is absent.
+   * Silent session restore when a same-origin indicator cookie or client hint is present.
+   * Skips the network call when both are absent.
    */
   restoreFromRefresh(): Promise<void> {
-    if (!hasAuthIndicatorCookie()) {
+    if (!shouldAttemptSessionRestore()) {
       return Promise.resolve();
     }
 

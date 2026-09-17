@@ -21,15 +21,16 @@ Authentication__Seed__Password=<local-secret>
 
 | Token | Storage | Notes |
 |-------|---------|-------|
-| Access (JWT) | Frontend memory only | Default 15 minutes; Bearer header |
+| Access (JWT) | Frontend memory only | Default 15 minutes; Bearer header. **Not** stored in `localStorage`. |
 | Refresh | HttpOnly cookie `erp_refresh` | Rotated on each refresh; hashed server-side |
-| Indicator | Non-HttpOnly `erp_auth=1` | Lets Shell skip silent refresh when absent |
+| Indicator | Non-HttpOnly `erp_auth=1` | Lets Shell skip silent refresh when absent (same-origin / proxied Shell) |
+| Client hint | `localStorage['erp.authHint']=1` | Non-secret flag so cross-origin Shell still attempts silent refresh after reload |
 
 ## Cookie / CORS
 
 - Development (via Shell proxy): `SameSite=Lax`, `Secure=false`, `apiBaseUrl=""`.
 - Production: HTTPS required; set `Authentication:Refresh:Secure=true`, prefer `SameSite=Lax` behind same-site reverse proxy, or `None` only with Secure when Shell and API are cross-site. Enable CORS `AllowCredentials` with explicit origins (never `*`).
-- Cross-origin Render (UI and API on different `*.onrender.com` hosts): allow the Shell origin in `Cors:AllowedOrigins`, set `Authentication:Refresh:SameSite=None` and `Secure=true`, and point Shell `apiBaseUrl` at the API HTTPS URL. Defaults live in `appsettings.Production.json`; override on the host with:
+- Cross-origin Render (UI and API on different `*.onrender.com` hosts): allow the Shell origin in `Cors:AllowedOrigins`, set `Authentication:Refresh:SameSite=None` and `Secure=true`, and point Shell `apiBaseUrl` at the API HTTPS URL. The API also emits `Partitioned` on those cookies (CHIPS) so browsers can keep the refresh cookie for the Shell top-level site. Defaults live in `appsettings.Production.json`; override on the host with:
 
 ```bash
 Cors__AllowedOrigins__0=https://stock-management-ui-dw2a.onrender.com
@@ -39,6 +40,7 @@ Authentication__Refresh__Secure=true
 
 Shell `apiBaseUrl` for this deploy: `https://stock-management-a48d.onrender.com`.
 
+**Preferred production shape** (matches Docker/nginx): serve Shell and `/api` on the **same origin** (`apiBaseUrl: ""`) so refresh cookies are first-party. Separate UI/API hosts rely on cross-site cookies and are more fragile.
 ## Render (API) required env vars
 
 The API image does **not** ship a production database URL. Without these, login tries `127.0.0.1:5432` and fails.

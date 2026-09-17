@@ -38,10 +38,6 @@ export class ThemeService {
       // ignore storage access errors
     }
 
-    if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-
     return 'light';
   }
 

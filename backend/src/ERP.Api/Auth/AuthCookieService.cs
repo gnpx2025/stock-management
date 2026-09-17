@@ -23,26 +23,34 @@ public sealed class AuthCookieService(IHostEnvironment environment, Microsoft.Ex
         request.Cookies.TryGetValue(_options.CookieName, out var value) ? value : null;
 
     private CookieOptions BuildRefreshCookie(DateTimeOffset expires) =>
-        new()
+        BuildCookie(expires, httpOnly: true);
+
+    private CookieOptions BuildIndicatorCookie(DateTimeOffset expires) =>
+        BuildCookie(expires, httpOnly: false);
+
+    private CookieOptions BuildCookie(DateTimeOffset expires, bool httpOnly)
+    {
+        var sameSite = ParseSameSite();
+        var secure = IsSecure();
+        var cookie = new CookieOptions
         {
-            HttpOnly = true,
-            Secure = IsSecure(),
-            SameSite = ParseSameSite(),
+            HttpOnly = httpOnly,
+            Secure = secure,
+            SameSite = sameSite,
             Expires = expires.UtcDateTime,
             Path = "/",
             IsEssential = true
         };
 
-    private CookieOptions BuildIndicatorCookie(DateTimeOffset expires) =>
-        new()
+        // Cross-site Shell↔API (e.g. separate Render hosts) need CHIPS so browsers
+        // still store/send the refresh cookie when third-party cookies are restricted.
+        if (sameSite == SameSiteMode.None && secure)
         {
-            HttpOnly = false,
-            Secure = IsSecure(),
-            SameSite = ParseSameSite(),
-            Expires = expires.UtcDateTime,
-            Path = "/",
-            IsEssential = true
-        };
+            cookie.Extensions.Add("Partitioned");
+        }
+
+        return cookie;
+    }
 
     private bool IsSecure() =>
         _options.Secure ?? !environment.IsDevelopment() && !environment.IsEnvironment("Testing");
