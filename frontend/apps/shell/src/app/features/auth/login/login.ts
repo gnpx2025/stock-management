@@ -13,6 +13,8 @@ import { LanguageService, TranslatePipe } from '@erp/i18n';
 import {
   ErpButtonComponent,
   ErpFormFieldComponent,
+  ErpIconComponent,
+  ErpPrefixDirective,
   ErpSuffixDirective,
 } from '@erp/ui';
 
@@ -23,6 +25,8 @@ import {
     ReactiveFormsModule,
     ErpButtonComponent,
     ErpFormFieldComponent,
+    ErpIconComponent,
+    ErpPrefixDirective,
     ErpSuffixDirective,
     TranslatePipe,
   ],

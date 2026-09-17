@@ -18,7 +18,9 @@
         inputId="usernameOrEmail"
         autocomplete="username"
         [error]="usernameError()"
-      />
+      >
+        <erp-icon erpPrefix name="person" class="text-muted" />
+      </erp-form-field>
 
       <erp-form-field
         class="full-width"
@@ -29,6 +31,7 @@
         autocomplete="current-password"
         [error]="passwordError()"
       >
+        <erp-icon erpPrefix name="lock" class="text-muted" />
         <erp-button
           erpSuffix
           variant="icon"
@@ -43,17 +46,18 @@
         <p class="login__error text-error m-0" role="alert">{{ message }}</p>
       }
 
-      <erp-button
-        class="d-block w-100"
-        type="submit"
-        variant="flat"
-        color="primary"
-        [loading]="authenticating"
-        [disabled]="authenticating || form.invalid"
-        [spinnerDiameter]="20"
-      >
-        {{ 'auth.login.submit' | erpTranslate: 'Sign in' }}
-      </erp-button>
+      <div class="d-flex justify-content-center">
+        <erp-button
+          type="submit"
+          variant="flat"
+          color="primary"
+          [loading]="authenticating"
+          [disabled]="authenticating || form.invalid"
+          [spinnerDiameter]="20"
+        >
+          {{ 'auth.login.submit' | erpTranslate: 'Sign in' }}
+        </erp-button>
+      </div>
     </form>
   </div>
 </div>
