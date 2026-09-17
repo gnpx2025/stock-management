@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, master, '001-platform-foundation']
+    branches: [main, master]
   pull_request:
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
       - run: npm run check:ui-libs
-      - run: npx nx run-many -t lint,test,build --projects=shell,core,ui,shared,contracts --skip-nx-cache
+      - run: npx nx run-many -t lint,test,build --projects=shell,core,ui,i18n,shared,contracts --skip-nx-cache
 
   backend:
     runs-on: ubuntu-latest

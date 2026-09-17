@@ -4,7 +4,6 @@ using ERP.Api.Auth;
 using ERP.Api.Infrastructure.ExceptionHandling;
 using ERP.Api.Middleware;
 using ERP.Infrastructure;
-using ERP.Infrastructure.Identity;
 using ERP.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpLogging;

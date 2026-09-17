@@ -72,7 +72,7 @@ Runtime API URL: `frontend/apps/shell/public/config.json`.
 # Frontend
 cd frontend
 npm run check:ui-libs
-npx nx run-many -t lint,test,build --projects=shell,core,ui,shared,contracts
+npx nx run-many -t lint,test,build --projects=shell,core,ui,i18n,shared,contracts
 
 # Backend
 cd backend

@@ -85,5 +85,4 @@ export {
   setAuthSessionHint,
   clearAuthSessionHint,
 } from './lib/auth/auth-indicator';
-export { provideAuthInitializer } from './lib/auth/provide-auth-initializer';
 export { AppContextService } from './lib/context/app-context.service';

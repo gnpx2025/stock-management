@@ -58,6 +58,8 @@ npx nx serve shell
 
 ## Spec Kit
 
-Feature specs live under `specs/`. Active feature: `specs/002-login-authentication/`.
+Feature specs live under `specs/`. Active feature pointer: `.specify/feature.json` (currently `specs/006-i18n-language-selector`).
+
+Architecture skills for agents live under `.cursor/skills/erp-*` and MUST be used by `/speckit-specify`, `/speckit-plan`, and `/speckit-implement` so feature prompts do not restate stack conventions.
 
 Default seed login (Development only; change immediately): `admin` / `ChangeMe!DevOnly1` — see [docs/authentication.md](docs/authentication.md).

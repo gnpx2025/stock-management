@@ -90,11 +90,16 @@ You **MUST** consider the user input before proceeding (if not empty).
 3. Load and analyze the implementation context:
    - **REQUIRED**: Read tasks.md for the complete task list and execution plan
    - **REQUIRED**: Read plan.md for tech stack, architecture, and file structure
+   - **REQUIRED**: Read `.cursor/skills/erp-architecture/SKILL.md`
+   - **REQUIRED** (frontend tasks): Read `.cursor/skills/erp-frontend/SKILL.md`
+   - **REQUIRED** (backend tasks): Read `.cursor/skills/erp-backend/SKILL.md`
    - **IF EXISTS**: Read data-model.md for entities and relationships
    - **IF EXISTS**: Read contracts/ for API specifications and test requirements
    - **IF EXISTS**: Read research.md for technical decisions and constraints
    - **IF EXISTS**: Read .specify/memory/constitution.md for governance constraints
    - **IF EXISTS**: Read quickstart.md for integration scenarios
+
+   Implementation MUST follow the ERP skills (library placement, Material/`erp-*` policy, Clean Architecture layers, Signals, no competing UI libs, no MediatR unless skills say otherwise). Reuse existing components/services before creating new ones.
 
 4. **Project Setup Verification**:
    - **REQUIRED**: Create/verify ignore files based on actual project setup:

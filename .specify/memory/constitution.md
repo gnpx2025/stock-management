@@ -1,26 +1,13 @@
 <!--
 Sync Impact Report
-- Version change: 2.0.0 → 3.0.0
+- Version change: 3.0.0 → 3.0.1
 - Modified principles / sections:
-  - II. Defined Architecture Stack → Angular Material replaces PrimeNG as
-    primary frontend UI library; stack diagram updated
-  - III. Frontend and Micro-Frontend Boundaries → Angular Material + shared
-    libs/ui + SCSS; MFE design-system consistency; Shell Material usage;
-    competing libraries (including PrimeNG) forbidden; libs/ui, libs/core,
-    libs/contracts ownership clarified
-  - IX. Quality, Testing, and Observability → forbid unnecessary Angular
-    Material wrappers; competing UI libraries without architectural approval
-  - Technology and Platform Constraints / Frontend UI Architecture → fully
-    redefined from PrimeNG-first to Angular Material-first + shared UI library,
-    centralized theming, accessibility, and developer guidance
-  - State Management → explicit Signals default for Shell UI presentation
-    state; NgRx not for simple shell UI
-- Added sections: none (Frontend UI Architecture rewritten in place;
-  accessibility and DX guidance folded into that subsection)
-- Removed / retired rules:
-  - PrimeNG as primary UI component library
-  - Official PrimeNG / PrimeIcons as approved first-class UI dependency
-  - Competing-library ban that listed Angular Material as forbidden
+  - III. Frontend and Micro-Frontend Boundaries → shared library ownership
+    now includes libs/i18n (@erp/i18n) for catalogs, LanguageService, and
+    TranslatePipe; stack diagram note clarified that Shared libraries include
+    core / ui / contracts / i18n / shared
+- Added sections: none
+- Removed / retired rules: none
 - Follow-up TODOs: none
 -->
 
@@ -78,7 +65,7 @@ Nx Monorepo
     ↓
 Native Federation Microfrontends
     ↓
-Shared Core / UI / Contracts libraries
+Shared Core / UI / Contracts / i18n / Shared libraries
 ```
 
 The backend architecture stack MUST remain:
@@ -118,6 +105,9 @@ Shared library ownership MUST follow:
   shared UI styles
 * `libs/contracts` — shared contracts across micro-frontends
 * `libs/core` — core cross-cutting functionality
+* `libs/i18n` — language catalogs, `LanguageService`, translation pipe, and
+  document direction (RTL/LTR)
+* `libs/shared` — pure non-UI helpers
 
 Micro-frontends MUST NOT directly import UI components or services from
 another micro-frontend.
@@ -542,4 +532,4 @@ Compliance review expectations:
 * Spec-Driven Development lifecycle gates MUST be respected for
   significant features.
 
-**Version**: 3.0.0 | **Ratified**: 2026-09-08 | **Last Amended**: 2026-09-09
+**Version**: 3.0.1 | **Ratified**: 2026-09-08 | **Last Amended**: 2026-09-18

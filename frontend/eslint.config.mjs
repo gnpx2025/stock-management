@@ -21,6 +21,7 @@ export default [
               onlyDependOnLibsWithTags: [
                 'type:core',
                 'type:ui',
+                'type:i18n',
                 'type:shared',
                 'type:contracts',
               ],
@@ -31,6 +32,14 @@ export default [
             },
             {
               sourceTag: 'type:ui',
+              onlyDependOnLibsWithTags: [
+                'type:core',
+                'type:shared',
+                'type:contracts',
+              ],
+            },
+            {
+              sourceTag: 'type:i18n',
               onlyDependOnLibsWithTags: [
                 'type:core',
                 'type:shared',

@@ -113,6 +113,12 @@ Given that feature description, do this:
 
 5. **IF EXISTS**: Load `.specify/memory/constitution.md` for project principles and governance constraints.
 
+5b. **REQUIRED — Load ERP architecture skills** (project baseline; do not skip):
+   - `.cursor/skills/erp-architecture/SKILL.md`
+   - `.cursor/skills/erp-frontend/SKILL.md` (when the feature touches UI/Shell/Angular)
+   - `.cursor/skills/erp-backend/SKILL.md` (when the feature touches the API/.NET)
+   - Inspect existing implementation when needed. Specs MUST focus on WHAT (workflows, requirements, acceptance criteria) and MUST NOT redefine architecture, folder structure, UI library, state management, styling, or testing conventions already covered by those skills.
+
 6. Follow this execution flow:
     1. Parse user description from arguments
        If empty: ERROR "No feature description provided"
@@ -294,6 +300,7 @@ Report completion to the user with:
 
 When creating this spec from a user prompt:
 
+0. **Use project skills**: Treat `.cursor/skills/erp-*` + constitution as the fixed engineering baseline. Do not restate those standards inside the spec.
 1. **Make informed guesses**: Use context, industry standards, and common patterns to fill gaps
 2. **Document assumptions**: Record reasonable defaults in the Assumptions section
 3. **Limit clarifications**: Maximum 3 [NEEDS CLARIFICATION] markers - use only for critical decisions that:
@@ -306,7 +313,7 @@ When creating this spec from a user prompt:
    - Feature scope and boundaries (include/exclude specific use cases)
    - User types and permissions (if multiple conflicting interpretations possible)
    - Security/compliance requirements (when legally/financially significant)
-
+7. **New architecture only when required**: If the feature truly needs a new pattern not in `erp-*` skills, mark it explicitly for plan phase and require skill/constitution updates.
 **Examples of reasonable defaults** (don't ask about these):
 
 - Data retention: Industry-standard practices for the domain
