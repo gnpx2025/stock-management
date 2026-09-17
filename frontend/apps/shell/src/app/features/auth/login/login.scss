@@ -45,6 +45,17 @@
   letter-spacing: 0.04em;
 }
 
+:host-context([dir='rtl']) .login__mark,
+:host-context([lang='ar']) .login__mark {
+  letter-spacing: normal;
+}
+
+@media (max-width: 40rem) {
+  .login__panel {
+    width: min(100%, 22rem);
+  }
+}
+
 .login__product {
   margin: 0;
   font-size: 1.35rem;

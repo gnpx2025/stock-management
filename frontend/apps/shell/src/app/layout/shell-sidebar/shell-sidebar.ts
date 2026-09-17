@@ -1,5 +1,11 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  output,
+  signal,
+} from '@angular/core';
 import { LanguageService, TranslatePipe } from '@erp/i18n';
 import { ErpIconComponent } from '@erp/ui';
 import { SHELL_NAV_MENU } from '../nav/shell-nav-menu.data';
@@ -17,6 +23,9 @@ const SELECTED_NAV_STORAGE_KEY = 'erp.shell.sidebar.selectedNavId';
 export class ShellSidebarComponent {
   /** Touched so OnPush refreshes when locale changes (pipe is impure; host still needs CD trigger). */
   protected readonly language = inject(LanguageService);
+
+  /** Emitted when a leaf nav item is selected (used to close the mobile drawer). */
+  readonly navigated = output<void>();
 
   protected readonly sections: NavSection[] = SHELL_NAV_MENU;
   protected readonly expandedIds = signal<ReadonlySet<string>>(new Set());
@@ -68,6 +77,7 @@ export class ShellSidebarComponent {
     const ancestors = findAncestorIds(this.sections, node.id) ?? [];
     this.expandedIds.update((current) => new Set([...current, ...ancestors]));
     persistSelectedId(node.id);
+    this.navigated.emit();
   }
 
   private restoreSelection(): void {

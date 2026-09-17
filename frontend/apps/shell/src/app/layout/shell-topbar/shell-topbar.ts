@@ -3,6 +3,8 @@ import {
   Component,
   computed,
   inject,
+  input,
+  output,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
@@ -37,6 +39,9 @@ export class ShellTopbarComponent {
   private readonly auth = inject(AuthSessionService);
   protected readonly theme = inject(ThemeService);
   protected readonly language = inject(LanguageService);
+
+  readonly navOpen = input(false);
+  readonly navToggle = output<void>();
 
   protected readonly searchOptions = computed<readonly ErpSearchOption[]>(() => {
     this.language.language();
@@ -93,6 +98,13 @@ export class ShellTopbarComponent {
     return this.language.t('shell.topbar.accountMenu', 'Account menu for {name}', {
       name: this.displayName(),
     });
+  });
+
+  protected readonly navToggleLabel = computed(() => {
+    this.language.language();
+    return this.navOpen()
+      ? this.language.t('shell.sidebar.closeNav', 'Close navigation')
+      : this.language.t('shell.sidebar.openNav', 'Open navigation');
   });
 
   protected onNotificationClick(): void {

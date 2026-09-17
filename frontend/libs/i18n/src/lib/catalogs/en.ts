@@ -11,6 +11,8 @@ export const EN_CATALOG: Readonly<Record<string, string>> = {
   'shell.topbar.userFallback': "User",
   'shell.sidebar.navAria': "Application navigation",
   'shell.sidebar.menuAria': "Main menu",
+  'shell.sidebar.openNav': "Open navigation",
+  'shell.sidebar.closeNav': "Close navigation",
   'shell.language.label': "Language",
   'shell.language.loadFailed': "Could not switch language. Keeping previous language.",
   'auth.login.product': "Platform Shell",

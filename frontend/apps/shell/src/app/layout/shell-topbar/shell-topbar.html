@@ -1,8 +1,18 @@
 <header
-  class="shell-topbar d-flex align-items-center justify-content-between gap-4 px-4"
+  class="shell-topbar d-flex align-items-center justify-content-between px-3"
   role="banner"
 >
-  <div class="shell-topbar__brand d-flex flex-shrink-0 align-items-center gap-3">
+  <div class="shell-topbar__brand d-flex flex-shrink-0 align-items-center gap-2">
+    <span class="shell-topbar__menu">
+      <erp-button
+        variant="icon"
+        type="button"
+        icon="menu"
+        [ariaLabel]="navToggleLabel()"
+        (clicked)="navToggle.emit()"
+      />
+    </span>
+
     <span
       class="shell-topbar__mark d-inline-grid place-items-center flex-shrink-0 text-accent fw-700"
       aria-hidden="true"

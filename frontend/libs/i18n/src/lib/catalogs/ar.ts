@@ -11,6 +11,8 @@ export const AR_CATALOG: Readonly<Record<string, string>> = {
   'shell.topbar.userFallback': "مستخدم",
   'shell.sidebar.navAria': "تنقل التطبيق",
   'shell.sidebar.menuAria': "القائمة الرئيسية",
+  'shell.sidebar.openNav': "فتح التنقل",
+  'shell.sidebar.closeNav': "إغلاق التنقل",
   'shell.language.label': "اللغة",
   'shell.language.loadFailed': "تعذر تغيير اللغة. سيتم الإبقاء على اللغة السابقة.",
   'auth.login.product': "منصة النظام",

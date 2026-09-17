@@ -8,7 +8,10 @@
   --erp-space-3: 0.75rem;
   --erp-space-4: 1rem;
   --erp-space-6: 1.5rem;
-  --erp-font-family: 'Scoutie Sans';
+  --erp-font-family: 'Scoutie Sans', 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+  --erp-breakpoint-nav: 56rem;
+  --erp-breakpoint-compact: 40rem;
+  --erp-breakpoint-narrow: 30rem;
   --erp-shadow-soft: 0 1px 2px rgb(var(--erp-color-ink-rgb) / 6%);
 }
 

@@ -52,6 +52,7 @@
         }}</span>
         <erp-icon
           class="sidebar-nav__expand-icon flex-shrink-0 text-muted"
+          [class.sidebar-nav__expand-icon--open]="isExpanded(node.id)"
           [name]="isExpanded(node.id) ? 'expand_more' : 'chevron_right'"
         />
       </button>
